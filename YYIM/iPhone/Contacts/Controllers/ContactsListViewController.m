@@ -91,8 +91,10 @@
     
 
     
-    
+//    [ProgressTool show];
 //    [Request getUserListSuccess:^(NSUInteger code, NSString *msg, id data) {
+//        [ProgressTool hidden];
+//
 //        if (code == 200) {
 //            NSArray * nodes = data;
 //
@@ -105,8 +107,8 @@
 //            }
 //            [self->_datas removeAllObjects];
 //            [self->_datas addObjectsFromArray:models];
-//            
-//            
+//
+//
 //            self->_showDatas= [self resolveDatas:[self getAllDatasWithDatas:self->_datas]];
 //
 //
@@ -117,7 +119,7 @@
 //
 //        }
 //    } failure:^(NSError *error) {
-//
+//       [ProgressTool hidden];
 //    }];
 
     
@@ -141,13 +143,29 @@
                                                                      @"Expanded":@(YES),
                                                                      @"Tag": @"2",
                                                                      @"Nodes": @[@{
-                                                                                     @"Text":@"鞠文竹-13718967990",
+                                                                                     @"Text":@"技术部",
                                                                                      @"ImageIndex": @"20",
                                                                                      @"SelectedImageIndex":@"20",
                                                                                      @"Checked": @"false",
-                                                                                     @"Expanded": @(NO),
+                                                                                     @"Expanded": @(YES),
                                                                                      @"Tag": @"13718967990",
-                                                                                     @"Nodes": @[]
+                                                                                     @"Nodes": @[@{
+                                                                                                     @"Text":@"鞠文竹-13718967990",
+                                                                                                     @"ImageIndex": @"20",
+                                                                                                     @"SelectedImageIndex":@"20",
+                                                                                                     @"Checked": @"false",
+                                                                                                     @"Expanded": @(NO),
+                                                                                                     @"Tag": @"13718967990",
+                                                                                                     @"Nodes": @[]
+                                                                                                     }, @{
+                                                                                                     @"Text": @"刘洋-15801603945",
+                                                                                                     @"ImageIndex": @"0",
+                                                                                                     @"SelectedImageIndex": @"0",
+                                                                                                     @"Checked": @"false",
+                                                                                                     @"Expanded": @(NO),
+                                                                                                     @"Tag": @"15801603945",
+                                                                                                     @"Nodes": @[]
+                                                                                                     }]
                                                                                      }, @{
                                                                                      @"Text": @"刘洋-15801603945",
                                                                                      @"ImageIndex": @"0",
@@ -230,17 +248,17 @@
 #pragma mark -- delegate
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 1;
+    return _showDatas.count;
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return _showDatas.count;
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     ContactsListTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"contactsCell" forIndexPath:indexPath];
     
     
-    ContactsListModel * model = _showDatas[indexPath.section];
+    ContactsListModel * model = _showDatas[indexPath.row];
     cell.model = model;
     return cell;
     
@@ -248,7 +266,14 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
     
-    ContactsListModel * model = _showDatas[indexPath.section];
+    ContactsListModel * model = _showDatas[indexPath.row];
+    if (model.Nodes.count <= 0) {
+        [self.navigationController pushViewController:[ChatViewController new] animated:YES];
+        return;
+    }
+    
+    
+    
     if (model.level.count == 1) { // 一层
         NSInteger lev0 = [model.level[0] integerValue];
         ContactsListModel * model0 = _datas[lev0];
@@ -276,9 +301,47 @@
         
     }
     if (model.level.count == 3) { // 三层
-        NSInteger lev2 = [model.level[2] integerValue];
+        NSInteger lev0 = [model.level[0] integerValue];
+        ContactsListModel * model0 = _datas[lev0];
+        NSMutableArray * nodes0 = [NSMutableArray arrayWithArray:model0.Nodes];
         
-        [self.navigationController pushViewController:[ChatViewController new] animated:YES];
+        
+        NSInteger lev1 = [model.level[1] integerValue];
+        ContactsListModel * model1 = model0.Nodes[lev1];
+//        model1.Expanded = !model1.Expanded;
+        NSMutableArray * nodes1 = [NSMutableArray arrayWithArray:model1.Nodes];
+
+        
+        
+        
+        
+        
+        
+        NSInteger lev2 = [model.level[2] integerValue];
+        ContactsListModel * model2 = model1.Nodes[lev2];
+        model2.Expanded =!model2.Expanded;
+        
+        
+        
+        [nodes1 replaceObjectAtIndex:lev2 withObject:model2];
+        model1.Nodes = nodes1;
+        
+        
+        
+        [nodes0 replaceObjectAtIndex:lev1 withObject:model1];
+        model0.Nodes = nodes0;
+        
+        
+        
+        _showDatas = [self resolveDatas:[self getAllDatasWithDatas:_datas]];
+        [_tableView reloadData];
+        
+        
+        
+        
+//        NSInteger lev2 = [model.level[2] integerValue];
+//        
+
         
     }
     
@@ -329,6 +392,13 @@
                 model2.level = @[@(x),@(y),@(z)];
                 [allDatas addObject:model2];
                 
+                
+                for (int w = 0; w < model2.Nodes.count; w ++) {
+                    ContactsListModel * model3 = model2.Nodes[z];
+                    model3.level = @[@(x),@(y),@(z),@(w)];
+                    [allDatas addObject:model3];
+                    
+                };
             };
         };
     };
@@ -392,6 +462,30 @@
                 return NO;
             }
         }
+        if (i == 3) {
+            NSInteger lev0 =  [model.level[0] integerValue];
+            ContactsListModel * model0 = datas[lev0];
+            
+            
+            NSInteger lev1 = [model.level[1] integerValue];
+            ContactsListModel * model1 = model0.Nodes[lev1];
+            
+            NSInteger lev2 = [model.level[2] integerValue];
+            ContactsListModel * model2 = model1.Nodes[lev2];
+            
+            
+            NSLog(@"%ld: %ld ::::%@",(long)lev0,(long)lev1,model1.Expanded?@"yes":@"no");
+            if (!model0.Expanded) {
+                return NO;
+            }
+            if (!model1.Expanded) {
+                return NO;
+            }
+            if (!model2.Expanded) {
+                return NO;
+            }
+        }
+     
         
         
      

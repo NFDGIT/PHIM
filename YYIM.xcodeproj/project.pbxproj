@@ -43,6 +43,7 @@
 		C59021A720F5A76A001296C4 /* NSString+Json.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021A620F5A76A001296C4 /* NSString+Json.m */; };
 		C59021AB20F5F583001296C4 /* MsgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021AA20F5F583001296C4 /* MsgModel.m */; };
 		C59021B720F5FC49001296C4 /* ProgressTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021B620F5FC49001296C4 /* ProgressTool.m */; };
+		C59021BA20F6088B001296C4 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021B920F6088B001296C4 /* NSString+Base64.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +137,8 @@
 		C59021AA20F5F583001296C4 /* MsgModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MsgModel.m; sourceTree = "<group>"; };
 		C59021B520F5FC49001296C4 /* ProgressTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgressTool.h; sourceTree = "<group>"; };
 		C59021B620F5FC49001296C4 /* ProgressTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressTool.m; sourceTree = "<group>"; };
+		C59021B820F6088B001296C4 /* NSString+Base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Base64.h"; sourceTree = "<group>"; };
+		C59021B920F6088B001296C4 /* NSString+Base64.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
 		EC4D8DFB44757BA08EA582CF /* Pods-YYIMUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYIMUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YYIMUITests/Pods-YYIMUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -255,6 +258,10 @@
 				C590213820F44E06001296C4 /* Base */,
 				C590219D20F4C6B5001296C4 /* UDPSocketSingleton.h */,
 				C590219E20F4C6B5001296C4 /* UDPSocketSingleton.m */,
+				C59021A520F5A76A001296C4 /* NSString+Json.h */,
+				C59021A620F5A76A001296C4 /* NSString+Json.m */,
+				C59021B820F6088B001296C4 /* NSString+Base64.h */,
+				C59021B920F6088B001296C4 /* NSString+Base64.m */,
 				C59021A020F5A3ED001296C4 /* NSData+GZip.h */,
 				C59021A120F5A3ED001296C4 /* NSData+GZip.m */,
 				C59021B520F5FC49001296C4 /* ProgressTool.h */,
@@ -268,8 +275,6 @@
 			children = (
 				C590213920F44E1D001296C4 /* BaseViewController.h */,
 				C590213A20F44E1D001296C4 /* BaseViewController.m */,
-				C59021A520F5A76A001296C4 /* NSString+Json.h */,
-				C59021A620F5A76A001296C4 /* NSString+Json.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -694,6 +699,7 @@
 				C590215320F458F7001296C4 /* ContactsListTableViewCell.m in Sources */,
 				C590217720F4A3CF001296C4 /* LoginViewController.m in Sources */,
 				C590213420F44D86001296C4 /* NavigationController.m in Sources */,
+				C59021BA20F6088B001296C4 /* NSString+Base64.m in Sources */,
 				C590214E20F455DB001296C4 /* UIViewAdditions.m in Sources */,
 				C590219F20F4C6B5001296C4 /* UDPSocketSingleton.m in Sources */,
 				C590213520F44D86001296C4 /* TabBarController.m in Sources */,

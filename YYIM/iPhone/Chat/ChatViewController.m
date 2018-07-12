@@ -38,7 +38,7 @@
     
 }
 -(void)initNavi{
-    self.title = @"我的好友";
+    self.title = @"聊天";
     
 }
 -(void)initUI{

@@ -9,6 +9,7 @@
 #import "UDPSocketSingleton.h"
 #import "NSString+Json.h"
 #import "NSData+GZip.h"
+#import "NSString+Base64.h"
 
 static UDPSocketSingleton *sharedInstance = nil;
 @implementation UDPSocketSingleton
@@ -43,7 +44,7 @@ static UDPSocketSingleton *sharedInstance = nil;
     /**
      *  所连接的服务器ip地址 socketHost 和 端口号:socketPort
      */
-    [self.socket connectToHost:self.socketHost onPort:self.socketPort error:&error];
+   BOOL isConnect =  [self.socket connectToHost:self.socketHost onPort:self.socketPort error:&error];
     /**
      *  允许广播信息
      */
@@ -87,7 +88,7 @@ static UDPSocketSingleton *sharedInstance = nil;
     NSString * ReceiveId = @"";
     NSString * MsgInfoClass = @"";
     NSString * MsgContent = msg;
-    NSData * MsgContentData = [MsgContent dataUsingEncoding:NSUTF8StringEncoding];
+
     
     
     NSString * GroupMsg = @"";
@@ -230,8 +231,10 @@ withFilterContext:(nullable id)filterContext{
     NSString * ReceiveId = @"";
     NSString * MsgInfoClass = @"82";
     NSString * MsgContent = @"心跳包";
-    NSData * MsgContentData = [NSMutableData dataWithData:[MsgContent dataUsingEncoding:NSUTF8StringEncoding]];
-    MsgContentData = [NSData gzipDeflate:MsgContentData];
+    NSString * MsgContentBase64 = [NSString encode:MsgContent];
+    
+//    NSData * MsgContentData = [NSMutableData dataWithData:[MsgContent dataUsingEncoding:NSUTF8StringEncoding]];
+//    MsgContentData = [NSData gzipDeflate:MsgContentData];
     
     
     NSString * GroupMsg = @"";
@@ -259,7 +262,7 @@ withFilterContext:(nullable id)filterContext{
     [param setValue:SendID forKey:@"SendID"];
     [param setValue:ReceiveId forKey:@"ReceiveId"];
     [param setValue:MsgInfoClass forKey:@"MsgInfoClass"];
-    [param setValue:MsgContentData forKey:@"MsgContent"];
+    [param setValue:MsgContentBase64 forKey:@"MsgContent"];
     [param setValue:GroupMsg forKey:@"GroupMsg"];
     [param setValue:Type forKey:@"Type"];
     
@@ -273,10 +276,13 @@ withFilterContext:(nullable id)filterContext{
     
     
     
+    NSString * sochost = self.socketHost;
+    int socport = self.socketPort;
     
-    
+//    [self.socket sendData:writer toHost:sochost port:socport withTimeout:-1 tag:1];
 
     [self.socket sendData:writer withTimeout:-1 tag:1];
+    
 }
 
 
