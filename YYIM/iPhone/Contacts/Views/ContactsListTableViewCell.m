@@ -42,6 +42,15 @@
     
     
     _labelName.text = _model.Text;
+    if (_model.Nodes.count != 0) {
+        if (_model.Expanded) {
+            _labelName.text = [NSString stringWithFormat:@"- %@",_model.Text];
+        }else{
+            _labelName.text = [NSString stringWithFormat:@"+ %@",_model.Text];
+        }
+    }
+    
+    
     _labelName.left = _model.level.count * 20;
     
     
