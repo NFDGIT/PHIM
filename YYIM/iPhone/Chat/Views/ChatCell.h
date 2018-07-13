@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MsgModel.h"
+#import "PHCellHeight.h"
 
 @interface ChatCell : UITableViewCell
+@property (nonatomic,strong)MsgModel * model;
 
 @end

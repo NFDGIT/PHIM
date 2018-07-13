@@ -10,7 +10,7 @@
 #import "ContactsListTableViewCell.h"
 #import "ContactsListModel.h"
 #import "ChatViewController.h"
-#import <MBProgressHUD.h>
+
 
 
 @interface ContactsListViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -60,20 +60,17 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
-    
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
     
 }
 
 -(void)refreshUI{
 //    _showDatas = [self getShowDatasWithModels:_datas];
     [_tableView reloadData];
+    [_tableView.mj_header endRefreshing];
 }
 -(void)refreshData{
     
-    [ProgressTool show];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-         [ProgressTool hidden];
-    });
     
 //    NSMutableDictionary * dic1 =[NSMutableDictionary dictionaryWithDictionary:@{@"f":@""}];
 //    NSMutableArray * data1 = [NSMutableArray arrayWithArray:@[dic1]];
@@ -91,36 +88,36 @@
     
 
     
-//    [ProgressTool show];
-//    [Request getUserListSuccess:^(NSUInteger code, NSString *msg, id data) {
-//        [ProgressTool hidden];
-//
-//        if (code == 200) {
-//            NSArray * nodes = data;
-//
-//
-//            NSMutableArray * models = [NSMutableArray array];
-//            for (NSDictionary * dic  in nodes) {
-//                ContactsListModel * model = [ContactsListModel new];
-//                [model setValuesForKeysWithDictionary:dic];
-//                [models addObject:model];
-//            }
-//            [self->_datas removeAllObjects];
-//            [self->_datas addObjectsFromArray:models];
-//
-//
-//            self->_showDatas= [self resolveDatas:[self getAllDatasWithDatas:self->_datas]];
-//
-//
-//            [self refreshUI];
-//
-//        }else{
-//            NSLog(@"%@",msg);
-//
-//        }
-//    } failure:^(NSError *error) {
-//       [ProgressTool hidden];
-//    }];
+    [ProgressTool show];
+    [Request getUserListSuccess:^(NSUInteger code, NSString *msg, id data) {
+        [ProgressTool hidden];
+
+        if (code == 200) {
+            NSArray * nodes = data;
+
+
+            NSMutableArray * models = [NSMutableArray array];
+            for (NSDictionary * dic  in nodes) {
+                ContactsListModel * model = [ContactsListModel new];
+                [model setValuesForKeysWithDictionary:dic];
+                [models addObject:model];
+            }
+            [self->_datas removeAllObjects];
+            [self->_datas addObjectsFromArray:models];
+
+
+            self->_showDatas= [self resolveDatas:[self getAllDatasWithDatas:self->_datas]];
+
+
+            [self refreshUI];
+
+        }else{
+            NSLog(@"%@",msg);
+
+        }
+    } failure:^(NSError *error) {
+       [ProgressTool hidden];
+    }];
 
     
 
@@ -242,9 +239,6 @@
     [self refreshUI];
 }
 
-
-
-
 #pragma mark -- delegate
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
@@ -264,87 +258,7 @@
     
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
-    
-    ContactsListModel * model = _showDatas[indexPath.row];
-    if (model.Nodes.count <= 0) {
-        [self.navigationController pushViewController:[ChatViewController new] animated:YES];
-        return;
-    }
-    
-    
-    
-    if (model.level.count == 1) { // 一层
-        NSInteger lev0 = [model.level[0] integerValue];
-        ContactsListModel * model0 = _datas[lev0];
-        model0.Expanded = !model0.Expanded;
-        
-        _showDatas = [self resolveDatas:[self getAllDatasWithDatas:_datas]];
-        [_tableView reloadData];
-    }
-    if (model.level.count == 2) { // 二层
-        NSInteger lev0 = [model.level[0] integerValue];
-        ContactsListModel * model0 = _datas[lev0];
-        NSMutableArray * nodes0 = [NSMutableArray arrayWithArray:model0.Nodes];
-        
-        
-        NSInteger lev1 = [model.level[1] integerValue];
-        ContactsListModel * model1 = model0.Nodes[lev1];
-        model1.Expanded = !model1.Expanded;
-        [nodes0 replaceObjectAtIndex:lev1 withObject:model1];
-        model0.Nodes = nodes0;
-        
-        _showDatas = [self resolveDatas:[self getAllDatasWithDatas:_datas]];
-        [_tableView reloadData];
-        
-
-        
-    }
-    if (model.level.count == 3) { // 三层
-        NSInteger lev0 = [model.level[0] integerValue];
-        ContactsListModel * model0 = _datas[lev0];
-        NSMutableArray * nodes0 = [NSMutableArray arrayWithArray:model0.Nodes];
-        
-        
-        NSInteger lev1 = [model.level[1] integerValue];
-        ContactsListModel * model1 = model0.Nodes[lev1];
-//        model1.Expanded = !model1.Expanded;
-        NSMutableArray * nodes1 = [NSMutableArray arrayWithArray:model1.Nodes];
-
-        
-        
-        
-        
-        
-        
-        NSInteger lev2 = [model.level[2] integerValue];
-        ContactsListModel * model2 = model1.Nodes[lev2];
-        model2.Expanded =!model2.Expanded;
-        
-        
-        
-        [nodes1 replaceObjectAtIndex:lev2 withObject:model2];
-        model1.Nodes = nodes1;
-        
-        
-        
-        [nodes0 replaceObjectAtIndex:lev1 withObject:model1];
-        model0.Nodes = nodes0;
-        
-        
-        
-        _showDatas = [self resolveDatas:[self getAllDatasWithDatas:_datas]];
-        [_tableView reloadData];
-        
-        
-        
-        
-//        NSInteger lev2 = [model.level[2] integerValue];
-//        
-
-        
-    }
-    
+    [self rowClickWithRow:indexPath.row];
 }
 
 
@@ -365,8 +279,78 @@
     return showDatas;
 }
 
+#pragma mark -- 处理 多级列表的一些逻辑
+/**
+ 列表的点击事件
 
-
+ @param row 第几行
+ */
+-(void)rowClickWithRow:(NSUInteger)row{
+    ContactsListModel * model = _showDatas[row];
+    if (model.Nodes.count <= 0) {
+        [self.navigationController pushViewController:[ChatViewController new] animated:YES];
+        return;
+    }
+    
+    
+    if (model.level.count == 1) { // 一层
+        NSInteger lev0 = [model.level[0] integerValue];
+        ContactsListModel * model0 = _datas[lev0];
+        model0.Expanded = !model0.Expanded;
+        
+        _showDatas = [self resolveDatas:[self getAllDatasWithDatas:_datas]];
+        [_tableView reloadData];
+    }
+    if (model.level.count == 2) { // 二层
+        NSInteger lev0 = [model.level[0] integerValue];
+        ContactsListModel * model0 = _datas[lev0];
+        NSMutableArray * nodes0 = [NSMutableArray arrayWithArray:model0.Nodes];
+        
+        
+        NSInteger lev1 = [model.level[1] integerValue];
+        ContactsListModel * model1 = model0.Nodes[lev1];
+        model1.Expanded = !model1.Expanded;
+        
+        
+        [nodes0 replaceObjectAtIndex:lev1 withObject:model1];
+        model0.Nodes = nodes0;
+        
+        _showDatas = [self resolveDatas:[self getAllDatasWithDatas:_datas]];
+        [_tableView reloadData];
+        
+    }
+    if (model.level.count == 3) { // 三层
+        NSInteger lev0 = [model.level[0] integerValue];
+        ContactsListModel * model0 = _datas[lev0];
+        NSMutableArray * nodes0 = [NSMutableArray arrayWithArray:model0.Nodes];
+        
+        
+        NSInteger lev1 = [model.level[1] integerValue];
+        ContactsListModel * model1 = model0.Nodes[lev1];
+        NSMutableArray * nodes1 = [NSMutableArray arrayWithArray:model1.Nodes];
+        
+        
+        NSInteger lev2 = [model.level[2] integerValue];
+        ContactsListModel * model2 = model1.Nodes[lev2];
+        model2.Expanded =!model2.Expanded;
+        
+        
+        
+        
+        [nodes1 replaceObjectAtIndex:lev2 withObject:model2];
+        model1.Nodes = nodes1;
+        
+        [nodes0 replaceObjectAtIndex:lev1 withObject:model1];
+        model0.Nodes = nodes0;
+        
+        
+        _showDatas = [self resolveDatas:[self getAllDatasWithDatas:_datas]];
+        [_tableView reloadData];
+        
+    }
+    
+    
+}
 
 /**
   将 树状数据 转化为界面上显示的依次排序 的数组
@@ -394,7 +378,7 @@
                 
                 
                 for (int w = 0; w < model2.Nodes.count; w ++) {
-                    ContactsListModel * model3 = model2.Nodes[z];
+                    ContactsListModel * model3 = model2.Nodes[w];
                     model3.level = @[@(x),@(y),@(z),@(w)];
                     [allDatas addObject:model3];
                     

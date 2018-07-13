@@ -72,17 +72,23 @@
     
     
     [[NSUserDefaults standardUserDefaults] setValue:_userNameTF.text forKey:@"UserName"];
-    
     [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
-    
     return;
     
     [Request loginWithUserName:_userNameTF.text passWord:_passwordTF.text success:^(NSUInteger code, NSString *msg, id data) {
         if (code == 200) {
-            [[NSUserDefaults standardUserDefaults] setValue:_userNameTF.text forKey:@"UserName"];
             
+            [Request getUserInfoWithIdOrName:_userNameTF.text success:^(NSUInteger code, NSString *msg, id data) {
+                if (code == 200) {
+                    
+                }
+            } failure:^(NSError *error) {
+                
+            }];
+            
+            [[NSUserDefaults standardUserDefaults] setValue:_userNameTF.text forKey:@"UserName"];
             [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
-        }
+     }
     } failure:^(NSError *error) {
         
     }];

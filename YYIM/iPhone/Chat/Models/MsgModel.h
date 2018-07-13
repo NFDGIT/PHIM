@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
- 
-@interface MsgModel : NSObject
 
+@interface MsgModel : NSObject
+@property (nonatomic,strong)NSString * msg;
+@property (nonatomic,strong)NSString * Id;
 @end

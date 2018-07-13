@@ -8,7 +8,7 @@
 
 #import "MineViewController.h"
 #import "MyFriendsViewController.h"
-
+#import "AppDelegate.h"
 @interface MineViewController ()
 
 @end
@@ -19,7 +19,7 @@
     [super viewDidLoad];
     [self initNavi];
     [self initUI];
-
+    [self refreshData];
     // Do any additional setup after loading the view.
 }
 
@@ -35,12 +35,34 @@
     [btn addTarget:self action:@selector(jumpToMyFriend) forControlEvents:UIControlEventTouchUpInside];
 
     
+    
+    UIButton * logoutBtn = [[UIButton alloc]initWithFrame:CGRectMake(100, NaviHeight* 2, 100, 30)];
+    [logoutBtn setTitle:@"退出登录" forState:UIControlStateNormal];
+    [logoutBtn setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8] forState:UIControlStateNormal];
+    logoutBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [self.view addSubview:logoutBtn];
+    [logoutBtn addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+
+-(void)refreshData{
+    NSString * UserName =   [[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"];
+    
+    
+    [Request getUserInfoWithIdOrName:UserName success:^(NSUInteger code, NSString *msg, id data) {
+        
+    } failure:^(NSError *error) {
+        
+    }];
+    
 }
 -(void)jumpToMyFriend{
     [self.navigationController pushViewController:[MyFriendsViewController new] animated:YES];
-    
-    
-    
+}
+-(void)logout{
+    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"UserName"];
+    [((AppDelegate *)[UIApplication sharedApplication].delegate) switchRootVC];
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -9,6 +9,7 @@
 #import "ChatViewController.h"
 #import "ChatCell.h"
 #import "ChatInputView.h"
+#import "SocketTool.h"
 
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -52,14 +53,14 @@
     scrollView.backgroundColor  =[UIColor lightGrayColor];
     
     ChatInputView * inputView = [[ChatInputView alloc]initWithFrame:CGRectMake(0, 0, scrollView.width, 50)];
-    inputView.bottom = scrollView.height;
+    inputView.top = scrollView.height- inputView.topView.bottom;
     [scrollView addSubview:inputView];
     inputView.inputBlock = ^(NSString *value) {
         [self sendAction:value];
     };
     
     
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, scrollView.width, scrollView.height - inputView.height) style:UITableViewStyleGrouped];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, scrollView.width, scrollView.height - inputView.topView.height) style:UITableViewStyleGrouped];
     [_tableView registerClass:[ChatCell class] forCellReuseIdentifier:@"cell"];
     [scrollView addSubview:_tableView];
     
@@ -77,10 +78,20 @@
 
 #pragma mark -- 点击事件
 -(void)sendAction:(NSString *)msg{
-    [_datas addObject:msg];
+    
+    MsgModel * model = [MsgModel new];
+    model.Id = @"1";
+    model.msg = msg;
     
     
-    [[UDPSocketSingleton sharedInstance]sendMsg:msg];
+    MsgModel * model1 = [MsgModel new];
+    model1.msg = msg;
+    
+    
+    [_datas addObject:model];
+    [_datas addObject:model1];
+    [[SocketTool share] sendMsg:@"hello swift" msgInfoClass:12];
+    
     
     
     [_tableView reloadData];
@@ -95,12 +106,18 @@
     
     return _datas.count;
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [tableView cellHeightWithIndexPath:indexPath];
+    
+}
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     ChatCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+    cell.indexPath = indexPath;
     
-    NSString * msg = _datas[indexPath.section];
-    cell.textLabel.text = msg;
+    
+    
+    MsgModel * model = _datas[indexPath.section];
+    cell.model = model;
     return cell;
 }
 - (void)didReceiveMemoryWarning {

@@ -36,6 +36,6 @@ typedef void (^failureBlock)(NSError *error);
  @param success 成功的回调
  @param failure 失败的回调
  */
-+(void)searchUserWithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure;
++(void)getUserInfoWithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure;
 
 @end

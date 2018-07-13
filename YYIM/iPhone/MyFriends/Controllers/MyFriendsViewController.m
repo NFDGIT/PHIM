@@ -65,7 +65,7 @@
 //    userName = @"15701344579";
     
     [ProgressTool show];
-    [Request searchUserWithIdOrName:userName success:^(NSUInteger code, NSString *msg, id data) {
+    [Request getUserInfoWithIdOrName:userName success:^(NSUInteger code, NSString *msg, id data) {
         [ProgressTool hidden];
         
         if (code == 200) {

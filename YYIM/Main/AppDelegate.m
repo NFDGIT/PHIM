@@ -22,9 +22,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [[IQKeyboardManager sharedManager] setEnable:YES];
-//    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"UserName"];
+    [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = YES;;
+    
+
     [self switchRootVC];
-    [self connectSocket];
+
     return YES;
 }
 -(void)switchRootVC{
@@ -33,24 +35,13 @@
     LoginViewController * loginVC = [LoginViewController new];
     
     if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] length] <= 0) {
-            self.window.rootViewController = loginVC;
+        self.window.rootViewController = loginVC;
     }else
     {
-            self.window.rootViewController = tabbar;
+        self.window.rootViewController = tabbar;
+        [[SocketTool share] startHeartBeat];
+        
     };
-    
-    
-
-
-    
-}
--(void)connectSocket{
-    
-    
-    [UDPSocketSingleton sharedInstance].socketHost = @"http://10.120.35.64";
-    [UDPSocketSingleton sharedInstance].socketPort = 5540;
-    [[UDPSocketSingleton sharedInstance] socketConnectHost];
-    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface ChatInputView : UIView
+@property (nonatomic,strong)UIView * topView;
 @property (nonatomic,strong)void(^inputBlock)(NSString * value);
+@property (nonatomic,strong)void(^inputEmotionBlock)(UIImage * image);
 @end

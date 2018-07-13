@@ -89,7 +89,7 @@
 +(void)getUserListSuccess:(successBlock)success failure:(failureBlock)failure{
     
 
-    NSString * httpHeader = [NSString stringWithFormat:@"%@%@",host,@"RemotingService"];
+    NSString * httpHeader = [NSString stringWithFormat:@"%@%@",serverHost,@"RemotingService"];
     
     [Request getWithUrlPath:httpHeader AndUrl:@"/FindAllUser" params:nil success:^(NSUInteger code, NSString *msg, id data) {
         if (success) {
@@ -130,7 +130,7 @@
  @param success 成功的回调
  @param failure 失败的回调
  */
-+(void)searchUserWithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure{
++(void)getUserInfoWithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure{
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setValue:idOrName forKey:@"idOrName"];
     

@@ -10,6 +10,14 @@
 		3CAF869468F73E75B093A938 /* libPods-YYIMTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9791F00C5904E36EFDD2329B /* libPods-YYIMTests.a */; };
 		79C6AF1FFD00DEFB63679084 /* libPods-YYIMUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5123BA9C0E0D7B303243152D /* libPods-YYIMUITests.a */; };
 		B2BE3C9C7563C48D286A847B /* libPods-YYIM.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 938192F04F8ECFB5D01E5E49 /* libPods-YYIM.a */; };
+		C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */; };
+		C55FF5F320F6EB3A00A86F00 /* EmotionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5F220F6EB3A00A86F00 /* EmotionView.m */; };
+		C55FF5F920F72A3B00A86F00 /* ChatAddView.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5F820F72A3B00A86F00 /* ChatAddView.m */; };
+		C55FF5FC20F72AC500A86F00 /* ChatBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5FB20F72AC500A86F00 /* ChatBottomView.m */; };
+		C55FF5FF20F74B2E00A86F00 /* SmiliesTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5FE20F74B2E00A86F00 /* SmiliesTextAttachment.m */; };
+		C55FF60520F7568000A86F00 /* NSAttributedString+SmiliesId.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60420F7568000A86F00 /* NSAttributedString+SmiliesId.m */; };
+		C55FF60820F75A1300A86F00 /* SmiliesAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60720F75A1300A86F00 /* SmiliesAttributedString.m */; };
+		C55FF60B20F836D400A86F00 /* SocketTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60A20F836D400A86F00 /* SocketTool.m */; };
 		C590210020F44D49001296C4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C59020FF20F44D49001296C4 /* AppDelegate.m */; };
 		C590210320F44D49001296C4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C590210220F44D49001296C4 /* ViewController.m */; };
 		C590210620F44D49001296C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C590210420F44D49001296C4 /* Main.storyboard */; };
@@ -72,6 +80,22 @@
 		938192F04F8ECFB5D01E5E49 /* libPods-YYIM.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YYIM.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9791F00C5904E36EFDD2329B /* libPods-YYIMTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YYIMTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB59103455D6E2DC3664B0B2 /* Pods-YYIM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYIM.release.xcconfig"; path = "Pods/Target Support Files/Pods-YYIM/Pods-YYIM.release.xcconfig"; sourceTree = "<group>"; };
+		C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHCellHeight.m; sourceTree = "<group>"; };
+		C55FF5EF20F6E57500A86F00 /* PHCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHCellHeight.h; sourceTree = "<group>"; };
+		C55FF5F120F6EB3A00A86F00 /* EmotionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmotionView.h; sourceTree = "<group>"; };
+		C55FF5F220F6EB3A00A86F00 /* EmotionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmotionView.m; sourceTree = "<group>"; };
+		C55FF5F720F72A3B00A86F00 /* ChatAddView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatAddView.h; sourceTree = "<group>"; };
+		C55FF5F820F72A3B00A86F00 /* ChatAddView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatAddView.m; sourceTree = "<group>"; };
+		C55FF5FA20F72AC500A86F00 /* ChatBottomView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatBottomView.h; sourceTree = "<group>"; };
+		C55FF5FB20F72AC500A86F00 /* ChatBottomView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatBottomView.m; sourceTree = "<group>"; };
+		C55FF5FD20F74B2E00A86F00 /* SmiliesTextAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmiliesTextAttachment.h; sourceTree = "<group>"; };
+		C55FF5FE20F74B2E00A86F00 /* SmiliesTextAttachment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SmiliesTextAttachment.m; sourceTree = "<group>"; };
+		C55FF60320F7568000A86F00 /* NSAttributedString+SmiliesId.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+SmiliesId.h"; sourceTree = "<group>"; };
+		C55FF60420F7568000A86F00 /* NSAttributedString+SmiliesId.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+SmiliesId.m"; sourceTree = "<group>"; };
+		C55FF60620F75A1300A86F00 /* SmiliesAttributedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmiliesAttributedString.h; sourceTree = "<group>"; };
+		C55FF60720F75A1300A86F00 /* SmiliesAttributedString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SmiliesAttributedString.m; sourceTree = "<group>"; };
+		C55FF60920F836D400A86F00 /* SocketTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketTool.h; sourceTree = "<group>"; };
+		C55FF60A20F836D400A86F00 /* SocketTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketTool.m; sourceTree = "<group>"; };
 		C59020FB20F44D49001296C4 /* YYIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YYIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59020FE20F44D49001296C4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C59020FF20F44D49001296C4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -253,6 +277,8 @@
 		C590213720F44DFA001296C4 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				C55FF5EF20F6E57500A86F00 /* PHCellHeight.h */,
+				C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */,
 				C590214C20F455DB001296C4 /* UIViewAdditions.h */,
 				C590214D20F455DB001296C4 /* UIViewAdditions.m */,
 				C590213820F44E06001296C4 /* Base */,
@@ -266,6 +292,8 @@
 				C59021A120F5A3ED001296C4 /* NSData+GZip.m */,
 				C59021B520F5FC49001296C4 /* ProgressTool.h */,
 				C59021B620F5FC49001296C4 /* ProgressTool.m */,
+				C55FF60920F836D400A86F00 /* SocketTool.h */,
+				C55FF60A20F836D400A86F00 /* SocketTool.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -423,8 +451,6 @@
 				C59021A820F5F544001296C4 /* Models */,
 				C590218A20F4B3A3001296C4 /* Views */,
 				C590218920F4B399001296C4 /* Controllers */,
-				C590218620F4B394001296C4 /* ChatViewController.h */,
-				C590218720F4B394001296C4 /* ChatViewController.m */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -432,6 +458,8 @@
 		C590218920F4B399001296C4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C590218620F4B394001296C4 /* ChatViewController.h */,
+				C590218720F4B394001296C4 /* ChatViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -443,6 +471,18 @@
 				C590218C20F4B47F001296C4 /* ChatCell.m */,
 				C590218E20F4B531001296C4 /* ChatInputView.h */,
 				C590218F20F4B531001296C4 /* ChatInputView.m */,
+				C55FF5FA20F72AC500A86F00 /* ChatBottomView.h */,
+				C55FF5FB20F72AC500A86F00 /* ChatBottomView.m */,
+				C55FF5F120F6EB3A00A86F00 /* EmotionView.h */,
+				C55FF5F220F6EB3A00A86F00 /* EmotionView.m */,
+				C55FF5F720F72A3B00A86F00 /* ChatAddView.h */,
+				C55FF5F820F72A3B00A86F00 /* ChatAddView.m */,
+				C55FF5FD20F74B2E00A86F00 /* SmiliesTextAttachment.h */,
+				C55FF5FE20F74B2E00A86F00 /* SmiliesTextAttachment.m */,
+				C55FF60620F75A1300A86F00 /* SmiliesAttributedString.h */,
+				C55FF60720F75A1300A86F00 /* SmiliesAttributedString.m */,
+				C55FF60320F7568000A86F00 /* NSAttributedString+SmiliesId.h */,
+				C55FF60420F7568000A86F00 /* NSAttributedString+SmiliesId.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -662,11 +702,13 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-YYIM/Pods-YYIM-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -685,25 +727,33 @@
 				C590210320F44D49001296C4 /* ViewController.m in Sources */,
 				C590214720F44FD2001296C4 /* ContactsListViewController.m in Sources */,
 				C590215720F45AA2001296C4 /* MessageLlistTableViewCell.m in Sources */,
+				C55FF60520F7568000A86F00 /* NSAttributedString+SmiliesId.m in Sources */,
 				C590218420F4B07A001296C4 /* MyFriendTableViewCell.m in Sources */,
 				C590218120F4AF36001296C4 /* MyFriendListModel.m in Sources */,
+				C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */,
 				C590214420F44FB3001296C4 /* MessageListViewController.m in Sources */,
 				C590214A20F44FE1001296C4 /* MineViewController.m in Sources */,
 				C59021B720F5FC49001296C4 /* ProgressTool.m in Sources */,
 				C59021A720F5A76A001296C4 /* NSString+Json.m in Sources */,
 				C590219020F4B531001296C4 /* ChatInputView.m in Sources */,
 				C59021A220F5A3ED001296C4 /* NSData+GZip.m in Sources */,
+				C55FF5FC20F72AC500A86F00 /* ChatBottomView.m in Sources */,
 				C590215B20F45FC5001296C4 /* ContactsListModel.m in Sources */,
 				C590217E20F4AEA4001296C4 /* MyFriendsViewController.m in Sources */,
 				C590213B20F44E1D001296C4 /* BaseViewController.m in Sources */,
+				C55FF5F920F72A3B00A86F00 /* ChatAddView.m in Sources */,
 				C590215320F458F7001296C4 /* ContactsListTableViewCell.m in Sources */,
 				C590217720F4A3CF001296C4 /* LoginViewController.m in Sources */,
 				C590213420F44D86001296C4 /* NavigationController.m in Sources */,
 				C59021BA20F6088B001296C4 /* NSString+Base64.m in Sources */,
+				C55FF5FF20F74B2E00A86F00 /* SmiliesTextAttachment.m in Sources */,
 				C590214E20F455DB001296C4 /* UIViewAdditions.m in Sources */,
+				C55FF60B20F836D400A86F00 /* SocketTool.m in Sources */,
 				C590219F20F4C6B5001296C4 /* UDPSocketSingleton.m in Sources */,
 				C590213520F44D86001296C4 /* TabBarController.m in Sources */,
 				C590210E20F44D4F001296C4 /* main.m in Sources */,
+				C55FF5F320F6EB3A00A86F00 /* EmotionView.m in Sources */,
+				C55FF60820F75A1300A86F00 /* SmiliesAttributedString.m in Sources */,
 				C590218820F4B394001296C4 /* ChatViewController.m in Sources */,
 				C590210020F44D49001296C4 /* AppDelegate.m in Sources */,
 				C590215F20F491B2001296C4 /* Request.m in Sources */,

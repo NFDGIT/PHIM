@@ -13,8 +13,9 @@
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 #import "UIViewAdditions.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
-#import "UDPSocketSingleton.h"
+#import "SocketTool.h"
 #import "ProgressTool.h"
+#import <MJRefresh/MJRefresh.h>
 
 #import "Request.h"
 #import "Define.h"

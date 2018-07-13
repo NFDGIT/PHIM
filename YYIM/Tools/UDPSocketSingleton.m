@@ -20,6 +20,9 @@ static UDPSocketSingleton *sharedInstance = nil;
     dispatch_once(&onceToken, ^{
 
         sharedInstance = [[self alloc] init];
+        
+        sharedInstance.socketHost = @"10.120.35.64";
+        sharedInstance.socketPort = 5540;
     });
 
     return sharedInstance;
@@ -29,34 +32,53 @@ static UDPSocketSingleton *sharedInstance = nil;
 
 
 
+
+
+
+
+
 #pragma mark - 连接host
 - (void)socketConnectHost {
 
+    
+    
     /**
      *  初始化
      */
-    self.socket = [[GCDAsyncUdpSocket alloc] initWithSocketQueue:dispatch_get_main_queue()];
-
-    _socket.delegate = self;
-    _socket.delegateQueue = dispatch_get_main_queue();
+    self.socket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+    self.socket.delegate = self;
 
     NSError *error = nil;
     /**
      *  所连接的服务器ip地址 socketHost 和 端口号:socketPort
      */
-   BOOL isConnect =  [self.socket connectToHost:self.socketHost onPort:self.socketPort error:&error];
-    /**
-     *  允许广播信息
-     */
-    [self.socket enableBroadcast:YES error:&error];
-    //启动接收线程
+    BOOL isConnect =  [self.socket connectToHost:self.socketHost onPort:self.socketPort error:&error];
+    if (isConnect) {
+        /**
+         *  允许广播信息
+         */
+        [self.socket enableBroadcast:YES error:&error];
+        //启动接收线程
+        
+        //    [self.socket receiveWithTimeout:-1 tag:1];
+        [self sendMessage];
+        [self startTimer];
+        
+        
+        
+    }else{
+        
+        NSLog(@"socket %@ : %hu  连接失败",self.socketHost,self.socketPort);
+    }
     
-//    [self.socket receiveWithTimeout:-1 tag:1];
-
     
-    [self sendMessage];
 
 
+
+
+}
+
+-(void)startTimer{
     /**
      *  建立定时器，每隔50s像服务器发送心跳包
      *
@@ -65,52 +87,20 @@ static UDPSocketSingleton *sharedInstance = nil;
      *  TimeInterval:心跳包执行间隔时间
      *
      */
+    
+    [self.connectTimer invalidate];
+    self.connectTimer = nil;
     self.connectTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(longConnectToSocket) userInfo:nil repeats:YES];// 在longConnectToSocket方法中进行长连接需要向服务器发送的讯息
     /**
      *  启动定时器
      */
     [self.connectTimer fire];
-
-
-
 }
 
 #pragma mark - 心跳包调用方法
 - (void)longConnectToSocket {
-
-
     //    NSLog(@"心跳包信息发送");
     [self sendMessage];
-}
-#pragma mark -- 发消息
--(void)sendMsg:(NSString *)msg{
-    NSString * SendID = @"15701344579";
-    NSString * ReceiveId = @"";
-    NSString * MsgInfoClass = @"";
-    NSString * MsgContent = msg;
-
-    
-    
-    NSString * GroupMsg = @"";
-    NSString * Type = @"";
-    
-    NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setValue:SendID forKey:@"SendID"];
-    [param setValue:ReceiveId forKey:@"ReceiveId"];
-    [param setValue:MsgInfoClass forKey:@"MsgInfoClass"];
-    [param setValue:MsgContent forKey:@"MsgContent"];
-    [param setValue:GroupMsg forKey:@"GroupMsg"];
-    [param setValue:Type forKey:@"Type"];
-    
-    NSString * jsonString = [NSString convertToJsonData:param];
-    NSData * jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSData * writer = [NSData gzipDeflate:jsonData];
-    
-    
-    [self.socket sendData:writer withTimeout:-1 tag:1];
-    
-    
 }
 
 
@@ -126,7 +116,7 @@ static UDPSocketSingleton *sharedInstance = nil;
  * This method is called if one of the connect methods are invoked, and the connection is successful.
  **/
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didConnectToAddress:(NSData *)address{
-    
+    NSLog(@"已连接socket ：%@ -- %@:%hu",address,self.socketHost,self.socketPort);
 }
 
 /**
@@ -138,7 +128,7 @@ static UDPSocketSingleton *sharedInstance = nil;
  * This may happen, for example, if a domain name is given for the host and the domain name is unable to be resolved.
  **/
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotConnect:(NSError * _Nullable)error{
-    
+        NSLog(@"不能连接socket ：%@",error);
 }
 
 /**
@@ -146,15 +136,21 @@ static UDPSocketSingleton *sharedInstance = nil;
  **/
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag{
         NSLog(@"已发送消息tag = %ld",tag);
+    if (_sendBlock) {
+        _sendBlock(tag,nil);
+    }
 }
-
+ 
 /**
  * Called if an error occurs while trying to send a datagram.
  * This could be due to a timeout, or something more serious such as the data being too large to fit in a sigle packet.
  **/
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError * _Nullable)error{
     //无法发送时,返回的异常提示信息  do something
-    //    NSLog(@"error1");
+    NSLog(@"不能发送消息tag:%ld ----- error :%@",tag,error);
+    if (_sendBlock) {
+        _sendBlock(tag,error);
+    }
 }
 
 /**
@@ -181,82 +177,28 @@ withFilterContext:(nullable id)filterContext{
  * Called when the socket is closed.
  **/
 - (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError  * _Nullable)error{
-    
-    
+    NSLog(@"断开连接  error： %@",error);
+    [self socketConnectHost];
 }
 
 
 #pragma mark - 接收到数据进行回调
 - (void)receiveData:(dataBlock)block {
-
     self.receiveData = block;
 }
-#pragma mark -- 心跳包消息
-- (void)sendMessage {
 
-
-//    [self.socket receiveWithTimeout:-1 tag:1];
-
-    /**
-     *  获取通过Keychain保存的唯一不可变的UUID，否则UUID在删除程序重新装入后会变化
-     */
-//    NSString *uuidStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"clientId"];
-
-//    NSMutableData *writer=[[NSMutableData alloc]init];
-
-    //    NSLog(@"%@",uuidStr);
-
-
-//    int version = 1;
-//    int num = 1;
-//    int cmd = 0;
-//    int length= 0000;
-//
-//    NSData *data = [uuidStr dataUsingEncoding:NSUTF8StringEncoding];
-//    Byte *byte = (Byte *)[data bytes];
-//    Byte by[16];
-//    CC_MD5(byte, (int)data.length, by);//md5加密
-//
-//
-//    [writer appendBytes:&version length:1];
-//    [writer appendBytes:&num length:1];
-//    [writer appendBytes:&cmd length:1];
-////    [writer appendBytes:by length:16];
-//    [writer appendBytes:&length length:2];
+#pragma mark -- 发消息
+-(void)sendMsg:(NSString *)msg MsgInfoClass:(NSString *)msgInfoClass block:(SendBlock)sendBlock{
     
-
-    
-    
-    NSString * SendID = @"15701344579";
+    NSString * SendID = @"13383824275";
     NSString * ReceiveId = @"";
-    NSString * MsgInfoClass = @"82";
-    NSString * MsgContent = @"心跳包";
+    NSString * MsgInfoClass = msgInfoClass;
+    NSString * MsgContent = msg;
     NSString * MsgContentBase64 = [NSString encode:MsgContent];
-    
-//    NSData * MsgContentData = [NSMutableData dataWithData:[MsgContent dataUsingEncoding:NSUTF8StringEncoding]];
-//    MsgContentData = [NSData gzipDeflate:MsgContentData];
-    
     
     NSString * GroupMsg = @"";
     NSString * Type = @"mobile";
     
-    
-//        NSString * SendID = @"15701344579";
-//        NSString * ReceiveId = @"";
-//        int  MsgInfoClass = 82;
-//        NSString * MsgContent = @"心跳包";
-//        NSData * MsgContentData = [MsgContent dataUsingEncoding:NSUTF8StringEncoding];
-//        NSString * GroupMsg = @"";
-//        NSString * Type = @"mobile";
-    
-    
-//    NSString * MsgContentJson = [NSString convertToJsonData:MsgContent];
-
-    
-    
-    
-    
-
     
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setValue:SendID forKey:@"SendID"];
@@ -266,22 +208,71 @@ withFilterContext:(nullable id)filterContext{
     [param setValue:GroupMsg forKey:@"GroupMsg"];
     [param setValue:Type forKey:@"Type"];
     
-    NSString * jsonString = [NSString convertToJsonData:param];
+    
+    NSString * jsonString =   [NSString convertToJsonData:param];
+    NSData * jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    
+    
+    //    [self.socket receiveWithTimeout:-1 tag:1];
+    
+    /**
+     *  获取通过Keychain保存的唯一不可变的UUID，否则UUID在删除程序重新装入后会变化
+     */
+    //    NSString *uuidStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"clientId"];
     
     
     
     
-    
-    NSData * writer = [NSData gzipDeflate:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
-    
+    Byte *byte = (Byte *)[jsonData bytes];
     
     
-    NSString * sochost = self.socketHost;
-    int socport = self.socketPort;
     
-//    [self.socket sendData:writer toHost:sochost port:socport withTimeout:-1 tag:1];
+    NSMutableData *writer=[[NSMutableData alloc]init];
+    //        NSLog(@"%@",uuidStr);
+    //    [writer appendData:jsonData];
+    [writer appendBytes:byte length:sizeof(byte)];
+    
+    
+    
+    [self.socket sendData:writer withTimeout:-1 tag:2];
+    _sendBlock = sendBlock;
+}
 
-    [self.socket sendData:writer withTimeout:-1 tag:1];
+
+#pragma mark -- 心跳包消息
+- (void)sendMessage {
+
+    NSString * SendID = @"13383824275";
+    NSString * ReceiveId = @"";
+    NSString * MsgInfoClass = @"82";
+    NSString * MsgContent = @"心跳包";
+    NSString * MsgContentBase64 = [NSString encode:MsgContent];
+    
+    NSString * GroupMsg = @"";
+    NSString * Type = @"mobile";
+    
+    
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    [param setValue:SendID forKey:@"SendID"];
+    [param setValue:ReceiveId forKey:@"ReceiveId"];
+    [param setValue:MsgInfoClass forKey:@"MsgInfoClass"];
+    [param setValue:MsgContentBase64 forKey:@"MsgContent"];
+    [param setValue:GroupMsg forKey:@"GroupMsg"];
+    [param setValue:Type forKey:@"Type"];
+    
+    NSString * jsonString =   [NSString convertToJsonData:param];
+    NSData * jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    
+
+//    [self.socket receiveWithTimeout:-1 tag:1];
+    
+    Byte *byte = (Byte *)[jsonData bytes];
+    
+    NSMutableData *writer=[[NSMutableData alloc]init];
+
+    [writer appendBytes:byte length:sizeof(byte)];
+    [self.socket sendData:writer  withTimeout:-1 tag:1];
     
 }
 

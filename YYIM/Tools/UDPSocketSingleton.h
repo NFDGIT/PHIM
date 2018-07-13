@@ -12,6 +12,7 @@
 #import <CommonCrypto/CommonDigest.h>
 
 typedef void (^dataBlock)(NSDictionary *response, NSString *responseString);
+typedef void (^SendBlock)(long tag,NSError * error);
 
 
 @interface UDPSocketSingleton : NSObject<GCDAsyncUdpSocketDelegate>
@@ -24,6 +25,7 @@ typedef void (^dataBlock)(NSDictionary *response, NSString *responseString);
 @property (nonatomic, strong) NSDictionary *socketResult;
 
 @property (nonatomic, strong) dataBlock receiveData;
+@property (nonatomic, strong) SendBlock sendBlock;
 
 /**
  *  block回调方法，为了回调的时候少写代码
@@ -36,5 +38,5 @@ typedef void (^dataBlock)(NSDictionary *response, NSString *responseString);
 
 -(void)cutOffSocket; // 断开socket连接
 
--(void)sendMsg:(NSString *)msg; // 发消息
+-(void)sendMsg:(NSString *)msg MsgInfoClass:(NSString *)msgInfoClass block:(SendBlock)sendBlock; // 发消息
 @end
