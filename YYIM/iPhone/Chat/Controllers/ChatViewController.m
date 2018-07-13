@@ -34,12 +34,11 @@
 
 -(void)initData{
     _datas = [NSMutableArray array];
-    
-
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNewMsg:) name:NotiForReceive object:nil];
 }
+
 -(void)initNavi{
-    self.title = @"聊天";
+    self.title = self.userId;
     
 }
 -(void)initUI{
@@ -80,21 +79,44 @@
 -(void)sendAction:(NSString *)msg{
     
     MsgModel * model = [MsgModel new];
-    model.Id = @"1";
-    model.msg = msg;
-    
-    
-    MsgModel * model1 = [MsgModel new];
-    model1.msg = msg;
-    
+    model.sendId = CurrentUserId;
+    model.content = msg;
+
     
     [_datas addObject:model];
-    [_datas addObject:model1];
-    [[SocketTool share] sendMsg:@"hello swift" msgInfoClass:12];
-    
-    
-    
     [_tableView reloadData];
+
+    [[SocketTool share] sendMsg:msg receiveId:[NSString stringWithFormat:@"%@",_userId]  msgInfoClass:12];
+
+}
+-(void)receiveNewMsg:(NSNotification *)noti{
+    NSDictionary * MsgContent =[NSDictionary dictionaryWithDictionary:noti.object];
+    NSString *  MsgInfoClass = [NSString stringWithFormat:@"%@",MsgContent[@"MsgInfoClass"]];
+    NSString *  ReceiveId = [NSString stringWithFormat:@"%@",MsgContent[@"ReceiveId"]];
+    NSString *  SendID = [NSString stringWithFormat:@"%@",MsgContent[@"SendID"]];
+    
+    
+    if ([MsgInfoClass isEqualToString:@"12"] && [ReceiveId isEqualToString:CurrentUserId]) {
+        NSDictionary *  ClassTextMsg = [NSDictionary dictionaryWithDictionary:MsgContent[@"MsgContent"][@"ClassTextMsg"]];
+        
+        if (ClassTextMsg && [ClassTextMsg.allKeys containsObject:@"msg"]) {
+            
+            NSString * msg = [NSString stringWithFormat:@"%@",ClassTextMsg[@"msg"]];
+            
+            MsgModel * model = [MsgModel new];
+            model.sendId = SendID;
+            model.content = msg;
+            [_datas addObject:model];
+            [_tableView reloadData];
+            
+        }
+        
+        
+        
+        
+        
+    }
+    
 }
 
 
@@ -115,7 +137,6 @@
     cell.indexPath = indexPath;
     
     
-    
     MsgModel * model = _datas[indexPath.section];
     cell.model = model;
     return cell;
@@ -124,7 +145,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 /*
 #pragma mark - Navigation
 

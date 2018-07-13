@@ -6,10 +6,10 @@ target 'YYIM' do
   pod 'IQKeyboardManager'
   pod 'CocoaAsyncSocket'
   pod 'MBProgressHUD'
-  pod 'SVProgressHUD'
   pod 'FMDB'
   pod 'SDWebImage'
   pod 'MJRefresh'
+  pod 'Toast'
     
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!

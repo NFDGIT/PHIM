@@ -10,7 +10,7 @@
 #import "MyFriendsViewController.h"
 #import "AppDelegate.h"
 @interface MineViewController ()
-
+@property (nonatomic,strong)UILabel * labelName;
 @end
 
 @implementation MineViewController
@@ -27,11 +27,21 @@
     self.title = @"我的";
 }
 -(void)initUI{
+    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, NaviHeight, ScreenWidth, ContentHeight)];
+    [self.view addSubview:scrollView];
+    
+    UILabel * labelName =[[UILabel alloc]initWithFrame:CGRectMake(100, 0, 200, 20)];
+    labelName.textColor  = ColorBlack;
+    labelName.font = FontBig;
+    [scrollView addSubview:labelName];
+    labelName.text = [NSString stringWithFormat:@"当前用户：%@",CurrentUserId];
+    _labelName = labelName;
+    
     UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(100, NaviHeight, 100, 30)];
     [btn setTitle:@"我的好友" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [self.view addSubview:btn];
+    [scrollView addSubview:btn];
     [btn addTarget:self action:@selector(jumpToMyFriend) forControlEvents:UIControlEventTouchUpInside];
 
     
@@ -40,17 +50,21 @@
     [logoutBtn setTitle:@"退出登录" forState:UIControlStateNormal];
     [logoutBtn setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8] forState:UIControlStateNormal];
     logoutBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [self.view addSubview:logoutBtn];
+    [scrollView addSubview:logoutBtn];
     [logoutBtn addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
 -(void)refreshData{
-    NSString * UserName =   [[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"];
+    _labelName.text = [NSString stringWithFormat:@"当前用户：%@",CurrentUserId];
+    
+    NSString * UserName =   CurrentUserId;
     
     
     [Request getUserInfoWithIdOrName:UserName success:^(NSUInteger code, NSString *msg, id data) {
-        
+        if (code == 200) {
+            _labelName.text = [NSString stringWithFormat:@"当前用户：%@",CurrentUserId];
+        }
     } failure:^(NSError *error) {
         
     }];
@@ -60,7 +74,7 @@
     [self.navigationController pushViewController:[MyFriendsViewController new] animated:YES];
 }
 -(void)logout{
-    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"UserName"];
+    setCurrentUserId(@"");
     [((AppDelegate *)[UIApplication sharedApplication].delegate) switchRootVC];
 
 }

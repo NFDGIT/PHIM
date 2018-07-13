@@ -11,4 +11,5 @@
 @interface ProgressTool : NSObject
 +(void)show;
 +(void)hidden;
++(void)showNetError;
 @end

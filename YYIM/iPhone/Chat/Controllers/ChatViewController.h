@@ -9,5 +9,5 @@
 #import "BaseViewController.h"
 
 @interface ChatViewController : BaseViewController
-
+@property (nonatomic,strong)NSString * userId;
 @end

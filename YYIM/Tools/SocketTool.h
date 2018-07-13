@@ -15,5 +15,5 @@
  开始心跳包
  */
 -(void)startHeartBeat;
--(void)sendMsg:(NSString *)msg msgInfoClass:(NSInteger)msgInfoClass;
+-(void)sendMsg:(NSString *)msg receiveId:(NSString *)receiveId msgInfoClass:(NSInteger)msgInfoClass;
 @end

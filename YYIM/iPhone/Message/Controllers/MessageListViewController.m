@@ -72,11 +72,27 @@
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MessageLlistTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+    if (indexPath.section == 0) {
+        cell.textLabel.text = @"13383824275";
+    }else{
+        cell.textLabel.text = @"15701344579";
+        
+    }
+    
     return cell;
     
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-  [self.navigationController pushViewController:[ChatViewController new] animated:YES];
+    ChatViewController * chatvc = [ChatViewController new];
+    chatvc.userId = @"15701344579";
+    if (indexPath.section == 0) {
+        chatvc.userId = @"13383824275";
+
+    }else{
+        chatvc.userId = @"15701344579";
+    }
+    
+    [self.navigationController pushViewController:chatvc animated:YES];
     
 }
 

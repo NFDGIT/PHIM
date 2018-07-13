@@ -65,36 +65,17 @@
 }
 
 -(void)refreshUI{
-//    _showDatas = [self getShowDatasWithModels:_datas];
     [_tableView reloadData];
     [_tableView.mj_header endRefreshing];
 }
 -(void)refreshData{
-    
-    
-//    NSMutableDictionary * dic1 =[NSMutableDictionary dictionaryWithDictionary:@{@"f":@""}];
-//    NSMutableArray * data1 = [NSMutableArray arrayWithArray:@[dic1]];
-//
-//
-//                              NSDictionary * dic0 = @{@"f":@""};
-//                              NSArray * data0 = @[dic0];
-//
-//
-//    NSMutableDictionary * dic2 = [NSMutableDictionary dictionaryWithDictionary:@{@"f":@"",@"data":data0}];
-//    NSMutableArray * data2 = [NSMutableArray arrayWithArray:@[dic2]];
-//    [data2[0][@"data"][0] setValue:@"fff" forKey:@"f"];
-//    NSLog(@"%@",data2);
-//
-    
 
-    
     [ProgressTool show];
     [Request getUserListSuccess:^(NSUInteger code, NSString *msg, id data) {
         [ProgressTool hidden];
 
         if (code == 200) {
             NSArray * nodes = data;
-
 
             NSMutableArray * models = [NSMutableArray array];
             for (NSDictionary * dic  in nodes) {
@@ -104,139 +85,138 @@
             }
             [self->_datas removeAllObjects];
             [self->_datas addObjectsFromArray:models];
-
-
             self->_showDatas= [self resolveDatas:[self getAllDatasWithDatas:self->_datas]];
-
-
-            [self refreshUI];
-
         }else{
-            NSLog(@"%@",msg);
+            [self.view makeToast:msg duration:2 position:CSToastPositionCenter];
 
         }
+        
+         [self refreshUI];
     } failure:^(NSError *error) {
+         [self refreshUI];
        [ProgressTool hidden];
+        [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];
+        
     }];
 
-    
-
-    NSDictionary * data =  @{
-                             @"code":@"200",
-                             @"msg":@"成功",
-                             @"data": @{
-                                     @"Nodes": @[@{
-                                                     @"Text": @"总裁办",
-                                                     @"ImageIndex":@"0",
-                                                     @"SelectedImageIndex":@"0",
-                                                     @"Checked": @"false",
-                                                     @"Expanded": @(YES),
-                                                     @"Tag": @"1",
-                                                     @"Nodes": @[@{
-                                                                     @"Text":@"副总裁助理",
-                                                                     @"ImageIndex":@"1",
-                                                                     @"SelectedImageIndex":@"1",
-                                                                     @"Checked":@"false",
-                                                                     @"Expanded":@(YES),
-                                                                     @"Tag": @"2",
-                                                                     @"Nodes": @[@{
-                                                                                     @"Text":@"技术部",
-                                                                                     @"ImageIndex": @"20",
-                                                                                     @"SelectedImageIndex":@"20",
-                                                                                     @"Checked": @"false",
-                                                                                     @"Expanded": @(YES),
-                                                                                     @"Tag": @"13718967990",
-                                                                                     @"Nodes": @[@{
-                                                                                                     @"Text":@"鞠文竹-13718967990",
-                                                                                                     @"ImageIndex": @"20",
-                                                                                                     @"SelectedImageIndex":@"20",
-                                                                                                     @"Checked": @"false",
-                                                                                                     @"Expanded": @(NO),
-                                                                                                     @"Tag": @"13718967990",
-                                                                                                     @"Nodes": @[]
-                                                                                                     }, @{
-                                                                                                     @"Text": @"刘洋-15801603945",
-                                                                                                     @"ImageIndex": @"0",
-                                                                                                     @"SelectedImageIndex": @"0",
-                                                                                                     @"Checked": @"false",
-                                                                                                     @"Expanded": @(NO),
-                                                                                                     @"Tag": @"15801603945",
-                                                                                                     @"Nodes": @[]
-                                                                                                     }]
-                                                                                     }, @{
-                                                                                     @"Text": @"刘洋-15801603945",
-                                                                                     @"ImageIndex": @"0",
-                                                                                     @"SelectedImageIndex": @"0",
-                                                                                     @"Checked": @"false",
-                                                                                     @"Expanded": @(NO),
-                                                                                     @"Tag": @"15801603945",
-                                                                                     @"Nodes": @[]
-                                                                                     }]
-                                                                     }
-                                                                 ]
-
-                                                     },
-                                                 @{
-                                                     @"Text": @"总裁办",
-                                                     @"ImageIndex":@"0",
-                                                     @"SelectedImageIndex":@"0",
-                                                     @"Checked": @"false",
-                                                     @"Expanded": @(YES),
-                                                     @"Tag": @"1",
-                                                     @"Nodes": @[@{
-                                                                     @"Text":@"副总裁助理",
-                                                                     @"ImageIndex":@"1",
-                                                                     @"SelectedImageIndex":@"1",
-                                                                     @"Checked":@"false",
-                                                                     @"Expanded":@(NO),
-                                                                     @"Tag": @"2",
-                                                                     @"Nodes": @[@{
-                                                                                     @"Text":@"鞠文竹-13718967990",
-                                                                                     @"ImageIndex": @"20",
-                                                                                     @"SelectedImageIndex":@"20",
-                                                                                     @"Checked": @"false",
-                                                                                     @"Expanded": @(YES),
-                                                                                     @"Tag": @"13718967990",
-                                                                                     @"Nodes": @[]
-                                                                                     }, @{
-                                                                                     @"Text": @"刘洋-15801603945",
-                                                                                     @"ImageIndex": @"0",
-                                                                                     @"SelectedImageIndex": @"0",
-                                                                                     @"Checked": @"false",
-                                                                                     @"Expanded": @(YES),
-                                                                                     @"Tag": @"15801603945",
-                                                                                     @"Nodes": @[]
-                                                                                     }]
-                                                                     }
-                                                                 ]
-
-                                                     }
-
-                                                 ]
-
-                                     }
-
-                             };
-
-
-
-    NSArray * nodes = data[@"data"][@"Nodes"];
-
-    NSMutableArray * models = [NSMutableArray array];
-    for (NSDictionary * dic  in nodes) {
-        ContactsListModel * model = [ContactsListModel new];
-        [model setValuesForKeysWithDictionary:dic];
-        [models addObject:model];
-    }
-    [_datas removeAllObjects];
-    [_datas addObjectsFromArray:models];
-
-
-
-    _showDatas =[self resolveDatas:[self getAllDatasWithDatas:_datas]];
-
-
-    [self refreshUI];
+//
+//
+//    NSDictionary * data =  @{
+//                             @"code":@"200",
+//                             @"msg":@"成功",
+//                             @"data": @{
+//                                     @"Nodes": @[@{
+//                                                     @"Text": @"总裁办",
+//                                                     @"ImageIndex":@"0",
+//                                                     @"SelectedImageIndex":@"0",
+//                                                     @"Checked": @"false",
+//                                                     @"Expanded": @(YES),
+//                                                     @"Tag": @"1",
+//                                                     @"Nodes": @[@{
+//                                                                     @"Text":@"副总裁助理",
+//                                                                     @"ImageIndex":@"1",
+//                                                                     @"SelectedImageIndex":@"1",
+//                                                                     @"Checked":@"false",
+//                                                                     @"Expanded":@(YES),
+//                                                                     @"Tag": @"2",
+//                                                                     @"Nodes": @[@{
+//                                                                                     @"Text":@"技术部",
+//                                                                                     @"ImageIndex": @"20",
+//                                                                                     @"SelectedImageIndex":@"20",
+//                                                                                     @"Checked": @"false",
+//                                                                                     @"Expanded": @(YES),
+//                                                                                     @"Tag": @"13718967990",
+//                                                                                     @"Nodes": @[@{
+//                                                                                                     @"Text":@"鞠文竹-13718967990",
+//                                                                                                     @"ImageIndex": @"20",
+//                                                                                                     @"SelectedImageIndex":@"20",
+//                                                                                                     @"Checked": @"false",
+//                                                                                                     @"Expanded": @(NO),
+//                                                                                                     @"Tag": @"13718967990",
+//                                                                                                     @"Nodes": @[]
+//                                                                                                     }, @{
+//                                                                                                     @"Text": @"刘洋-15801603945",
+//                                                                                                     @"ImageIndex": @"0",
+//                                                                                                     @"SelectedImageIndex": @"0",
+//                                                                                                     @"Checked": @"false",
+//                                                                                                     @"Expanded": @(NO),
+//                                                                                                     @"Tag": @"15801603945",
+//                                                                                                     @"Nodes": @[]
+//                                                                                                     }]
+//                                                                                     }, @{
+//                                                                                     @"Text": @"刘洋-15801603945",
+//                                                                                     @"ImageIndex": @"0",
+//                                                                                     @"SelectedImageIndex": @"0",
+//                                                                                     @"Checked": @"false",
+//                                                                                     @"Expanded": @(NO),
+//                                                                                     @"Tag": @"15801603945",
+//                                                                                     @"Nodes": @[]
+//                                                                                     }]
+//                                                                     }
+//                                                                 ]
+//
+//                                                     },
+//                                                 @{
+//                                                     @"Text": @"总裁办",
+//                                                     @"ImageIndex":@"0",
+//                                                     @"SelectedImageIndex":@"0",
+//                                                     @"Checked": @"false",
+//                                                     @"Expanded": @(YES),
+//                                                     @"Tag": @"1",
+//                                                     @"Nodes": @[@{
+//                                                                     @"Text":@"副总裁助理",
+//                                                                     @"ImageIndex":@"1",
+//                                                                     @"SelectedImageIndex":@"1",
+//                                                                     @"Checked":@"false",
+//                                                                     @"Expanded":@(NO),
+//                                                                     @"Tag": @"2",
+//                                                                     @"Nodes": @[@{
+//                                                                                     @"Text":@"鞠文竹-13718967990",
+//                                                                                     @"ImageIndex": @"20",
+//                                                                                     @"SelectedImageIndex":@"20",
+//                                                                                     @"Checked": @"false",
+//                                                                                     @"Expanded": @(YES),
+//                                                                                     @"Tag": @"13718967990",
+//                                                                                     @"Nodes": @[]
+//                                                                                     }, @{
+//                                                                                     @"Text": @"刘洋-15801603945",
+//                                                                                     @"ImageIndex": @"0",
+//                                                                                     @"SelectedImageIndex": @"0",
+//                                                                                     @"Checked": @"false",
+//                                                                                     @"Expanded": @(YES),
+//                                                                                     @"Tag": @"15801603945",
+//                                                                                     @"Nodes": @[]
+//                                                                                     }]
+//                                                                     }
+//                                                                 ]
+//
+//                                                     }
+//
+//                                                 ]
+//
+//                                     }
+//
+//                             };
+//
+//
+//
+//    NSArray * nodes = data[@"data"][@"Nodes"];
+//
+//    NSMutableArray * models = [NSMutableArray array];
+//    for (NSDictionary * dic  in nodes) {
+//        ContactsListModel * model = [ContactsListModel new];
+//        [model setValuesForKeysWithDictionary:dic];
+//        [models addObject:model];
+//    }
+//    [_datas removeAllObjects];
+//    [_datas addObjectsFromArray:models];
+//
+//
+//
+//    _showDatas =[self resolveDatas:[self getAllDatasWithDatas:_datas]];
+//
+//
+//    [self refreshUI];
 }
 
 #pragma mark -- delegate
@@ -288,7 +268,10 @@
 -(void)rowClickWithRow:(NSUInteger)row{
     ContactsListModel * model = _showDatas[row];
     if (model.Nodes.count <= 0) {
-        [self.navigationController pushViewController:[ChatViewController new] animated:YES];
+        
+        ChatViewController * chatvc = [ChatViewController new];
+        chatvc.userId = @"13383824275";
+        [self.navigationController pushViewController:chatvc animated:YES];
         return;
     }
     

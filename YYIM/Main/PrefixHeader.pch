@@ -16,6 +16,7 @@
 #import "SocketTool.h"
 #import "ProgressTool.h"
 #import <MJRefresh/MJRefresh.h>
+#import <Toast/UIView+Toast.h>
 
 #import "Request.h"
 #import "Define.h"

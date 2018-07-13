@@ -18,6 +18,10 @@
 		C55FF60520F7568000A86F00 /* NSAttributedString+SmiliesId.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60420F7568000A86F00 /* NSAttributedString+SmiliesId.m */; };
 		C55FF60820F75A1300A86F00 /* SmiliesAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60720F75A1300A86F00 /* SmiliesAttributedString.m */; };
 		C55FF60B20F836D400A86F00 /* SocketTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60A20F836D400A86F00 /* SocketTool.m */; };
+		C55FF60E20F8672C00A86F00 /* NetTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60D20F8672C00A86F00 /* NetTool.m */; };
+		C55FF61220F872FB00A86F00 /* NewMsgCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61120F872FB00A86F00 /* NewMsgCellModel.m */; };
+		C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61620F898E000A86F00 /* MineTableViewCell.m */; };
+		C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61920F89A2300A86F00 /* DBTool.m */; };
 		C590210020F44D49001296C4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C59020FF20F44D49001296C4 /* AppDelegate.m */; };
 		C590210320F44D49001296C4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C590210220F44D49001296C4 /* ViewController.m */; };
 		C590210620F44D49001296C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C590210420F44D49001296C4 /* Main.storyboard */; };
@@ -96,6 +100,14 @@
 		C55FF60720F75A1300A86F00 /* SmiliesAttributedString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SmiliesAttributedString.m; sourceTree = "<group>"; };
 		C55FF60920F836D400A86F00 /* SocketTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketTool.h; sourceTree = "<group>"; };
 		C55FF60A20F836D400A86F00 /* SocketTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketTool.m; sourceTree = "<group>"; };
+		C55FF60C20F8672C00A86F00 /* NetTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetTool.h; sourceTree = "<group>"; };
+		C55FF60D20F8672C00A86F00 /* NetTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetTool.m; sourceTree = "<group>"; };
+		C55FF61020F872FB00A86F00 /* NewMsgCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewMsgCellModel.h; sourceTree = "<group>"; };
+		C55FF61120F872FB00A86F00 /* NewMsgCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewMsgCellModel.m; sourceTree = "<group>"; };
+		C55FF61520F898E000A86F00 /* MineTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineTableViewCell.h; sourceTree = "<group>"; };
+		C55FF61620F898E000A86F00 /* MineTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineTableViewCell.m; sourceTree = "<group>"; };
+		C55FF61820F89A2300A86F00 /* DBTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBTool.h; sourceTree = "<group>"; };
+		C55FF61920F89A2300A86F00 /* DBTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBTool.m; sourceTree = "<group>"; };
 		C59020FB20F44D49001296C4 /* YYIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YYIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59020FE20F44D49001296C4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C59020FF20F44D49001296C4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -206,6 +218,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C55FF60F20F872D300A86F00 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C55FF61020F872FB00A86F00 /* NewMsgCellModel.h */,
+				C55FF61120F872FB00A86F00 /* NewMsgCellModel.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C55FF61320F898B900A86F00 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C55FF61520F898E000A86F00 /* MineTableViewCell.h */,
+				C55FF61620F898E000A86F00 /* MineTableViewCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C55FF61420F898C200A86F00 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		C59020F220F44D49001296C4 = {
 			isa = PBXGroup;
 			children = (
@@ -294,6 +331,10 @@
 				C59021B620F5FC49001296C4 /* ProgressTool.m */,
 				C55FF60920F836D400A86F00 /* SocketTool.h */,
 				C55FF60A20F836D400A86F00 /* SocketTool.m */,
+				C55FF60C20F8672C00A86F00 /* NetTool.h */,
+				C55FF60D20F8672C00A86F00 /* NetTool.m */,
+				C55FF61820F89A2300A86F00 /* DBTool.h */,
+				C55FF61920F89A2300A86F00 /* DBTool.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -310,6 +351,7 @@
 		C590213C20F44F09001296C4 /* Message */ = {
 			isa = PBXGroup;
 			children = (
+				C55FF60F20F872D300A86F00 /* Models */,
 				C590215420F45A8A001296C4 /* Views */,
 				C590213F20F44F5D001296C4 /* Controllers */,
 			);
@@ -329,6 +371,8 @@
 		C590213E20F44F31001296C4 /* Mine */ = {
 			isa = PBXGroup;
 			children = (
+				C55FF61420F898C200A86F00 /* Models */,
+				C55FF61320F898B900A86F00 /* Views */,
 				C590214120F44F7B001296C4 /* Controllers */,
 			);
 			path = Mine;
@@ -703,13 +747,11 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-YYIM/Pods-YYIM-resources.sh",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
-				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -725,13 +767,16 @@
 			files = (
 				C59021AB20F5F583001296C4 /* MsgModel.m in Sources */,
 				C590210320F44D49001296C4 /* ViewController.m in Sources */,
+				C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */,
 				C590214720F44FD2001296C4 /* ContactsListViewController.m in Sources */,
 				C590215720F45AA2001296C4 /* MessageLlistTableViewCell.m in Sources */,
+				C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */,
 				C55FF60520F7568000A86F00 /* NSAttributedString+SmiliesId.m in Sources */,
 				C590218420F4B07A001296C4 /* MyFriendTableViewCell.m in Sources */,
 				C590218120F4AF36001296C4 /* MyFriendListModel.m in Sources */,
 				C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */,
 				C590214420F44FB3001296C4 /* MessageListViewController.m in Sources */,
+				C55FF61220F872FB00A86F00 /* NewMsgCellModel.m in Sources */,
 				C590214A20F44FE1001296C4 /* MineViewController.m in Sources */,
 				C59021B720F5FC49001296C4 /* ProgressTool.m in Sources */,
 				C59021A720F5A76A001296C4 /* NSString+Json.m in Sources */,
@@ -748,6 +793,7 @@
 				C59021BA20F6088B001296C4 /* NSString+Base64.m in Sources */,
 				C55FF5FF20F74B2E00A86F00 /* SmiliesTextAttachment.m in Sources */,
 				C590214E20F455DB001296C4 /* UIViewAdditions.m in Sources */,
+				C55FF60E20F8672C00A86F00 /* NetTool.m in Sources */,
 				C55FF60B20F836D400A86F00 /* SocketTool.m in Sources */,
 				C590219F20F4C6B5001296C4 /* UDPSocketSingleton.m in Sources */,
 				C590213520F44D86001296C4 /* TabBarController.m in Sources */,

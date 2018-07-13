@@ -7,7 +7,7 @@
 //
 
 #import "ChatInputView.h"
-#import <SVProgressHUD.h>
+
 #import "EmotionView.h"
 #import "ChatBottomView.h"
 #import "SmiliesAttributedString.h"
@@ -50,18 +50,19 @@
     addBtn.backgroundColor = [UIColor lightGrayColor];
     [topView addSubview:addBtn];
     _addBtn = addBtn;
-    [addBtn addTarget:self action:@selector(addClick) forControlEvents:UIControlEventTouchUpInside];
+//    [addBtn addTarget:self action:@selector(addClick) forControlEvents:UIControlEventTouchUpInside];
     
 
     UIButton * emotionBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
     emotionBtn.backgroundColor = [UIColor lightGrayColor];
     [topView addSubview:emotionBtn];
     _emotionBtn = emotionBtn;
-    [emotionBtn addTarget:self action:@selector(emotionClick) forControlEvents:UIControlEventTouchUpInside];
+//    [emotionBtn addTarget:self action:@selector(emotionClick) forControlEvents:UIControlEventTouchUpInside];
     
     
     _textTF = [[UITextView alloc]initWithFrame:CGRectMake(10, 5, self.width - 20, self.height - 20)];
     _textTF.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9  alpha:0.8];
+    _textTF.font = FontBig;
     _textTF.delegate = self;
     _textTF.returnKeyType = UIReturnKeySend;
     [topView addSubview:_textTF];
@@ -140,8 +141,6 @@
     if (index != 0) {
         _bottomView.page = index - 1;
     }
-    
-    
 }
 #pragma mark -- texttf delegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
@@ -162,19 +161,7 @@
     
     return YES;
 }
-//-(BOOL)textFieldShouldReturn:(UITextField *)textField{
-//    if (textField.text.length <= 0) {
-////        [SVProgressHUD showWithStatus:@"请输入内容"];
-//        return NO;
-//    }
-//
-//
-//    if (_inputBlock) {
-//        _inputBlock(textField.text);
-//    }
-//    [[IQKeyboardManager sharedManager] resignFirstResponder];
-//    return YES;
-//}
+
 -(void)inputImage:(NSString *)imageName{
 //    if (_inputEmotionBlock) {
 //        _inputEmotionBlock(image);
@@ -195,8 +182,7 @@
     smilies.smiliesId = imageName;
     
 
-    
-    
+
     
     //插入表情
     [_textTF.textStorage insertAttributedString:smilies

@@ -34,7 +34,7 @@
     
     LoginViewController * loginVC = [LoginViewController new];
     
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"] length] <= 0) {
+    if ([CurrentUserId length] <= 0) {
         self.window.rootViewController = loginVC;
     }else
     {

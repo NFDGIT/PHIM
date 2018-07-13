@@ -10,6 +10,8 @@
 @interface ChatCell()
 
 @property (nonatomic,strong)UIImageView * headImg;
+@property (nonatomic,strong)UILabel     * labelName;
+
 @property (nonatomic,strong)UILabel     * msgContent;
 @end
 @implementation ChatCell
@@ -26,12 +28,19 @@
     [self.contentView addSubview:headImg];
     _headImg = headImg;
     
+    UILabel * labelName = [[UILabel alloc]initWithFrame:CGRectMake(headImg.right + 10, headImg.top, self.width - headImg.right - 20, 20)];
+    labelName.textColor = ColorBlack;
+    labelName.font = FontNormal;
+    [self.contentView addSubview:labelName];
+    _labelName = labelName;
+    
     
     UILabel * msgContent = [[UILabel alloc]initWithFrame:CGRectMake(headImg.right + 10, headImg.top, self.width - headImg.right - 20, 40)];
     msgContent.textColor = ColorBlack;
     msgContent.font = FontNormal;
     [self.contentView addSubview:msgContent];
     _msgContent = msgContent;
+    _msgContent.numberOfLines = 0;
     
     
     
@@ -44,28 +53,60 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
     
-    if ([_model.Id isEqualToString:@"1"]) {
+    
+    
+    
+    
+    if ([_model.sendId isEqualToString:CurrentUserId]) {
         _headImg.right = self.width - 10;
+        
+        
+        
+        _labelName.right = _headImg.left - 10;
+        _labelName.textAlignment = NSTextAlignmentRight;
+        
+        
         _msgContent.right = _headImg.left - 10;
         _msgContent.textAlignment = NSTextAlignmentRight;
+        _msgContent.top = _labelName.bottom + 10;
+        
+        
+        
 
     }else{
-        _headImg.frame = CGRectMake(10, 10, 60, 60);
-        _msgContent.frame =CGRectMake(_headImg.right + 10, _headImg.top, self.width - _headImg.right - 20, 40);
+        _headImg.left = 10;
+        
+        
+        
+        _labelName.left = _headImg.right + 10;
+        _labelName.top = _headImg.top;
+        _labelName.textAlignment = NSTextAlignmentLeft;
+        
+        
+        
+        _msgContent.top = _labelName.bottom + 10;
+        _msgContent.left = _labelName.left;
         _msgContent.textAlignment = NSTextAlignmentLeft;
     }
+
+
     
     
+        self.ph_Height = _msgContent.bottom + 10;
 }
 
 
 -(void)setModel:(MsgModel *)model{
     _model = model;
     
+    _labelName.text = model.sendId;
+    _msgContent.text= model.content;
     
-    _msgContent.text= model.msg;
+    _msgContent.width = self.width - _headImg.right - 100;
+    [_msgContent sizeToFit];
     
-    self.ph_Height = _headImg.bottom + 10;
+    
+    self.ph_Height = _msgContent.bottom + 10;
     
     [self layoutSubviews];
     

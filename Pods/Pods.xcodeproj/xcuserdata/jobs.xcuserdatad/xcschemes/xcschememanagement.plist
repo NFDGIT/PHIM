@@ -74,7 +74,7 @@
 			<key>orderHint</key>
 			<integer>9</integer>
 		</dict>
-		<key>SVProgressHUD.xcscheme</key>
+		<key>Toast.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

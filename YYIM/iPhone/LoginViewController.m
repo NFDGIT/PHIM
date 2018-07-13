@@ -28,69 +28,77 @@
     _userNameTF = [[UITextField alloc]init];
     _userNameTF.placeholder = @"请输入用户名";
     _userNameTF.font = [UIFont systemFontOfSize:14];
+    _userNameTF.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.8];
     [self.view addSubview:_userNameTF];
     _userNameTF.delegate = self;
+    _userNameTF.textAlignment = NSTextAlignmentCenter;
     _userNameTF.text = @"15701344579";
     
     _passwordTF = [[UITextField alloc]init];
     _passwordTF.placeholder = @"请输入密码";
     _passwordTF.font = [UIFont systemFontOfSize:14];
+    _passwordTF.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.8];
     [self.view addSubview:_passwordTF];
     _passwordTF.delegate = self;
+    _passwordTF.textAlignment = NSTextAlignmentCenter;
     _passwordTF.text = @"123456";
     
     _loginBtn = [[UIButton alloc]init];
-    _loginBtn.backgroundColor = [UIColor greenColor];
-    _loginBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [_loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+    [_loginBtn setTitleColor:ColorBlack forState:UIControlStateNormal];
+    _loginBtn.titleLabel.font = FontBig;
     [self.view addSubview:_loginBtn];
     [_loginBtn addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
     
-    _passwordTF.frame = CGRectMake(100, 0, self.view.width - 200, 50);
+    _passwordTF.frame = CGRectMake(0, 0, self.view.width * 0.7, 50);
     _passwordTF.center = CGPointMake(self.view.width/2, self.view.height/2);
     
-    _userNameTF.frame =CGRectMake(100, 0, self.view.width, 50);
+    _userNameTF.frame =CGRectMake(0, 0, self.view.width * 0.7, 50);
     _userNameTF.bottom = _passwordTF.top - 30;
     
     _loginBtn.frame =CGRectMake(0, _passwordTF.bottom + 50, 150, 40);
-    _loginBtn.centerX = _passwordTF.centerX;
+    _userNameTF.centerX =  _loginBtn.centerX = _passwordTF.centerX ;
 }
 
 #pragma mark -- login
 -(void)login{
     if (_userNameTF.text.length <= 0) {
-        NSLog(@"%@",@"请输入用户名");
+        [self.view makeToast:@"请输入用户名" duration:2 position:CSToastPositionCenter];
         return;
     }
     if (_passwordTF.text.length <= 0) {
-        NSLog(@"%@",@"请输入密码");
+        [self.view makeToast:@"请输入密码" duration:2 position:CSToastPositionCenter];
         return;
     }
     
     
-    
-    [[NSUserDefaults standardUserDefaults] setValue:_userNameTF.text forKey:@"UserName"];
+    setCurrentUserId(_userNameTF.text);
     [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
     return;
     
+    
+    
     [Request loginWithUserName:_userNameTF.text passWord:_passwordTF.text success:^(NSUInteger code, NSString *msg, id data) {
         if (code == 200) {
+            setCurrentUserId(self->_userNameTF.text);
+            [[NSUserDefaults standardUserDefaults] setValue:self->_userNameTF.text forKey:@"UserName"];
+            [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
             
-            [Request getUserInfoWithIdOrName:_userNameTF.text success:^(NSUInteger code, NSString *msg, id data) {
+            
+            [Request getUserInfoWithIdOrName:self->_userNameTF.text success:^(NSUInteger code, NSString *msg, id data) {
                 if (code == 200) {
                     
                 }
             } failure:^(NSError *error) {
-                
+                    [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];
             }];
-            
-            [[NSUserDefaults standardUserDefaults] setValue:_userNameTF.text forKey:@"UserName"];
-            [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
+       
      }
     } failure:^(NSError *error) {
-        
+        [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];
     }];
     
 }
