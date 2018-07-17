@@ -10,7 +10,7 @@
 
 @implementation NSString (Helper)
 -(BOOL)isEmptyString{
-    return !self || [self isKindOfClass:[NSNull class]]|| [self isEqualToString:@"<null>"] || [self isEqualToString:@"(null)"] || [self isEqualToString:@"null"];
+    return !self|| self.length <= 0 || [self isKindOfClass:[NSNull class]]|| [self isEqualToString:@"<null>"] || [self isEqualToString:@"(null)"] || [self isEqualToString:@"null"];
     
 }
 @end

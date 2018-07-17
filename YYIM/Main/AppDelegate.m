@@ -34,7 +34,7 @@
     
     LoginViewController * loginVC = [LoginViewController new];
     
-    if ([CurrentUserId length] <= 0) {
+    if ([CurrentUserId isEmptyString]) {
         self.window.rootViewController = loginVC;
     }else
     {

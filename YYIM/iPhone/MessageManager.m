@@ -7,6 +7,8 @@
 //
 
 #import "MessageManager.h"
+#import "DBTool.h"
+
 static MessageManager *shared = nil;
 
 @interface MessageManager()
@@ -33,24 +35,27 @@ static MessageManager *shared = nil;
 
 
 
--(NSArray<MessageTargetModel *> *)getMsgTargets{
-    NSArray * msgTargets = [NSArray array];
-    if (_messageTargets) {
-        msgTargets = _messageTargets;
-    }
-    return msgTargets;
+-(void)getMsgTargetsSuccess:(void (^)(NSArray *))success{
+//    NSArray * msgTargets = [NSArray array];
+//    if (_messageTargets) {
+//        msgTargets = _messageTargets;
+//    }
+//    return msgTargets;
+    [[DBTool share] getChatPersons:^(NSArray *result) {
+        if (success){
+            success(result);
+        }
+    }];
+    
 }
 
 -(void)addMsgTarget:(MessageTargetModel *)target{
-    NSArray * msgTargets = [NSArray arrayWithArray:[self getMsgTargets]];
-    for (MessageTargetModel * currentTarget in msgTargets) {
-        if (currentTarget.Id == target.Id) {
-            [_messageTargets removeObject:currentTarget];
-        }
-    }
-    [_messageTargets addObject:target];
+    [[DBTool share] addTargetModel:target response:^(BOOL success) {
+        
+    }];
+
 }
--(NSArray<MsgModel *> *)getMessagesWithTargetId:(NSString *)targetId{
+-(void)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success{
     NSArray * messages = [NSArray array];
     
     if ([_messageDic.allKeys containsObject:targetId]) {
@@ -59,12 +64,38 @@ static MessageManager *shared = nil;
             messages = msgs;
         }
     }
-    return messages;
+    
+    [[DBTool share]getMessagesWithTarget:targetId success:^(NSArray *result) {
+        if (success) {
+            success(result);
+        }
+    }];
+    
+//    return messages;
 }
 -(void)addMsg:(MsgModel *)msg toTarget:(NSString *)targetId{
-    NSMutableArray * messages = [NSMutableArray arrayWithArray:[self getMessagesWithTargetId:targetId]];
-    [messages addObject:msg];
-    [_messageDic setObject:messages forKey:targetId];
+    
+    [[DBTool share]addModel:msg withTarget:targetId response:^(BOOL success) {
+        
+    }];
+    
+    MessageTargetModel * targetModel = [MessageTargetModel new];
+    targetModel.Id = targetId;
+    targetModel.name = @"";
+    targetModel.imgUrl = @"";
+    
+    [self addMsgTarget:targetModel];
+//    [self getMessagesWithTargetId:targetId success:^(NSArray * result) {
+//        
+////        NSMutableArray * messages = [NSMutableArray arrayWithArray:result];
+////        [messages addObject:msg];
+////        [self->_messageDic setObject:messages forKey:targetId];
+//        
+//        [[DBTool share]addModel:msg withTarget:targetId response:^(BOOL success) {
+//            
+//        }];
+//    }];
+
 }
 
 #pragma mark -- 处理 socket 收到的数据

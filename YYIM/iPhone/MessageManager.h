@@ -19,10 +19,10 @@
 
 
 
--(NSArray<MessageTargetModel *> *)getMsgTargets;
+-(void)getMsgTargetsSuccess:(void (^)(NSArray *))success;
 -(void)addMsgTarget:(MessageTargetModel *)target;
 
--(NSArray<MsgModel *> *)getMessagesWithTargetId:(NSString *)targetId;
+-(void)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success;
 -(void)addMsg:(MsgModel *)msg toTarget:(NSString *)targetId;
 
 #pragma mark -- 处理 socket 收到的数据

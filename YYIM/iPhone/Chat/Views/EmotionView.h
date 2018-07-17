@@ -12,4 +12,5 @@
 
 @interface EmotionView : UIView
 @property (nonatomic,strong)void(^clickBlock)(NSString * imgName);
+@property (nonatomic,strong)void(^deleteBlock)();
 @end

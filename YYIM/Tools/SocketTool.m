@@ -42,7 +42,7 @@ static SocketTool *shared = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        shared = [[self alloc] init];
+        shared = [[SocketTool alloc] init];
         [shared setupSocket];
     });
     
@@ -291,9 +291,11 @@ static SocketTool *shared = nil;
             NSString * msg = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"][@"MsgContent"]];
         
             MsgModel * model = [MsgModel new];
+            model.target = SendID;
             model.sendId = SendID;
             model.receivedId = ReceiveId;
             model.content = msg;
+            model.msgType = 0;
             [[MessageManager share] addMsg:model toTarget:SendID];
         }
         

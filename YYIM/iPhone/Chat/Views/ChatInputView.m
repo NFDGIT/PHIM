@@ -38,25 +38,28 @@
  
 }
 -(void)initUI{
+    
+    
+    
     self.backgroundColor = [UIColor whiteColor];
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:NO];
     
-    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width, 60)];
-    topView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:topView];
-    _topView = topView;
+//    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width, 60)];
+//    topView.backgroundColor = [UIColor whiteColor];
+//    [self addSubview:topView];
+//    _topView = topView;
     
     
     UIButton * addBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-    addBtn.backgroundColor = [UIColor lightGrayColor];
-    [topView addSubview:addBtn];
+    [self addSubview:addBtn];
+    [addBtn setImage:[UIImage imageNamed:@"chat_加号"] forState:UIControlStateNormal];
     _addBtn = addBtn;
     [addBtn addTarget:self action:@selector(addClick) forControlEvents:UIControlEventTouchUpInside];
     
 
     UIButton * emotionBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
 //    emotionBtn.backgroundColor = [UIColor lightGrayColor];
-    [topView addSubview:emotionBtn];
+    [self addSubview:emotionBtn];
     [emotionBtn setImage:[UIImage imageNamed:@"chat_表情.png"] forState:UIControlStateNormal];
     _emotionBtn = emotionBtn;
     [emotionBtn addTarget:self action:@selector(emotionClick) forControlEvents:UIControlEventTouchUpInside];
@@ -67,29 +70,40 @@
     _textTF.font = FontBig;
     _textTF.delegate = self;
     _textTF.returnKeyType = UIReturnKeySend;
-    [topView addSubview:_textTF];
-    
-
-    
-//    self.height = bottomView.bottom;
+    [self addSubview:_textTF];
     
 }
 
 -(void)layoutSubviews{
     [super layoutSubviews];
-    _topView.top = 0;
+
  
     
-    _addBtn.right = _topView.width - 15;
+    _addBtn.right = self.width - 15;
     _emotionBtn.right = _addBtn.left - 15;
     
+    _addBtn.centerY = _emotionBtn.centerY = _textTF.centerY = self.height/2;
     
-    
-    _textTF.frame = CGRectMake(10, 5, _topView.width - 20, _topView.height - 20);
+
     _textTF.width = _emotionBtn.left - _textTF.left - 15;
     
-    _addBtn.centerY = _emotionBtn.centerY = _textTF.centerY = _topView.height/2;
     
+    [_textTF sizeToFit];
+    if (_textTF.height < 20) {
+        _textTF.height = 20;
+    }
+    if (_textTF.width < _emotionBtn.left - _textTF.left - 15) {
+        _textTF.width = _emotionBtn.left - _textTF.left - 15;
+    }
+    _textTF.top = 10;
+    
+    
+    self.height = _textTF.bottom + 10;
+    
+    
+    _addBtn.bottom = _emotionBtn.bottom = _textTF.bottom;
+    
+
 }
 #pragma mark -- 点击事件
 
@@ -97,7 +111,8 @@
  表情
  */
 -(void)emotionClick{
-
+    [_textTF becomeFirstResponder];
+    
     if (_index == 1) {
         _index = 0;
         _textTF.inputView = nil;
@@ -105,36 +120,37 @@
         _index = 1;
         
         
-        EmotionView * emotionView = [[EmotionView alloc]initWithFrame:CGRectMake(0, 100, ScreenWidth, 200)];
+        EmotionView * emotionView = [[EmotionView alloc]initWithFrame:CGRectMake(0, 100, ScreenWidth, 220)];
         emotionView.clickBlock = ^(NSString *imgName) {
             [self inputImage:imgName];
+        };
+        emotionView.deleteBlock = ^{
+            [self deleteClick];
         };
         self->_textTF.inputView = emotionView;
     }
 
     [_textTF reloadInputViews];
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//
-//    });
-
-
-    
-    
-    
+ 
 }
 /**
  加号
  */
 -(void)addClick{
+    [_textTF becomeFirstResponder];
+    
     if (_index == 2) {
         _index = 0;
         _textTF.inputView = nil;
     }else{
         _index = 2;
-        ChatAddView * chatAddView = [[ChatAddView alloc]initWithFrame:CGRectMake(0, 100, ScreenWidth, 200)];
-        //    chatAddView.clickBlock = ^(NSString *imgName) {
-        //        [self inputImage:imgName];
-        //    };
+        ChatAddView * chatAddView = [[ChatAddView alloc]initWithFrame:CGRectMake(0, 100, ScreenWidth, 230)];
+        chatAddView.clickBlock = ^(ChatAddType type, id data) {
+            if (self->_inputAddDataBlock) {
+                self->_inputAddDataBlock(type,data);
+            }
+        };
+
         _textTF.inputView = chatAddView;
         
     }
@@ -142,28 +158,6 @@
 
     [_textTF reloadInputViews];
 }
-#pragma mark -- 判断要不要显示键盘
-//-(void)judgeShwoKeyBoardWithIndex:(NSUInteger)index{
-//    if (![[IQKeyboardManager sharedManager]isKeyboardShowing]) {
-//        [_textTF becomeFirstResponder];
-//        return;
-//    }
-//
-//
-//    if (index == 0) {
-//        [self keyboardView].hidden = NO;
-//    }else{
-//        [self judgeBottomOffsetWithIndex:index];
-//        [self keyboardView].hidden = YES;
-//
-//
-//    }
-//}
-//-(void)judgeBottomOffsetWithIndex:(NSUInteger)index{
-//    if (index != 0) {
-//        _bottomView.page = index - 1;
-//    }
-//}
 #pragma mark -- texttf delegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
@@ -180,108 +174,27 @@
         [[IQKeyboardManager sharedManager] resignFirstResponder];
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
     }
-    
+    if ([text isEqualToString:@""]) { // 删除键
+        
+    }
     return YES;
 }
-
--(void)inputImage:(NSString *)imageName{
-//    if (_inputEmotionBlock) {
-//        _inputEmotionBlock(image);
-//    }
-    
-//    SmiliesTextAttachment *emojiTextAttachment = [SmiliesTextAttachment new];
-//
-//    //设置表情图片
-//    emojiTextAttachment.image = [UIImage imageNamed:imageName];
-//    emojiTextAttachment.smiliesId = imageName;
-//
-//
-//
-//
-//    NSAttributedString * smiliesas = [NSAttributedString attributedStringWithAttachment:emojiTextAttachment];
-//
-//    SmiliesAttributedString * smilies = (SmiliesAttributedString *)smiliesas;
-//    smilies.smiliesId = imageName;
-//
-//
-//
-//
-//    //插入表情
-//    [_textTF.textStorage insertAttributedString:smilies
-//atIndex:_textTF.selectedRange.location];
-    
-    
-//    _textTF.attributedText = [[NSMutableAttributedString alloc]initWithString:_textTF.text];
-//    _textTF.textStorage appendAttributedString:<#(nonnull NSAttributedString *)#>
-    
-    
-    _textTF.text = [_textTF.text stringByAppendingString:imageName];
-    
+-(void)textViewDidChange:(UITextView *)textView{
+    [self layoutSubviews];
+    if(_changeHeightBlock){
+        _changeHeightBlock();
+    }
 }
-
-//#pragma mark -- keyboard should begin
-//-(void)chatBeginEditNoti:(NSNotification *)noti{
-////    CGFloat height =  [noti.userInfo[@"UIKeyboardBoundsUserInfoKey"] size].height;
-////    CGFloat duration = [noti.userInfo[@"UIKeyboardAnimationDurationUserInfoKey"] floatValue];
-////
-////    [UIView animateWithDuration:duration animations:^{
-////
-////    }];
-//
-//}
-//#pragma mark -- keyboard should end
-//-(void)chatEndEditNoti:(NSNotification *)noti{
-//
-//}
-//获取键盘UIKeyboard
-
-- (UIView *)keyboardView
-{
-    UIWindow* tempWindow;
-    
-    //Because we cant get access to the UIKeyboard throught the SDK we will just use UIView.
-    //UIKeyboard is a subclass of UIView anyways
-    UIView* keyboard;
-    
-    NSLog(@"windows %ld", [[[UIApplication sharedApplication]windows]count]);
-    
-    //Check each window in our application
-    for(int c = 0; c < [[[UIApplication sharedApplication] windows] count]; c ++)
-    {
-        //Get a reference of the current window
-        tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:c];
-        
-        //Get a reference of the current view
-        for(int i = 0; i < [tempWindow.subviews count]; i++)
-        {
-            keyboard = [tempWindow.subviews objectAtIndex:i];
-            NSLog(@"view: %@, on index: %d, class: %@", [keyboard description], i, [[tempWindow.subviews objectAtIndex:i] class]);
-            if([[keyboard description] hasPrefix:@"(lessThen)UIKeyboard"] == YES)
-            {
-                //If we get to this point, then our UIView "keyboard" is referencing our keyboard.
-                return keyboard;
-            }
-        }
-        
-        for(UIView* potentialKeyboard in tempWindow.subviews)
-            // if the real keyboard-view is found, remember it.
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-                if([[potentialKeyboard description] hasPrefix:@"<UILayoutContainerView"] == YES)
-                    keyboard = potentialKeyboard;
-            }
-            else if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 3.2) {
-                if([[potentialKeyboard description] hasPrefix:@"<UIPeripheralHost"] == YES)
-                    keyboard = potentialKeyboard;
-            }
-            else {
-                if([[potentialKeyboard description] hasPrefix:@"<UIKeyboard"] == YES)
-                    keyboard = potentialKeyboard;
-            }
+-(void)inputImage:(NSString *)imageName{
+    _textTF.text = [_textTF.text stringByAppendingString:imageName];
+}
+-(void)deleteClick{
+    if (_textTF.text.length < 1) {
+        return;
     }
     
-    return keyboard;
+    _textTF.text = [_textTF.text stringByReplacingCharactersInRange:NSMakeRange(_textTF.text.length -1, 1) withString:@""];
 }
-
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

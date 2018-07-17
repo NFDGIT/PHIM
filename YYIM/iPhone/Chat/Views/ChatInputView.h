@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ChatAddView.h"
 
 
 @interface ChatInputView : UIView
-@property (nonatomic,strong)UIView * topView;
 @property (nonatomic,strong)void(^inputBlock)(NSString * value);
 @property (nonatomic,strong)void(^inputEmotionBlock)(UIImage * image);
+@property (nonatomic,strong)void(^changeHeightBlock)(void);
+@property (nonatomic,strong)void(^inputAddDataBlock)(ChatAddType type, id data);
 @end

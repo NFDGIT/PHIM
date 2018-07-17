@@ -11,6 +11,8 @@
 #import "ChatViewController.h"
 #import "MessageManager.h"
 #import "MessageTargetModel.h"
+//
+//#import "DBTool.h"
 
 @interface MessageListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
@@ -28,24 +30,35 @@
     [self initNavi];
     [self initUI];
     [self refreshData];
+    
+    
+    
     // Do any additional setup after loading the view.
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self refreshData];
+}
+
 -(void)initNavi{
     self.title = @"消息";
 }
 -(void)initData{
+    _datas = [NSMutableArray array];
+
     
-    MessageTargetModel * model = [MessageTargetModel new];
-    model.Id = @"13383824275";
-    model.name = @"彭辉";
-    
-    
-    MessageTargetModel * model1 = [MessageTargetModel new];
-    model1.Id = @"15701344579";
-    model1.name = @"郭二明";
-    
-    [[MessageManager share] addMsgTarget:model];
-    [[MessageManager share] addMsgTarget:model1];
+//    MessageTargetModel * model = [MessageTargetModel new];
+//    model.Id = @"13383824275";
+//    model.name = @"彭辉";
+//    model.imgUrl = @"";
+//
+//    MessageTargetModel * model1 = [MessageTargetModel new];
+//    model1.Id = @"15701344579";
+//    model1.name = @"郭二明";
+//    model1.imgUrl = @"";
+//
+//    [[MessageManager share] addMsgTarget:model];
+//    [[MessageManager share] addMsgTarget:model1];
 }
 -(void)initUI{
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) style:UITableViewStyleGrouped];
@@ -56,13 +69,21 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
-    
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
     
 }
+
 - (void)refreshData{
-    _datas =[NSMutableArray arrayWithArray:[[MessageManager share]getMsgTargets]];
+    [[MessageManager share] getMsgTargetsSuccess:^(NSArray * result) {
+        self->_datas = [NSMutableArray arrayWithArray:result];
     
-    [self refreshUI];
+        [self refreshUI];
+    }];
+    
+//
+//    _datas =[NSMutableArray arrayWithArray:[[MessageManager share]getMsgTargets]];
+//
+//    [self refreshUI];
 //    [Request searchUserWithIdOrName:@"15701344579" success:^(NSUInteger code, NSString *msg, id data) {
 //
 //    } failure:^(NSError *error) {
@@ -71,6 +92,7 @@
     
 }
 -(void)refreshUI{
+    [_tableView.mj_header endRefreshing];
     [_tableView reloadData];
 }
 #pragma mark -- delegate
@@ -106,7 +128,7 @@
     MessageLlistTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
     cell.indexPath = indexPath;
-    MessageTargetModel * model = _datas[indexPath.section];
+    MessageTargetModel * model = _datas[_datas.count - 1 - indexPath.section];
     cell.model = model;
     return cell;
     
@@ -115,7 +137,7 @@
     
     
     ChatViewController * chatvc = [ChatViewController new];
-    MessageTargetModel * model = _datas[indexPath.section];
+    MessageTargetModel * model = _datas[_datas.count - 1 - indexPath.section];;
     chatvc.userId = model.Id;
     
     

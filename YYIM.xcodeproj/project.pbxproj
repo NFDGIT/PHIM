@@ -58,6 +58,8 @@
 		C5EFFCBD20FC5F34003BDB2E /* NSString+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFCBC20FC5F34003BDB2E /* NSString+Helper.m */; };
 		C5EFFE5B20FC6F42003BDB2E /* Emotion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C5EFFE5A20FC6F42003BDB2E /* Emotion.bundle */; };
 		C5EFFE5E20FC923A003BDB2E /* RishTextAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFE5D20FC923A003BDB2E /* RishTextAdapter.m */; };
+		C5EFFE6120FDB558003BDB2E /* PHImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFE5F20FDB555003BDB2E /* PHImagePickerController.m */; };
+		C5EFFE6420FDBE23003BDB2E /* NSDictionary+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFE6320FDBE23003BDB2E /* NSDictionary+Helper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +183,10 @@
 		C5EFFE5A20FC6F42003BDB2E /* Emotion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Emotion.bundle; sourceTree = "<group>"; };
 		C5EFFE5C20FC923A003BDB2E /* RishTextAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RishTextAdapter.h; sourceTree = "<group>"; };
 		C5EFFE5D20FC923A003BDB2E /* RishTextAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RishTextAdapter.m; sourceTree = "<group>"; };
+		C5EFFE5F20FDB555003BDB2E /* PHImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHImagePickerController.m; sourceTree = "<group>"; };
+		C5EFFE6020FDB555003BDB2E /* PHImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHImagePickerController.h; sourceTree = "<group>"; };
+		C5EFFE6220FDBE23003BDB2E /* NSDictionary+Helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Helper.h"; sourceTree = "<group>"; };
+		C5EFFE6320FDBE23003BDB2E /* NSDictionary+Helper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Helper.m"; sourceTree = "<group>"; };
 		EC4D8DFB44757BA08EA582CF /* Pods-YYIMUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYIMUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YYIMUITests/Pods-YYIMUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -331,6 +337,8 @@
 		C590213720F44DFA001296C4 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				C5EFFE6020FDB555003BDB2E /* PHImagePickerController.h */,
+				C5EFFE5F20FDB555003BDB2E /* PHImagePickerController.m */,
 				C55FF5EF20F6E57500A86F00 /* PHCellHeight.h */,
 				C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */,
 				C590214C20F455DB001296C4 /* UIViewAdditions.h */,
@@ -352,6 +360,8 @@
 				C55FF61920F89A2300A86F00 /* DBTool.m */,
 				C5EFFCBB20FC5F34003BDB2E /* NSString+Helper.h */,
 				C5EFFCBC20FC5F34003BDB2E /* NSString+Helper.m */,
+				C5EFFE6220FDBE23003BDB2E /* NSDictionary+Helper.h */,
+				C5EFFE6320FDBE23003BDB2E /* NSDictionary+Helper.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -829,6 +839,7 @@
 				C59021B720F5FC49001296C4 /* ProgressTool.m in Sources */,
 				C5EFFCBD20FC5F34003BDB2E /* NSString+Helper.m in Sources */,
 				C59021A720F5A76A001296C4 /* NSString+Json.m in Sources */,
+				C5EFFE6420FDBE23003BDB2E /* NSDictionary+Helper.m in Sources */,
 				C590219020F4B531001296C4 /* ChatInputView.m in Sources */,
 				C59021A220F5A3ED001296C4 /* NSData+GZip.m in Sources */,
 				C590215B20F45FC5001296C4 /* ContactsListModel.m in Sources */,
@@ -837,6 +848,7 @@
 				C55FF5F920F72A3B00A86F00 /* ChatAddView.m in Sources */,
 				C590215320F458F7001296C4 /* ContactsListTableViewCell.m in Sources */,
 				C590217720F4A3CF001296C4 /* LoginViewController.m in Sources */,
+				C5EFFE6120FDB558003BDB2E /* PHImagePickerController.m in Sources */,
 				C590213420F44D86001296C4 /* NavigationController.m in Sources */,
 				C59021BA20F6088B001296C4 /* NSString+Base64.m in Sources */,
 				C55FF5FF20F74B2E00A86F00 /* SmiliesTextAttachment.m in Sources */,
