@@ -9,6 +9,8 @@
 #import "MessageListViewController.h"
 #import "MessageLlistTableViewCell.h"
 #import "ChatViewController.h"
+#import "MessageManager.h"
+#import "MessageTargetModel.h"
 
 @interface MessageListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
@@ -32,20 +34,24 @@
     self.title = @"消息";
 }
 -(void)initData{
-    _datas = [NSMutableArray array];
-    [_datas addObject:@""];
-    [_datas addObject:@""];
-    [_datas addObject:@""];
-    [_datas addObject:@""];
-    [_datas addObject:@""];
+    
+    MessageTargetModel * model = [MessageTargetModel new];
+    model.Id = @"13383824275";
+    model.name = @"彭辉";
     
     
+    MessageTargetModel * model1 = [MessageTargetModel new];
+    model1.Id = @"15701344579";
+    model1.name = @"郭二明";
+    
+    [[MessageManager share] addMsgTarget:model];
+    [[MessageManager share] addMsgTarget:model1];
 }
 -(void)initUI{
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) style:UITableViewStyleGrouped];
     [_tableView registerClass:[MessageLlistTableViewCell class] forCellReuseIdentifier:@"cell"];
     [self.view addSubview:_tableView];
-    
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -54,6 +60,9 @@
     
 }
 - (void)refreshData{
+    _datas =[NSMutableArray arrayWithArray:[[MessageManager share]getMsgTargets]];
+    
+    [self refreshUI];
 //    [Request searchUserWithIdOrName:@"15701344579" success:^(NSUInteger code, NSString *msg, id data) {
 //
 //    } failure:^(NSError *error) {
@@ -61,36 +70,54 @@
 //    }];
     
 }
+-(void)refreshUI{
+    [_tableView reloadData];
+}
 #pragma mark -- delegate
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.01;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 10;
+}
+
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return nil;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return nil;
+}
+
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     return 1;
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return _datas.count;
-    
 }
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+   return  [tableView cellHeightWithIndexPath:indexPath];
+}
+
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MessageLlistTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
-    if (indexPath.section == 0) {
-        cell.textLabel.text = @"13383824275";
-    }else{
-        cell.textLabel.text = @"15701344579";
-        
-    }
     
+    cell.indexPath = indexPath;
+    MessageTargetModel * model = _datas[indexPath.section];
+    cell.model = model;
     return cell;
     
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
     ChatViewController * chatvc = [ChatViewController new];
-    chatvc.userId = @"15701344579";
-    if (indexPath.section == 0) {
-        chatvc.userId = @"13383824275";
-
-    }else{
-        chatvc.userId = @"15701344579";
-    }
+    MessageTargetModel * model = _datas[indexPath.section];
+    chatvc.userId = model.Id;
+    
     
     [self.navigationController pushViewController:chatvc animated:YES];
     

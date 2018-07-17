@@ -11,7 +11,7 @@
 
 
 @interface ContactsListTableViewCell()
-@property (nonatomic,strong)UILabel * labelName;
+@property (nonatomic,strong)UIButton  * btnName;
 @end
 @implementation ContactsListTableViewCell
 -(instancetype)initWithFrame:(CGRect)frame{
@@ -28,10 +28,13 @@
     return self;
 }
 -(void)initUI{
-    _labelName = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200 , 50)];
-    _labelName.font = FontNormal;
-    _labelName.textColor = ColorBlack;
-    [self.contentView addSubview:_labelName];
+    _btnName = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 200 , 50)];
+    _btnName.titleLabel.font = FontNormal;
+    [_btnName setTitleColor:ColorBlack forState:UIControlStateNormal];
+    _btnName.userInteractionEnabled = NO;
+    _btnName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    
+    [self.contentView addSubview:_btnName];
     
 }
 
@@ -41,19 +44,21 @@
 
     
     
-    _labelName.text = _model.Text;
+    [_btnName setTitle:[NSString stringWithFormat:@"%@",model.Text] forState:UIControlStateNormal];
     if (_model.Nodes.count != 0) {
-        if (_model.Expanded) {
-            _labelName.text = [NSString stringWithFormat:@"- %@",_model.Text];
-        }else{
-            _labelName.text = [NSString stringWithFormat:@"+ %@",_model.Text];
-        }
+        [_btnName setImage:[UIImage imageNamed:@"展开"] forState:UIControlStateSelected];
+        [_btnName setImage:[UIImage imageNamed:@"收起"] forState:UIControlStateNormal];
+        _btnName.selected = _model.Expanded;
+    }else{
+        [_btnName setImage:nil forState:UIControlStateNormal];
+        [_btnName setImage:nil forState:UIControlStateSelected];
+        
     }
     
     
-    _labelName.left = _model.level.count * 20;
+    _btnName.left = _model.level.count * 20;
     
-    
+    self.ph_Height = _btnName.bottom + 10;
 }
 - (void)awakeFromNib {
     [super awakeFromNib];

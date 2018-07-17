@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ContactsListModel.h"
+#import "PHCellHeight.h"
 
 @interface ContactsListTableViewCell : UITableViewCell
 @property (nonatomic,strong)ContactsListModel * model;

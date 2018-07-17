@@ -10,6 +10,7 @@
 #import "ChatCell.h"
 #import "ChatInputView.h"
 #import "SocketTool.h"
+#import "MessageManager.h"
 
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -27,6 +28,7 @@
     [self initData];
     [self initNavi];
     [self initUI];
+    [self refreshData];
     
 //    [self refreshData];
     // Do any additional setup after loading the view.
@@ -34,7 +36,7 @@
 
 -(void)initData{
     _datas = [NSMutableArray array];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNewMsg:) name:NotiForReceive object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNewMsg:) name:NotiForReceiveMsgInfoClass12 object:nil];
 }
 
 -(void)initNavi{
@@ -62,7 +64,7 @@
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, scrollView.width, scrollView.height - inputView.topView.height) style:UITableViewStyleGrouped];
     [_tableView registerClass:[ChatCell class] forCellReuseIdentifier:@"cell"];
     [scrollView addSubview:_tableView];
-    
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -74,48 +76,49 @@
 -(void)refreshUI{
     [_tableView reloadData];
 }
-
+-(void)refreshData{
+    _datas =[NSMutableArray arrayWithArray:[[MessageManager share]getMessagesWithTargetId:self.userId]];
+    
+    [self refreshUI];
+}
 #pragma mark -- 点击事件
 -(void)sendAction:(NSString *)msg{
+    [[SocketTool share] sendMsg:msg receiveId:[NSString stringWithFormat:@"%@",_userId]  msgInfoClass:12];
+    
     
     MsgModel * model = [MsgModel new];
     model.sendId = CurrentUserId;
+    model.receivedId = _userId;
     model.content = msg;
+    [[MessageManager share] addMsg:model toTarget:self.userId];
 
-    
-    [_datas addObject:model];
-    [_tableView reloadData];
-
-    [[SocketTool share] sendMsg:msg receiveId:[NSString stringWithFormat:@"%@",_userId]  msgInfoClass:12];
+    [self refreshData];
 
 }
 -(void)receiveNewMsg:(NSNotification *)noti{
-    NSDictionary * MsgContent =[NSDictionary dictionaryWithDictionary:noti.object];
-    NSString *  MsgInfoClass = [NSString stringWithFormat:@"%@",MsgContent[@"MsgInfoClass"]];
-    NSString *  ReceiveId = [NSString stringWithFormat:@"%@",MsgContent[@"ReceiveId"]];
-    NSString *  SendID = [NSString stringWithFormat:@"%@",MsgContent[@"SendID"]];
-    
-    
-    if ([MsgInfoClass isEqualToString:@"12"] && [ReceiveId isEqualToString:CurrentUserId]) {
-        NSDictionary *  ClassTextMsg = [NSDictionary dictionaryWithDictionary:MsgContent[@"MsgContent"][@"ClassTextMsg"]];
-        
-        if (ClassTextMsg && [ClassTextMsg.allKeys containsObject:@"msg"]) {
-            
-            NSString * msg = [NSString stringWithFormat:@"%@",ClassTextMsg[@"msg"]];
-            
-            MsgModel * model = [MsgModel new];
-            model.sendId = SendID;
-            model.content = msg;
-            [_datas addObject:model];
-            [_tableView reloadData];
-            
-        }
-        
-        
-        
-        
-        
-    }
+//    NSDictionary * MsgContent =[NSDictionary dictionaryWithDictionary:noti.object];
+//    NSString *  MsgInfoClass = [NSString stringWithFormat:@"%@",MsgContent[@"MsgInfoClass"]];
+//    NSString *  ReceiveId = [NSString stringWithFormat:@"%@",MsgContent[@"ReceiveId"]];
+//    NSString *  SendID = [NSString stringWithFormat:@"%@",MsgContent[@"SendID"]];
+//
+//    if ([MsgInfoClass isEqualToString:@"12"] && [ReceiveId isEqualToString:CurrentUserId]) {
+//
+//        if (MsgContent && [MsgContent.allKeys containsObject:@"MsgContent"]) {
+//
+//            NSString * msg = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"][@"MsgContent"]];
+//
+//            MsgModel * model = [MsgModel new];
+//            model.sendId = SendID;
+//            model.receivedId = ReceiveId;
+//            model.content = msg;
+//            [[MessageManager share] addMsg:model toTarget:self.userId];
+//            [self refreshData];
+//
+//        }
+//
+//
+//    }
+    [self refreshData];
     
 }
 
@@ -144,6 +147,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 /*
 #pragma mark - Navigation

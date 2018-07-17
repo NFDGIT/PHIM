@@ -15,6 +15,10 @@
 #import "NetTool.h"
 
 
+#import "MsgModel.h"
+#import "MessageManager.h"
+
+
 
 
 
@@ -82,8 +86,6 @@ static SocketTool *shared = nil;
 }
 -(void)longConnectToSocket{
     [self sendMsg:@"心跳包" receiveId:@"" msgInfoClass:82];
-
-    
     
 }
 
@@ -132,16 +134,16 @@ static SocketTool *shared = nil;
 // 返回 字段的内容 MsgContent
 -(NSString *)getMsgContentWithMsg:(NSString *)msg{
     NSMutableDictionary * ClassTextMsg = [NSMutableDictionary dictionary];
-    [ClassTextMsg setValue:msg forKey:@"msg"];
+    [ClassTextMsg setValue:msg forKey:@"MsgContent"];
     [ClassTextMsg setValue:@"" forKey:@"ImageInfo"];
-    
-    
-    
     
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setValue:[self getBase64WithDictionary:ClassTextMsg] forKey:@"ClassTextMsg"];
 
-    return [self getBase64WithDictionary:param];
+    
+    return [self getBase64WithDictionary:ClassTextMsg];
+    
+//    return [self getBase64WithDictionary:param];
 }
 #pragma mark -- 心跳包的 msgcontent
 -(NSString *)getHeartBeatMsgContent{
@@ -178,11 +180,16 @@ static SocketTool *shared = nil;
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
 {
     NSLog(@"接收到%@的消息:%@",address,data);//自行转换格式吧
-    NSLog(@"%@",[self resolveReceiveDataWithData:data]);
+    NSDictionary * receiceDic = [self resolveReceiveDataWithData:data];
+    NSLog(@"%@",receiceDic);
+    [self postNotiWith:receiceDic];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceive object:[self resolveReceiveDataWithData:data] userInfo:nil];
     
+
 }
+
+
+#pragma mark  处理接收到的数据
 -(NSDictionary *)resolveReceiveDataWithData:(NSData *)data{
     NSData * inflateData =  [NSData gzipInflate:data];
     NSString * jsonString = [[NSString alloc] initWithData:inflateData encoding:NSUTF8StringEncoding];
@@ -193,21 +200,37 @@ static SocketTool *shared = nil;
         NSDictionary * MsgContentDic = [self getDictionaryWithBase64:dataDic[@"MsgContent"]];
         if ([MsgContentDic.allKeys containsObject:@"ClassTextMsg"]) {
             NSDictionary * ClassTextMsgDic = [self getDictionaryWithBase64:MsgContentDic[@"ClassTextMsg"]];
-            
-            
-            
-            
+
             [MsgContentDic setValue:ClassTextMsgDic forKey:@"ClassTextMsg"];
         }
-        
-        
-        
-        
         [dataDic  setValue:MsgContentDic forKey:@"MsgContent"];
     }
     
     return dataDic;
 }
+#pragma mark -- 根据  MsgInfoClass  发送通知
+-(void)postNotiWith:(NSDictionary *)receiveDic{
+    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceive object:receiveDic userInfo:nil];
+    
+    NSString *  MsgInfoClass = [NSString stringWithFormat:@"%@",receiveDic[@"MsgInfoClass"]];
+    switch ([MsgInfoClass integerValue]) {
+        case 12: /// 个人发送的消息
+            [self handleChatMsgDic:receiveDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveMsgInfoClass12 object:receiveDic userInfo:nil];
+
+            
+            break;
+        case 3: /// 上线通知
+//            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveMsgInfoClass12 object:receiveDic userInfo:nil];
+            break;
+        default:
+            break;
+    }
+    
+}
+
+
 #pragma mark -- 压缩 解压
 
 -(NSData *)getGzipWithDictionary:(NSDictionary *)dictionary{
@@ -232,13 +255,51 @@ static SocketTool *shared = nil;
     return base64;
 }
 -(NSDictionary *)getDictionaryWithBase64:(NSString*)base64{
+    if ([base64 isKindOfClass:[NSNull class]]) {
+        return [NSDictionary dictionary];
+    };
+    
+    if ([base64 isEmptyString]) {
+        return [NSDictionary dictionary];
+    };
     
     // base64 转为 data
     NSData * gzipdata = [[NSData alloc]initWithBase64EncodedString:base64 options:NSDataBase64Encoding64CharacterLineLength];
     return   [self getDictionaryWithGzip:gzipdata];
-
 }
 
 
+
+
+#pragma mark -- 聊天消息
+
+/**
+ 把聊天消息保存到单例中
+
+ @param msgDic 接收的消息
+ */
+-(void)handleChatMsgDic:(NSDictionary *)msgDic{
+    NSDictionary * MsgContent =[NSDictionary dictionaryWithDictionary:msgDic];
+    NSString *  MsgInfoClass = [NSString stringWithFormat:@"%@",MsgContent[@"MsgInfoClass"]];
+    NSString *  ReceiveId = [NSString stringWithFormat:@"%@",MsgContent[@"ReceiveId"]];
+    NSString *  SendID = [NSString stringWithFormat:@"%@",MsgContent[@"SendID"]];
+    
+    if ([MsgInfoClass isEqualToString:@"12"] && [ReceiveId isEqualToString:CurrentUserId]) {
+        
+        if (MsgContent && [MsgContent.allKeys containsObject:@"MsgContent"]) {
+            
+            NSString * msg = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"][@"MsgContent"]];
+        
+            MsgModel * model = [MsgModel new];
+            model.sendId = SendID;
+            model.receivedId = ReceiveId;
+            model.content = msg;
+            [[MessageManager share] addMsg:model toTarget:SendID];
+        }
+        
+        
+    }
+    
+}
 
 @end

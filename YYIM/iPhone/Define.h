@@ -22,3 +22,7 @@
 
 
 #define NotiForReceive @"NotiForReceive"
+
+
+#define NotiForReceiveMsgInfoClass12 @"NotiForReceiveMsgInfoClass12"   // 接收到 发送的消息
+

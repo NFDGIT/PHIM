@@ -54,10 +54,11 @@
     
 
     UIButton * emotionBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-    emotionBtn.backgroundColor = [UIColor lightGrayColor];
+//    emotionBtn.backgroundColor = [UIColor lightGrayColor];
     [topView addSubview:emotionBtn];
+    [emotionBtn setImage:[UIImage imageNamed:@"chat_表情.png"] forState:UIControlStateNormal];
     _emotionBtn = emotionBtn;
-//    [emotionBtn addTarget:self action:@selector(emotionClick) forControlEvents:UIControlEventTouchUpInside];
+    [emotionBtn addTarget:self action:@selector(emotionClick) forControlEvents:UIControlEventTouchUpInside];
     
     
     _textTF = [[UITextView alloc]initWithFrame:CGRectMake(10, 5, self.width - 20, self.height - 20)];
@@ -68,7 +69,7 @@
     [topView addSubview:_textTF];
     
     
-    ChatBottomView * bottomView= [[ChatBottomView alloc]initWithFrame:CGRectMake(0, topView.bottom, self.width, 315)];
+    ChatBottomView * bottomView= [[ChatBottomView alloc]initWithFrame:CGRectMake(0, topView.bottom, self.width, 285)];
     [self addSubview:bottomView];
     _bottomView =bottomView;
     bottomView.emotionView.clickBlock = ^(NSString *imageName) {
@@ -167,30 +168,33 @@
 //        _inputEmotionBlock(image);
 //    }
     
-    SmiliesTextAttachment *emojiTextAttachment = [SmiliesTextAttachment new];
-
-    //设置表情图片
-    emojiTextAttachment.image = [UIImage imageNamed:imageName];
-    emojiTextAttachment.smiliesId = imageName;
-    
-
-    
-   
-    NSAttributedString * smiliesas = [NSAttributedString attributedStringWithAttachment:emojiTextAttachment];
-    
-    SmiliesAttributedString * smilies = (SmiliesAttributedString *)smiliesas;
-    smilies.smiliesId = imageName;
-    
-
-
-    
-    //插入表情
-    [_textTF.textStorage insertAttributedString:smilies
-atIndex:_textTF.selectedRange.location];
+//    SmiliesTextAttachment *emojiTextAttachment = [SmiliesTextAttachment new];
+//
+//    //设置表情图片
+//    emojiTextAttachment.image = [UIImage imageNamed:imageName];
+//    emojiTextAttachment.smiliesId = imageName;
+//
+//
+//
+//
+//    NSAttributedString * smiliesas = [NSAttributedString attributedStringWithAttachment:emojiTextAttachment];
+//
+//    SmiliesAttributedString * smilies = (SmiliesAttributedString *)smiliesas;
+//    smilies.smiliesId = imageName;
+//
+//
+//
+//
+//    //插入表情
+//    [_textTF.textStorage insertAttributedString:smilies
+//atIndex:_textTF.selectedRange.location];
     
     
 //    _textTF.attributedText = [[NSMutableAttributedString alloc]initWithString:_textTF.text];
 //    _textTF.textStorage appendAttributedString:<#(nonnull NSAttributedString *)#>
+    
+    
+    _textTF.text = [_textTF.text stringByAppendingString:imageName];
     
 }
 

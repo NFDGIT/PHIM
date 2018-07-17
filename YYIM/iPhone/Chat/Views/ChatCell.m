@@ -7,6 +7,8 @@
 //
 
 #import "ChatCell.h"
+#import "RishTextAdapter.h"
+
 @interface ChatCell()
 
 @property (nonatomic,strong)UIImageView * headImg;
@@ -23,14 +25,20 @@
     
 }
 -(void)initUI{
+    self.contentView.backgroundColor  =[UIColor clearColor];
+    self.backgroundColor = [UIColor clearColor];
+    
     UIImageView * headImg = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 60, 60)];
-    headImg.backgroundColor = [UIColor lightGrayColor];
+    headImg.layer.cornerRadius = headImg.height / 2;
+    headImg.layer.masksToBounds = YES;
     [self.contentView addSubview:headImg];
     _headImg = headImg;
     
+    
+    
     UILabel * labelName = [[UILabel alloc]initWithFrame:CGRectMake(headImg.right + 10, headImg.top, self.width - headImg.right - 20, 20)];
     labelName.textColor = ColorBlack;
-    labelName.font = FontNormal;
+    labelName.font = FontBig;
     [self.contentView addSubview:labelName];
     _labelName = labelName;
     
@@ -43,8 +51,6 @@
     _msgContent.numberOfLines = 0;
     
     
-    
-    
 }
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -53,7 +59,7 @@
 -(void)layoutSubviews{
     [super layoutSubviews];
     
-    
+
     
     
     
@@ -92,21 +98,29 @@
 
     
     
-        self.ph_Height = _msgContent.bottom + 10;
+    self.ph_Height = _msgContent.bottom + 10;
+    if (self.ph_Height < _headImg.bottom + 10) {
+        self.ph_Height = _headImg.bottom + 10;
+    }
+    
 }
 
 
 -(void)setModel:(MsgModel *)model{
     _model = model;
     
+    [_headImg sd_setImageWithURL:[NSURL URLWithString:_model.imageUrl] placeholderImage:[UIImage imageNamed:@"touxiang_default"]];
+    
     _labelName.text = model.sendId;
-    _msgContent.text= model.content;
+//    _msgContent.text= model.content;
+    _msgContent.attributedText = [RishTextAdapter getAttributedStringWithString:_model.content];
+    
     
     _msgContent.width = self.width - _headImg.right - 100;
     [_msgContent sizeToFit];
     
     
-    self.ph_Height = _msgContent.bottom + 10;
+
     
     [self layoutSubviews];
     

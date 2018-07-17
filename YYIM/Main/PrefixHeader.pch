@@ -17,8 +17,10 @@
 #import "ProgressTool.h"
 #import <MJRefresh/MJRefresh.h>
 #import <Toast/UIView+Toast.h>
+#import <SDWebImage/UIImageView+WebCache.h>
 
 #import "Request.h"
 #import "Define.h"
+#import "NSString+Helper.h"
 
 #endif /* PrefixHeader_pch */

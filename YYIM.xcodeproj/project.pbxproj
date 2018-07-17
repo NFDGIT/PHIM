@@ -19,7 +19,6 @@
 		C55FF60820F75A1300A86F00 /* SmiliesAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60720F75A1300A86F00 /* SmiliesAttributedString.m */; };
 		C55FF60B20F836D400A86F00 /* SocketTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60A20F836D400A86F00 /* SocketTool.m */; };
 		C55FF60E20F8672C00A86F00 /* NetTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60D20F8672C00A86F00 /* NetTool.m */; };
-		C55FF61220F872FB00A86F00 /* NewMsgCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61120F872FB00A86F00 /* NewMsgCellModel.m */; };
 		C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61620F898E000A86F00 /* MineTableViewCell.m */; };
 		C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61920F89A2300A86F00 /* DBTool.m */; };
 		C590210020F44D49001296C4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C59020FF20F44D49001296C4 /* AppDelegate.m */; };
@@ -49,13 +48,17 @@
 		C590218D20F4B47F001296C4 /* ChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C590218C20F4B47F001296C4 /* ChatCell.m */; };
 		C590219020F4B531001296C4 /* ChatInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = C590218F20F4B531001296C4 /* ChatInputView.m */; };
 		C590219520F4BE93001296C4 /* Define.h in Resources */ = {isa = PBXBuildFile; fileRef = C590219420F4BE93001296C4 /* Define.h */; };
-		C590219F20F4C6B5001296C4 /* UDPSocketSingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = C590219E20F4C6B5001296C4 /* UDPSocketSingleton.m */; };
 		C59021A220F5A3ED001296C4 /* NSData+GZip.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021A120F5A3ED001296C4 /* NSData+GZip.m */; };
 		C59021A420F5A4DF001296C4 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C59021A320F5A4DF001296C4 /* libz.1.2.5.tbd */; };
 		C59021A720F5A76A001296C4 /* NSString+Json.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021A620F5A76A001296C4 /* NSString+Json.m */; };
 		C59021AB20F5F583001296C4 /* MsgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021AA20F5F583001296C4 /* MsgModel.m */; };
 		C59021B720F5FC49001296C4 /* ProgressTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021B620F5FC49001296C4 /* ProgressTool.m */; };
 		C59021BA20F6088B001296C4 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021B920F6088B001296C4 /* NSString+Base64.m */; };
+		C5EFFCB420FC2CE3003BDB2E /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFCB320FC2CE3003BDB2E /* MessageManager.m */; };
+		C5EFFCB720FC3651003BDB2E /* MessageTargetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFCB620FC3651003BDB2E /* MessageTargetModel.m */; };
+		C5EFFCBD20FC5F34003BDB2E /* NSString+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFCBC20FC5F34003BDB2E /* NSString+Helper.m */; };
+		C5EFFE5B20FC6F42003BDB2E /* Emotion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C5EFFE5A20FC6F42003BDB2E /* Emotion.bundle */; };
+		C5EFFE5E20FC923A003BDB2E /* RishTextAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFE5D20FC923A003BDB2E /* RishTextAdapter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,8 +105,6 @@
 		C55FF60A20F836D400A86F00 /* SocketTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketTool.m; sourceTree = "<group>"; };
 		C55FF60C20F8672C00A86F00 /* NetTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetTool.h; sourceTree = "<group>"; };
 		C55FF60D20F8672C00A86F00 /* NetTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetTool.m; sourceTree = "<group>"; };
-		C55FF61020F872FB00A86F00 /* NewMsgCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewMsgCellModel.h; sourceTree = "<group>"; };
-		C55FF61120F872FB00A86F00 /* NewMsgCellModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewMsgCellModel.m; sourceTree = "<group>"; };
 		C55FF61520F898E000A86F00 /* MineTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineTableViewCell.h; sourceTree = "<group>"; };
 		C55FF61620F898E000A86F00 /* MineTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineTableViewCell.m; sourceTree = "<group>"; };
 		C55FF61820F89A2300A86F00 /* DBTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBTool.h; sourceTree = "<group>"; };
@@ -162,8 +163,6 @@
 		C590218E20F4B531001296C4 /* ChatInputView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatInputView.h; sourceTree = "<group>"; };
 		C590218F20F4B531001296C4 /* ChatInputView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatInputView.m; sourceTree = "<group>"; };
 		C590219420F4BE93001296C4 /* Define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
-		C590219D20F4C6B5001296C4 /* UDPSocketSingleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDPSocketSingleton.h; sourceTree = "<group>"; };
-		C590219E20F4C6B5001296C4 /* UDPSocketSingleton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UDPSocketSingleton.m; sourceTree = "<group>"; };
 		C59021A020F5A3ED001296C4 /* NSData+GZip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+GZip.h"; sourceTree = "<group>"; };
 		C59021A120F5A3ED001296C4 /* NSData+GZip.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+GZip.m"; sourceTree = "<group>"; };
 		C59021A320F5A4DF001296C4 /* libz.1.2.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.5.tbd; path = usr/lib/libz.1.2.5.tbd; sourceTree = SDKROOT; };
@@ -175,6 +174,16 @@
 		C59021B620F5FC49001296C4 /* ProgressTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProgressTool.m; sourceTree = "<group>"; };
 		C59021B820F6088B001296C4 /* NSString+Base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Base64.h"; sourceTree = "<group>"; };
 		C59021B920F6088B001296C4 /* NSString+Base64.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
+		C5EFFCB220FC2CE3003BDB2E /* MessageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageManager.h; sourceTree = "<group>"; };
+		C5EFFCB320FC2CE3003BDB2E /* MessageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageManager.m; sourceTree = "<group>"; };
+		C5EFFCB520FC3651003BDB2E /* MessageTargetModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTargetModel.h; sourceTree = "<group>"; };
+		C5EFFCB620FC3651003BDB2E /* MessageTargetModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTargetModel.m; sourceTree = "<group>"; };
+		C5EFFCBB20FC5F34003BDB2E /* NSString+Helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Helper.h"; sourceTree = "<group>"; };
+		C5EFFCBC20FC5F34003BDB2E /* NSString+Helper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helper.m"; sourceTree = "<group>"; };
+		C5EFFCC220FC6A64003BDB2E /* Emotion.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Emotion.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5EFFE5A20FC6F42003BDB2E /* Emotion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Emotion.bundle; sourceTree = "<group>"; };
+		C5EFFE5C20FC923A003BDB2E /* RishTextAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RishTextAdapter.h; sourceTree = "<group>"; };
+		C5EFFE5D20FC923A003BDB2E /* RishTextAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RishTextAdapter.m; sourceTree = "<group>"; };
 		EC4D8DFB44757BA08EA582CF /* Pods-YYIMUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYIMUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YYIMUITests/Pods-YYIMUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -204,6 +213,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C5EFFCBF20FC6A64003BDB2E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -221,8 +237,8 @@
 		C55FF60F20F872D300A86F00 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C55FF61020F872FB00A86F00 /* NewMsgCellModel.h */,
-				C55FF61120F872FB00A86F00 /* NewMsgCellModel.m */,
+				C5EFFCB520FC3651003BDB2E /* MessageTargetModel.h */,
+				C5EFFCB620FC3651003BDB2E /* MessageTargetModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -261,6 +277,7 @@
 				C59020FB20F44D49001296C4 /* YYIM.app */,
 				C590211320F44D4F001296C4 /* YYIMTests.xctest */,
 				C590211E20F44D4F001296C4 /* YYIMUITests.xctest */,
+				C5EFFCC220FC6A64003BDB2E /* Emotion.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -268,6 +285,7 @@
 		C59020FD20F44D49001296C4 /* YYIM */ = {
 			isa = PBXGroup;
 			children = (
+				C5EFFE5A20FC6F42003BDB2E /* Emotion.bundle */,
 				C590210C20F44D4F001296C4 /* Info.plist */,
 				C590214B20F4513F001296C4 /* Main */,
 				C590213720F44DFA001296C4 /* Tools */,
@@ -307,6 +325,8 @@
 				C590217520F4A3CF001296C4 /* LoginViewController.h */,
 				C590217620F4A3CF001296C4 /* LoginViewController.m */,
 				C590219420F4BE93001296C4 /* Define.h */,
+				C5EFFCB220FC2CE3003BDB2E /* MessageManager.h */,
+				C5EFFCB320FC2CE3003BDB2E /* MessageManager.m */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -319,8 +339,6 @@
 				C590214C20F455DB001296C4 /* UIViewAdditions.h */,
 				C590214D20F455DB001296C4 /* UIViewAdditions.m */,
 				C590213820F44E06001296C4 /* Base */,
-				C590219D20F4C6B5001296C4 /* UDPSocketSingleton.h */,
-				C590219E20F4C6B5001296C4 /* UDPSocketSingleton.m */,
 				C59021A520F5A76A001296C4 /* NSString+Json.h */,
 				C59021A620F5A76A001296C4 /* NSString+Json.m */,
 				C59021B820F6088B001296C4 /* NSString+Base64.h */,
@@ -335,6 +353,8 @@
 				C55FF60D20F8672C00A86F00 /* NetTool.m */,
 				C55FF61820F89A2300A86F00 /* DBTool.h */,
 				C55FF61920F89A2300A86F00 /* DBTool.m */,
+				C5EFFCBB20FC5F34003BDB2E /* NSString+Helper.h */,
+				C5EFFCBC20FC5F34003BDB2E /* NSString+Helper.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -536,6 +556,8 @@
 			children = (
 				C59021A920F5F583001296C4 /* MsgModel.h */,
 				C59021AA20F5F583001296C4 /* MsgModel.m */,
+				C5EFFE5C20FC923A003BDB2E /* RishTextAdapter.h */,
+				C5EFFE5D20FC923A003BDB2E /* RishTextAdapter.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -613,6 +635,23 @@
 			productReference = C590211E20F44D4F001296C4 /* YYIMUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		C5EFFCC120FC6A64003BDB2E /* Emotion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C5EFFCC520FC6A64003BDB2E /* Build configuration list for PBXNativeTarget "Emotion" */;
+			buildPhases = (
+				C5EFFCBE20FC6A64003BDB2E /* Sources */,
+				C5EFFCBF20FC6A64003BDB2E /* Frameworks */,
+				C5EFFCC020FC6A64003BDB2E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Emotion;
+			productName = Emotion;
+			productReference = C5EFFCC220FC6A64003BDB2E /* Emotion.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -633,6 +672,9 @@
 						CreatedOnToolsVersion = 9.4.1;
 						TestTargetID = C59020FA20F44D49001296C4;
 					};
+					C5EFFCC120FC6A64003BDB2E = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
 				};
 			};
 			buildConfigurationList = C59020F620F44D49001296C4 /* Build configuration list for PBXProject "YYIM" */;
@@ -651,6 +693,7 @@
 				C59020FA20F44D49001296C4 /* YYIM */,
 				C590211220F44D4F001296C4 /* YYIMTests */,
 				C590211D20F44D4F001296C4 /* YYIMUITests */,
+				C5EFFCC120FC6A64003BDB2E /* Emotion */,
 			);
 		};
 /* End PBXProject section */
@@ -664,6 +707,7 @@
 				C590210820F44D4F001296C4 /* Assets.xcassets in Resources */,
 				C590219520F4BE93001296C4 /* Define.h in Resources */,
 				C590210620F44D49001296C4 /* Main.storyboard in Resources */,
+				C5EFFE5B20FC6F42003BDB2E /* Emotion.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,6 +719,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C590211C20F44D4F001296C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5EFFCC020FC6A64003BDB2E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -768,6 +819,7 @@
 				C59021AB20F5F583001296C4 /* MsgModel.m in Sources */,
 				C590210320F44D49001296C4 /* ViewController.m in Sources */,
 				C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */,
+				C5EFFCB420FC2CE3003BDB2E /* MessageManager.m in Sources */,
 				C590214720F44FD2001296C4 /* ContactsListViewController.m in Sources */,
 				C590215720F45AA2001296C4 /* MessageLlistTableViewCell.m in Sources */,
 				C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */,
@@ -775,10 +827,12 @@
 				C590218420F4B07A001296C4 /* MyFriendTableViewCell.m in Sources */,
 				C590218120F4AF36001296C4 /* MyFriendListModel.m in Sources */,
 				C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */,
+				C5EFFE5E20FC923A003BDB2E /* RishTextAdapter.m in Sources */,
 				C590214420F44FB3001296C4 /* MessageListViewController.m in Sources */,
-				C55FF61220F872FB00A86F00 /* NewMsgCellModel.m in Sources */,
+				C5EFFCB720FC3651003BDB2E /* MessageTargetModel.m in Sources */,
 				C590214A20F44FE1001296C4 /* MineViewController.m in Sources */,
 				C59021B720F5FC49001296C4 /* ProgressTool.m in Sources */,
+				C5EFFCBD20FC5F34003BDB2E /* NSString+Helper.m in Sources */,
 				C59021A720F5A76A001296C4 /* NSString+Json.m in Sources */,
 				C590219020F4B531001296C4 /* ChatInputView.m in Sources */,
 				C59021A220F5A3ED001296C4 /* NSData+GZip.m in Sources */,
@@ -795,7 +849,6 @@
 				C590214E20F455DB001296C4 /* UIViewAdditions.m in Sources */,
 				C55FF60E20F8672C00A86F00 /* NetTool.m in Sources */,
 				C55FF60B20F836D400A86F00 /* SocketTool.m in Sources */,
-				C590219F20F4C6B5001296C4 /* UDPSocketSingleton.m in Sources */,
 				C590213520F44D86001296C4 /* TabBarController.m in Sources */,
 				C590210E20F44D4F001296C4 /* main.m in Sources */,
 				C55FF5F320F6EB3A00A86F00 /* EmotionView.m in Sources */,
@@ -820,6 +873,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C590212320F44D4F001296C4 /* YYIMUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5EFFCBE20FC6A64003BDB2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1080,6 +1140,40 @@
 			};
 			name = Release;
 		};
+		C5EFFCC620FC6A64003BDB2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = YY.Emotion;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		C5EFFCC720FC6A64003BDB2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_BUNDLE_IDENTIFIER = YY.Emotion;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1115,6 +1209,15 @@
 			buildConfigurations = (
 				C590212E20F44D4F001296C4 /* Debug */,
 				C590212F20F44D4F001296C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C5EFFCC520FC6A64003BDB2E /* Build configuration list for PBXNativeTarget "Emotion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5EFFCC620FC6A64003BDB2E /* Debug */,
+				C5EFFCC720FC6A64003BDB2E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

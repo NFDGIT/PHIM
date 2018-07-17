@@ -27,6 +27,7 @@
 -(void)initUI{
     UIScrollView * scrollView =   [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.width, self.height)];
     [self addSubview:scrollView];
+    scrollView.scrollEnabled = NO;
     _scrollView = scrollView;
     
     EmotionView * emotionView = [[EmotionView alloc]initWithFrame:CGRectMake(0, 0, self.width, self.height)];
