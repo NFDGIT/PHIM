@@ -9,12 +9,13 @@
 #import "ChatInputView.h"
 
 #import "EmotionView.h"
-#import "ChatBottomView.h"
+#import "ChatAddView.h"
+
 #import "SmiliesAttributedString.h"
 
 
 @interface ChatInputView()<UITextViewDelegate>
-@property (nonatomic,strong)ChatBottomView * bottomView;
+
 
 
 @property (nonatomic,strong)UIButton * addBtn;
@@ -34,7 +35,7 @@
 }
 -(void)initData{
     _index = 0;
-    
+ 
 }
 -(void)initUI{
     self.backgroundColor = [UIColor whiteColor];
@@ -50,7 +51,7 @@
     addBtn.backgroundColor = [UIColor lightGrayColor];
     [topView addSubview:addBtn];
     _addBtn = addBtn;
-//    [addBtn addTarget:self action:@selector(addClick) forControlEvents:UIControlEventTouchUpInside];
+    [addBtn addTarget:self action:@selector(addClick) forControlEvents:UIControlEventTouchUpInside];
     
 
     UIButton * emotionBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
@@ -68,23 +69,16 @@
     _textTF.returnKeyType = UIReturnKeySend;
     [topView addSubview:_textTF];
     
+
     
-    ChatBottomView * bottomView= [[ChatBottomView alloc]initWithFrame:CGRectMake(0, topView.bottom, self.width, 285)];
-    [self addSubview:bottomView];
-    _bottomView =bottomView;
-    bottomView.emotionView.clickBlock = ^(NSString *imageName) {
-        [self inputImage:imageName];
-    };
-    
-    self.height = bottomView.bottom;
+//    self.height = bottomView.bottom;
     
 }
 
 -(void)layoutSubviews{
     [super layoutSubviews];
     _topView.top = 0;
-    _bottomView.top = _topView.bottom;
-    
+ 
     
     _addBtn.right = _topView.width - 15;
     _emotionBtn.right = _addBtn.left - 15;
@@ -103,13 +97,29 @@
  表情
  */
 -(void)emotionClick{
-     [self keyboardView].hidden = ![self keyboardView].hidden;
+
     if (_index == 1) {
         _index = 0;
+        _textTF.inputView = nil;
     }else{
         _index = 1;
+        
+        
+        EmotionView * emotionView = [[EmotionView alloc]initWithFrame:CGRectMake(0, 100, ScreenWidth, 200)];
+        emotionView.clickBlock = ^(NSString *imgName) {
+            [self inputImage:imgName];
+        };
+        self->_textTF.inputView = emotionView;
     }
-    [self judgeShwoKeyBoardWithIndex:_index];
+
+    [_textTF reloadInputViews];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//
+//    });
+
+
+    
+    
     
 }
 /**
@@ -118,31 +128,42 @@
 -(void)addClick{
     if (_index == 2) {
         _index = 0;
+        _textTF.inputView = nil;
     }else{
         _index = 2;
+        ChatAddView * chatAddView = [[ChatAddView alloc]initWithFrame:CGRectMake(0, 100, ScreenWidth, 200)];
+        //    chatAddView.clickBlock = ^(NSString *imgName) {
+        //        [self inputImage:imgName];
+        //    };
+        _textTF.inputView = chatAddView;
+        
     }
-    [self judgeShwoKeyBoardWithIndex:_index];
+    
+
+    [_textTF reloadInputViews];
 }
 #pragma mark -- 判断要不要显示键盘
--(void)judgeShwoKeyBoardWithIndex:(NSUInteger)index{
-    if (![[IQKeyboardManager sharedManager]isKeyboardShowing]) {
-        [_textTF becomeFirstResponder];
-        return;
-    }
-    
-    
-    if (index == 0) {
-        [self keyboardView].hidden = NO;
-    }else{
-        [self judgeBottomOffsetWithIndex:index];
-        [self keyboardView].hidden = YES;
-    }
-}
--(void)judgeBottomOffsetWithIndex:(NSUInteger)index{
-    if (index != 0) {
-        _bottomView.page = index - 1;
-    }
-}
+//-(void)judgeShwoKeyBoardWithIndex:(NSUInteger)index{
+//    if (![[IQKeyboardManager sharedManager]isKeyboardShowing]) {
+//        [_textTF becomeFirstResponder];
+//        return;
+//    }
+//
+//
+//    if (index == 0) {
+//        [self keyboardView].hidden = NO;
+//    }else{
+//        [self judgeBottomOffsetWithIndex:index];
+//        [self keyboardView].hidden = YES;
+//
+//
+//    }
+//}
+//-(void)judgeBottomOffsetWithIndex:(NSUInteger)index{
+//    if (index != 0) {
+//        _bottomView.page = index - 1;
+//    }
+//}
 #pragma mark -- texttf delegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
