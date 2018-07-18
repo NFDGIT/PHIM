@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PHCellHeight.h"
+#import "MyFriendsModel.h"
 
 @interface MyFriendTableViewCell : UITableViewCell
-
+@property (nonatomic,strong)MyFriendsModel * model;
 @end

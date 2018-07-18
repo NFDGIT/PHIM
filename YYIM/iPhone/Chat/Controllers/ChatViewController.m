@@ -34,6 +34,10 @@
     [self initUI];
     [self refreshData];
     
+//    if (!_targetModel) {
+//        _targetModel = [MessageTargetModel new];
+//        _targetModel.Id = _userId;
+//    };
 //    [self refreshData];
     // Do any additional setup after loading the view.
 }
@@ -41,24 +45,12 @@
 -(void)initData{
     _datas = [NSMutableArray array];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNewMsg:) name:NotiForReceiveMsgInfoClass12 object:nil];
-    
-//    MsgModel * model = [MsgModel new];
-//    model.sendId = CurrentUserId;
-//    model.receivedId = _userId;
-//    model.target = self.userId;
-//    model.content = @"fsafdadflasf";
-//    [[DBTool share] addModel:model withTarget:self.userId response:^(BOOL success) {
-//
-//    }];
-//    [[DBTool share] getMessagesWithTarget:self.userId success:^(NSArray *result) {
-//
-//    }];
-    
-    
+
 }
 
+
 -(void)initNavi{
-    self.title = self.userId;
+    self.title = _targetModel.Id;
     
 }
 -(void)initUI{
@@ -90,7 +82,7 @@
     [_tableView registerClass:[ChatCell class] forCellReuseIdentifier:@"cell"];
     [scrollView addSubview:_tableView];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    _tableView.estimatedRowHeight = 100;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
@@ -104,21 +96,22 @@
 
 -(void)refreshUI{
     [_tableView reloadData];
+
     
-             [self showLastMsg];
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//
-//    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [self scrollTableToFoot:YES];
+        [self scrollToBottomisAnimated:YES];
+    });
  
 }
 -(void)refreshData{
-    [[MessageManager share]getMessagesWithTargetId:self.userId success:^(NSArray * result) {
+    
+    NSString * targetId = _targetModel.Id;
+    [[MessageManager share]getMessagesWithTargetId:targetId success:^(NSArray * result) {
         self->_datas = [NSMutableArray arrayWithArray:result];
         [self refreshUI];
     }];
-     [self refreshUI];
-//    _datas =[NSMutableArray arrayWithArray:[[MessageManager share]getMessagesWithTargetId:self.userId]];
-    
+//     [self refreshUI];
    
 }
 -(void)layout{
@@ -128,16 +121,21 @@
 }
 #pragma mark -- 点击事件
 -(void)sendAction:(NSString *)msg{
-    [[SocketTool share] sendMsg:msg receiveId:[NSString stringWithFormat:@"%@",_userId]  msgInfoClass:12];
-    
+    [[SocketTool share] sendMsg:msg receiveId:[NSString stringWithFormat:@"%@",_targetModel.Id]  msgInfoClass:12];
     
     MsgModel * model = [MsgModel new];
-    model.target =_userId;
+
+    model.target =_targetModel.Id;
     model.sendId = CurrentUserId;
-    model.receivedId = _userId;
+//    model.targetHeadName = _targetModel.imgUrl;
+    
+    
+    
+    model.receivedId = _targetModel.Id;
     model.content = msg;
     model.msgType = MsgTypeText;
-    [[MessageManager share] addMsg:model toTarget:self.userId];
+    model.headIcon = CurrentUserIcon;
+    [[MessageManager share] addMsg:model toTarget:_targetModel];
 
     [self refreshData];
 
@@ -147,13 +145,15 @@
     
     
     MsgModel * model = [MsgModel new];
-    model.target = _userId;
+//    model.targetHeadName = _targetModel.imgUrl;
+    model.target = _targetModel.Id;
     model.sendId = CurrentUserId;
-    model.receivedId = _userId;
+    model.receivedId = _targetModel.Id;
     model.msgType = MsgTypeImage;
+    model.headIcon = CurrentUserIcon;
     model.content = @"";
     model.imageUrl = @"http://img1.imgtn.bdimg.com/it/?u=3920398476,1501488149&fm=27&gp=0.jpg&width=200&height=300";
-    [[MessageManager share] addMsg:model toTarget:self.userId];
+    [[MessageManager share] addMsg:model toTarget:_targetModel];
     
     [self refreshData];
     
@@ -165,6 +165,19 @@
 
 
 #pragma mark -- delegate
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 10;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return nil;
+    
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.01;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    return nil;
+}
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
 }
@@ -185,24 +198,27 @@
     cell.model = model;
     return cell;
 }
--(void)showLastMsg{
-//    if (_datas.count <= 0) {
-//        return;
-//    }
-//
-//    NSIndexPath * indexPath = [NSIndexPath indexPathForRow:0 inSection:_datas.count-1];
-//    UITableViewCell * cell = [_tableView cellForRowAtIndexPath:indexPath];
-//    if (!cell) {
-//        return;
-//    }
-    
-    
-//    [UIView animateWithDuration:1 animations:^{
-////        self->_tableView.contentOffset = CGPointMake(0, cell.bottom - self->_tableView.height);
-//        self->_tableView.contentOffset = CGPointMake(0, self->_tableView.contentSize.height - _tableView.height);
-//    }];
+#pragma mark  - 滑到最底部
+- (void)scrollTableToFoot:(BOOL)animated
+{
+    NSInteger s = [self.tableView numberOfSections];  //有多少组
+    if (s<1) return;  //无数据时不执行 要不会crash
+    NSInteger r = [self.tableView numberOfRowsInSection:s-1]; //最后一组有多少行
+    if (r<1) return;
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:r-1 inSection:s-1];  //取最后一行数据
+    [_tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:animated]; //滚动到最后一行
 }
-
+- (void)scrollToBottomisAnimated:(BOOL)isAnimated {
+    if (self.datas.count == 0) {
+        return;
+    }
+    double delayInSeconds = 0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        NSIndexPath *lastIndex = [NSIndexPath indexPathForRow:0 inSection:self.datas.count-1];
+        [self.tableView scrollToRowAtIndexPath:lastIndex atScrollPosition:UITableViewScrollPositionBottom animated:isAnimated];
+    });
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

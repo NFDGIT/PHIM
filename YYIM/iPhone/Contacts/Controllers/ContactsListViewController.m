@@ -13,6 +13,7 @@
 
 #import "ContactsListModel.h"
 #import "ChatViewController.h"
+#import "PersonDetailViewController.h"
 
 
 
@@ -36,7 +37,7 @@
     // Do any additional setup after loading the view.
 }
 -(void)initNavi{
-    self.title = @"联系人";
+//    self.title = @"联系人";
 }
 -(void)initData{
     _showDatas = [NSMutableArray array];
@@ -99,7 +100,7 @@
                              @"data": @{
                                      @"Nodes": @[@{
                                                      @"Text": @"总裁办",
-                                                     @"ImageIndex":@"0",
+                                                     @"ImageIndex":@"55",
                                                      @"SelectedImageIndex":@"0",
                                                      @"Checked": @"false",
                                                      @"Expanded": @(YES),
@@ -128,7 +129,7 @@
                                                                                                      @"Nodes": @[]
                                                                                                      }, @{
                                                                                                      @"Text": @"刘洋-15801603945",
-                                                                                                     @"ImageIndex": @"0",
+                                                                                                     @"ImageIndex": @"12",
                                                                                                      @"SelectedImageIndex": @"0",
                                                                                                      @"Checked": @"false",
                                                                                                      @"Expanded": @(NO),
@@ -137,7 +138,7 @@
                                                                                                      }]
                                                                                      }, @{
                                                                                      @"Text": @"刘洋-15801603945",
-                                                                                     @"ImageIndex": @"0",
+                                                                                     @"ImageIndex": @"44",
                                                                                      @"SelectedImageIndex": @"0",
                                                                                      @"Checked": @"false",
                                                                                      @"Expanded": @(NO),
@@ -150,7 +151,7 @@
                                                      },
                                                  @{
                                                      @"Text": @"总裁办",
-                                                     @"ImageIndex":@"0",
+                                                     @"ImageIndex":@"33",
                                                      @"SelectedImageIndex":@"0",
                                                      @"Checked": @"false",
                                                      @"Expanded": @(YES),
@@ -172,7 +173,7 @@
                                                                                      @"Nodes": @[]
                                                                                      }, @{
                                                                                      @"Text": @"刘洋-15801603945",
-                                                                                     @"ImageIndex": @"0",
+                                                                                     @"ImageIndex": @"12",
                                                                                      @"SelectedImageIndex": @"0",
                                                                                      @"Checked": @"false",
                                                                                      @"Expanded": @(YES),
@@ -268,9 +269,24 @@
     ContactsListModel * model = _showDatas[row];
     if (model.Nodes.count <= 0) {
         
+        
+        
+        MessageTargetModel * target = [MessageTargetModel new];
+        target.Id = model.Tag;
+        target.imgUrl = model.ImageIndex;
+        target.name = model.Text;
+        
         ChatViewController * chatvc = [ChatViewController new];
-        chatvc.userId = @"13383824275";
+//        chatvc.userId = model.Tag;
+        chatvc.targetModel = target;
         [self.navigationController pushViewController:chatvc animated:YES];
+        
+        
+        
+//        PersonDetailViewController * detail = [PersonDetailViewController new];
+//        detail.Id = @"";
+//        [self.navigationController pushViewController:detail animated:YES];
+        
         return;
     }
     

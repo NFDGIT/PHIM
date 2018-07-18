@@ -31,11 +31,17 @@ typedef void (^failureBlock)(NSError *error);
  */
 +(void)loginWithUserName:(NSString *)userName passWord:(NSString *)passWord success:(successBlock)success  failure:(failureBlock)failure;
 /**
- 查询好友
+ 获取用户信息
  @param idOrName id 或用户名
  @param success 成功的回调
  @param failure 失败的回调
  */
 +(void)getUserInfoWithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure;
-
+/**
+ 查询好友
+ @param idOrName id 或用户名
+ @param success 成功的回调
+ @param failure 失败的回调
+ */
++(void)getFriendsWithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure;
 @end

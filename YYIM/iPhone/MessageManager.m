@@ -73,16 +73,16 @@ static MessageManager *shared = nil;
     
 //    return messages;
 }
--(void)addMsg:(MsgModel *)msg toTarget:(NSString *)targetId{
+-(void)addMsg:(MsgModel *)msg toTarget:(MessageTargetModel *)target{
     
-    [[DBTool share]addModel:msg withTarget:targetId response:^(BOOL success) {
+    [[DBTool share]addModel:msg withTarget:target.Id response:^(BOOL success) {
         
     }];
     
-    MessageTargetModel * targetModel = [MessageTargetModel new];
-    targetModel.Id = targetId;
-    targetModel.name = @"";
-    targetModel.imgUrl = @"";
+    MessageTargetModel * targetModel = target;
+//    targetModel.Id = targetId;
+//    targetModel.name = @"";
+//    targetModel.imgUrl = @"";
     
     [self addMsgTarget:targetModel];
 //    [self getMessagesWithTargetId:targetId success:^(NSArray * result) {

@@ -291,12 +291,21 @@ static SocketTool *shared = nil;
             NSString * msg = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"][@"MsgContent"]];
         
             MsgModel * model = [MsgModel new];
+//            model.headIcon = 
             model.target = SendID;
             model.sendId = SendID;
             model.receivedId = ReceiveId;
             model.content = msg;
             model.msgType = 0;
-            [[MessageManager share] addMsg:model toTarget:SendID];
+            
+            
+            MessageTargetModel * target = [MessageTargetModel new];
+            target.Id = SendID;
+            target.name = @"";
+            target.imgUrl = @"";
+    
+            
+            [[MessageManager share] addMsg:model toTarget:target];
         }
         
         

@@ -51,8 +51,13 @@
     _model = model;
     
     
-    
-    [_imgView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_model.imgUrl]] placeholderImage:[UIImage imageNamed:@"touxiang_default"]];
+//    [_imgView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_model.imgUrl]] placeholderImage:[UIImage imageNamed:@"touxiang_default"]];
+    _imgView.image = [UIImage imageNamed:@"touxiang_default"];
+    UIImage * image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",_model.imgUrl]];
+    if (image) {
+        _imgView.image = image;
+    }
+                    
     _labelName.text = _model.name;
     _labelSignature.text = _model.Id;
     

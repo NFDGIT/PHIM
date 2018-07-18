@@ -7,6 +7,8 @@
 //
 
 #import "NavigationController.h"
+#import "BaseViewController.h"
+
 
 @interface NavigationController ()
 
@@ -16,8 +18,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationBar.tintColor = ColorBlack;
+  
     // Do any additional setup after loading the view.
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -38,6 +43,8 @@
     }
     [super pushViewController:viewController animated:animated];
 }
+
+
 - (void)back {
     [self popViewControllerAnimated:YES];
 }

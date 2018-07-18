@@ -137,10 +137,10 @@
     
     
     ChatViewController * chatvc = [ChatViewController new];
-    MessageTargetModel * model = _datas[_datas.count - 1 - indexPath.section];;
-    chatvc.userId = model.Id;
-    
-    
+    MessageTargetModel * target = _datas[_datas.count - 1 - indexPath.section];;
+
+
+    chatvc.targetModel = target;
     [self.navigationController pushViewController:chatvc animated:YES];
     
 }

@@ -74,7 +74,12 @@
     _msgContent.hidden = YES;
     _imgView.hidden = YES;
     
-    [_headImg sd_setImageWithURL:[NSURL URLWithString:_model.imageUrl] placeholderImage:[UIImage imageNamed:@"touxiang_default"]];
+
+    _headImg.image = [UIImage imageNamed:@"touxiang_default"];
+    UIImage * headImage = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",_model.headIcon]];
+    if (headImage) {
+        _headImg.image = headImage;
+    }
     
     _labelName.text = _model.sendId;
     

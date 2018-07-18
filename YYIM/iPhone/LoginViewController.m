@@ -76,6 +76,7 @@
     
     
     setCurrentUserId(_userNameTF.text);
+    setCurrentUserIcon(@"1");
     [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
     return;
     

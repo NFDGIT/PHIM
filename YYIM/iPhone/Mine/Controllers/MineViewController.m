@@ -7,7 +7,12 @@
 //
 
 #import "MineViewController.h"
+
+
 #import "MyFriendsViewController.h"
+#import "MyGroupChatViewController.h"
+
+
 #import "AppDelegate.h"
 @interface MineViewController ()
 @property (nonatomic,strong)UILabel * labelName;
@@ -30,28 +35,43 @@
     UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, NaviHeight, ScreenWidth, ContentHeight)];
     [self.view addSubview:scrollView];
     
-    UILabel * labelName =[[UILabel alloc]initWithFrame:CGRectMake(100, 0, 200, 20)];
+    CGFloat setY = 0;
+    
+    
+    UILabel * labelName =[[UILabel alloc]initWithFrame:CGRectMake(100, setY, 200, 20)];
     labelName.textColor  = ColorBlack;
     labelName.font = FontBig;
     [scrollView addSubview:labelName];
     labelName.text = [NSString stringWithFormat:@"当前用户：%@",CurrentUserId];
     _labelName = labelName;
+    setY  = labelName.bottom;
     
-    UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(100, NaviHeight, 100, 30)];
+    
+    
+    UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(100, setY + 20, 100, 30)];
     [btn setTitle:@"我的好友" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:15];
     [scrollView addSubview:btn];
     [btn addTarget:self action:@selector(jumpToMyFriend) forControlEvents:UIControlEventTouchUpInside];
-
+    setY  = btn.bottom;
+    
+    UIButton * btngroup = [[UIButton alloc]initWithFrame:CGRectMake(100, setY + 20, 100, 30)];
+    [btngroup setTitle:@"我的群聊" forState:UIControlStateNormal];
+    [btngroup setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8] forState:UIControlStateNormal];
+    btngroup.titleLabel.font = [UIFont systemFontOfSize:15];
+    [scrollView addSubview:btngroup];
+    [btngroup addTarget:self action:@selector(jumpToMyGroup) forControlEvents:UIControlEventTouchUpInside];
+    setY  = btngroup.bottom;
     
     
-    UIButton * logoutBtn = [[UIButton alloc]initWithFrame:CGRectMake(100, NaviHeight* 2, 100, 30)];
+    UIButton * logoutBtn = [[UIButton alloc]initWithFrame:CGRectMake(100, setY + 20, 100, 30)];
     [logoutBtn setTitle:@"退出登录" forState:UIControlStateNormal];
     [logoutBtn setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8] forState:UIControlStateNormal];
     logoutBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [scrollView addSubview:logoutBtn];
     [logoutBtn addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
+        setY  = logoutBtn.bottom;
     
 }
 
@@ -72,6 +92,9 @@
 }
 -(void)jumpToMyFriend{
     [self.navigationController pushViewController:[MyFriendsViewController new] animated:YES];
+}
+-(void)jumpToMyGroup{
+    [self.navigationController pushViewController:[MyGroupChatViewController new] animated:YES];
 }
 -(void)logout{
     setCurrentUserId(@"");

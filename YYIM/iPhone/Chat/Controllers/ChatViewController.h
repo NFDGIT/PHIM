@@ -7,7 +7,9 @@
 //
 
 #import "BaseViewController.h"
+#import "MessageTargetModel.h"
 
 @interface ChatViewController : BaseViewController
-@property (nonatomic,strong)NSString * userId;
+//@property (nonatomic,strong)NSString * userId;
+@property (nonatomic,strong)MessageTargetModel * targetModel;
 @end

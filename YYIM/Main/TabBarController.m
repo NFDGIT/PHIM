@@ -12,6 +12,7 @@
 
 #import "MessageListViewController.h"
 #import "ContactsListViewController.h"
+#import "ContactsViewController.h"
 #import "MineViewController.h"
 
 
@@ -35,7 +36,7 @@
     
     _tabbarItems =  [NSMutableArray array];
     [_tabbarItems addObject:@{@"img":@"icon",@"title":@"消息",@"controller":NSStringFromClass([MessageListViewController class])}];
-    [_tabbarItems addObject:@{@"img":@"icon",@"title":@"联系人",@"controller":NSStringFromClass([ContactsListViewController class])}];
+    [_tabbarItems addObject:@{@"img":@"icon",@"title":@"联系人",@"controller":NSStringFromClass([ContactsViewController class])}];
     [_tabbarItems addObject:@{@"img":@"icon",@"title":@"我的",@"controller":NSStringFromClass([MineViewController class])}];
 
     
@@ -51,13 +52,18 @@
         NSString * controllerString = [NSString stringWithFormat:@"%@",currentDic[@"controller"]];
         
         Class Class = NSClassFromString(controllerString);
-        UIViewController * controller = [Class new];
-        controller.navigationItem.title = [NSString stringWithFormat:@"%d",i];
+        BaseViewController * controller = [Class new];
+//        controller.navigationItem.title = [NSString stringWithFormat:@"%d",i];
+        if (i == 1) {
+            controller.hiddeNavi = YES;
+        }
+        
         
         NavigationController * naviVC = [[NavigationController alloc]initWithRootViewController:controller];
         naviVC.tabBarItem.title = title;
         naviVC.tabBarItem.image = [UIImage imageNamed:img];
         
+     
         
         [vcs addObject:naviVC];
     }

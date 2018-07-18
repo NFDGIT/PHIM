@@ -6,9 +6,9 @@
 //  Copyright © 2018年 Jobs. All rights reserved.
 //
 
-#import "MyFriendListModel.h"
+#import "MyFriendsModel.h"
 
-@implementation MyFriendListModel
+@implementation MyFriendsModel
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key{
     
 }

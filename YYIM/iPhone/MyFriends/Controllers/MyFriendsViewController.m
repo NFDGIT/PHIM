@@ -7,9 +7,15 @@
 //
 
 #import "MyFriendsViewController.h"
+
+#import "MyFriendsGroupHeaderView.h"
 #import "MyFriendTableViewCell.h"
-#import "MyFriendListModel.h"
+
+
+
+#import "MyFriendsGroupModel.h"
 #import "ChatViewController.h"
+#import "PersonDetailViewController.h"
 
 @interface MyFriendsViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
@@ -36,48 +42,86 @@
 
     
 
-    
-    
+
 }
 -(void)initNavi{
     self.title = @"我的好友";
     
 }
 -(void)initUI{
+
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) style:UITableViewStyleGrouped];
+    [_tableView registerClass:[MyFriendsGroupHeaderView class] forHeaderFooterViewReuseIdentifier:@"header"];
     [_tableView registerClass:[MyFriendTableViewCell class] forCellReuseIdentifier:@"cell"];
     [self.view addSubview:_tableView];
-    
+    _tableView.backgroundColor  =[UIColor whiteColor];
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
-    
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
     
 }
 -(void)refreshUI{
     [_tableView reloadData];
+    [_tableView.mj_header endRefreshing];
 }
 
 
 -(void)refreshData{
-    NSString * userName =  [[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"];
-//    userName = @"15701344579";
     
+    NSDictionary * dataDic = @{
+                               @"FriendDicationary":@[@{@"Dicationary":@"我的好友",@"Friend":@[@{@"userID":@"15904076020",@"userName":@"孙文",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"15"},@{@"userID":@"18516568515",@"userName":@"张志丹",@"UnderWrite":@"测试主管",@"HeadName":@"91"}]},
+                                                      @{@"Dicationary":@"朋友",@"Friend":@[@{@"userID":@"15904076020",@"userName":@"孙文",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"15"},@{@"userID":@"18516568515",@"userName":@"张志丹",@"UnderWrite":@"测试主管",@"HeadName":@"91"}]}],
+                               @"Groups": @[@{@"groupID":@"123",@"groupName":@"HELLO WORLD",@"groupDep":@"欢迎进入我的群！Q ！",@"memberList":@[@{@"userID":@"13522220187",@"userName":@"黄华东",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"66"},@{@"userID":@"15904076020",@"userName":@"孙文",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"15"},@{@"userID":@"18511961198",@"userName":@"江飞洋",@"UnderWrite":@"产品经理",@"HeadName":@"10"},@{@"userID":@"18516568515",@"userName":@"张志丹",@"UnderWrite":@"测试主管",@"HeadName":@"91"}]}],
+                               @"userID":@"13522220187",
+                               @"userName":@"黄华东",
+                               @"UnderWrite":@"阿发斯蒂芬",
+                               @"HeadName":@"66"
+                               };
+    
+    NSArray * data = dataDic[@"FriendDicationary"];
+    
+    NSMutableArray * arr = [NSMutableArray array];
+    for (NSDictionary * dic in data) {
+        MyFriendsGroupModel * model = [MyFriendsGroupModel new];
+        [model setValuesForKeysWithDictionary:dic];
+        [arr addObject:model];
+    }
+    [_datas removeAllObjects];
+    [_datas addObjectsFromArray:arr];
+    
+    
+    
+    [self refreshUI];
+
+    
+    NSString * userName =  [[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"];
+    userName = @"15701344579";
+
     [ProgressTool show];
     [Request getUserInfoWithIdOrName:userName success:^(NSUInteger code, NSString *msg, id data) {
         [ProgressTool hidden];
-        
+
         if (code == 200) {
-            NSMutableArray * datam = [NSMutableArray array];
-            for (NSDictionary * dic in data) {
-                MyFriendListModel * model = [MyFriendListModel new];
-                [model setValuesForKeysWithDictionary:dic];
-                [datam addObject:model];
-                [self->_datas addObject:model];
-            }
-            [self refreshUI];
             
+            NSString * dataString =[NSString stringWithFormat:@"%@",data[@"FriendDicationary"]];
+            NSArray * datas =   [NSJSONSerialization JSONObjectWithData:[dataString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
+            
+            
+      
+            
+            NSMutableArray * arr = [NSMutableArray array];
+            for (NSDictionary * dic in datas) {
+                MyFriendsGroupModel * model = [MyFriendsGroupModel new];
+                [model setValuesForKeysWithDictionary:dic];
+                [arr addObject:model];
+            }
+            [self->_datas removeAllObjects];
+            [self->_datas addObjectsFromArray:arr];
+            
+            
+            [self refreshUI];
         }
     } failure:^(NSError *error) {
         [ProgressTool hidden];
@@ -86,25 +130,72 @@
 }
 
 #pragma mark -- delegate
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 50;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    MyFriendsGroupModel * model = _datas[section];
+    MyFriendsGroupHeaderView * header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"header"];
+    header.section = section;
+    header.model = model;
+    
+    
+    header.clickBlock = ^(NSInteger sectio) {
+        MyFriendsGroupModel * selectModel = self->_datas[sectio];
+        selectModel.Expanded = !selectModel.Expanded;
+        [self->_datas replaceObjectAtIndex:sectio withObject:selectModel];
+        [self refreshUI];
+    };
+
+    return header;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    MyFriendsGroupModel * groupModel = _datas[section];
+    NSArray * friends = groupModel.Friend;
+    if (!groupModel.Expanded) {
+        return 0;
+    }
+    return friends.count;
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
     return _datas.count;
 }
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [tableView cellHeightWithIndexPath:indexPath];
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MyFriendTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+    cell.indexPath = indexPath;
     
-    MyFriendListModel * model = _datas[indexPath.section];
+    MyFriendsGroupModel * groupModel = _datas[indexPath.section];
+    NSArray * friends = groupModel.Friend;
     
-    cell.textLabel.text =[NSString stringWithFormat:@"手机号：%@ 邮箱：%@",model.Phone,model.Email];
+    MyFriendsModel * model = friends[indexPath.row];
+    cell.model = model;
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    MyFriendsGroupModel * groupModel = _datas[indexPath.section];
+    NSArray * friends = groupModel.Friend;
     
-    [self.navigationController pushViewController:[ChatViewController new] animated:YES];
+    MyFriendsModel * model = friends[indexPath.row];
+    MessageTargetModel * target = [MessageTargetModel new];
+    target.Id = model.userID;
+    target.name = model.userName;
+    target.imgUrl = model.HeadName;
+//    
+//    PersonDetailViewController * detail = [PersonDetailViewController new];
+//    detail.Id = model.userID;
+//    [self.navigationController pushViewController:detail animated:YES];
+    
+    ChatViewController * chat=  [ChatViewController new];
+    chat.targetModel = target;
+    [self.navigationController pushViewController:chat animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

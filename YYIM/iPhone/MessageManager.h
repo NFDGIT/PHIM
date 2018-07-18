@@ -23,7 +23,7 @@
 -(void)addMsgTarget:(MessageTargetModel *)target;
 
 -(void)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success;
--(void)addMsg:(MsgModel *)msg toTarget:(NSString *)targetId;
+-(void)addMsg:(MsgModel *)msg toTarget:(MessageTargetModel *)target;
 
 #pragma mark -- 处理 socket 收到的数据
 -(void)handleMewMsg;

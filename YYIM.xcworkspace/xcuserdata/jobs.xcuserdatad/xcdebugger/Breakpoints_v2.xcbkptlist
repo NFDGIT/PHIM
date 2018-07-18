@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/Tools/UDPSocketSingleton.m"
-            timestampString = "553170546.656785"
+            filePath = "YYIM/iPhone/MyFriends/Controllers/MyFriendsViewController.m"
+            timestampString = "553598601.575261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
-            landmarkName = "-udpSocket:didReceiveData:fromAddress:withFilterContext:"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "-refreshData"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -35,13 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/Tools/UDPSocketSingleton.m"
-            timestampString = "553170546.656895"
+            filePath = "YYIM/iPhone/MyGroupChat/Controllers/MyGroupChatViewController.m"
+            timestampString = "553598601.57653"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
-            landmarkName = "-udpSocket:didNotSendDataWithTag:dueToError:"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "-refreshData"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -51,13 +51,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/Chat/ChatViewController.m"
-            timestampString = "553141985.1847529"
+            filePath = "YYIM/Tools/SocketTool.m"
+            timestampString = "553598601.576984"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "-sendAction:"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
+            landmarkName = "-handleChatMsgDic:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -67,92 +67,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/Chat/Views/ChatCell.m"
-            timestampString = "553516460.127905"
+            filePath = "YYIM/iPhone/MyFriends/Controllers/MyFriendsViewController.m"
+            timestampString = "553598752.5177341"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "-layoutSubviews"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/Chat/Controllers/ChatViewController.m"
-            timestampString = "553516460.12877"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
-            landmarkName = "-showLastMsg"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ChatViewController showLastMsg]"
-                  moduleName = "YYIM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/iPhone/Chat/Controllers/ChatViewController.m"
-                  timestampString = "553516395.135343"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "200"
-                  endingLineNumber = "200"
-                  offsetFromSymbolStart = "41">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__33-[ChatViewController showLastMsg]_block_invoke"
-                  moduleName = "YYIM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/iPhone/Chat/Controllers/ChatViewController.m"
-                  timestampString = "553516395.14214"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "200"
-                  endingLineNumber = "200"
-                  offsetFromSymbolStart = "12">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.166"
-                  moduleName = "YYIM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/iPhone/Chat/Controllers/ChatViewController.m"
-                  timestampString = "553516395.147411"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "200"
-                  endingLineNumber = "200"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/Chat/Controllers/ChatViewController.m"
-            timestampString = "553516460.13019"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "198"
-            endingLineNumber = "198"
-            landmarkName = "-showLastMsg"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "-refreshData"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

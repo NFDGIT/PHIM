@@ -6,6 +6,8 @@
 #define setCurrentUserId(currentUserId)  [[NSUserDefaults standardUserDefaults] setValue:currentUserId forKey:@"CurrentUserId"]
 
 
+#define CurrentUserIcon             [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"CurrentUserIcon"]]
+#define setCurrentUserIcon(currentUserIcon)  [[NSUserDefaults standardUserDefaults] setValue:currentUserIcon forKey:@"CurrentUserIcon"]
 
 #define NaviHeight 69
 #define ContentHeight [UIScreen mainScreen].bounds.size.height - NaviHeight
@@ -14,6 +16,7 @@
 
 #define FontNormal  [UIFont systemFontOfSize:14]
 #define FontBig  [UIFont systemFontOfSize:16]
+#define FontSmall  [UIFont systemFontOfSize:12]
 
 
 

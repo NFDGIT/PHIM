@@ -43,7 +43,7 @@ static DBTool *shared = nil;
     // 创建两个 表 一个表示消息以用户的ID为键值
     
     //4.数据库中创建表（可创建多张）
-    NSString *sql = @"create table if not exists chatMessages ('target' TEXT,'sendId' TEXT, 'receivedId' TEXT TEXT,'content'  TEXT,'imageUrl'  TEXT,'msgType' INTEGER NOT NULL)";
+    NSString *sql = @"create table if not exists chatMessages ('target' TEXT,'headIcon' TEXT,'sendId' TEXT, 'receivedId' TEXT TEXT,'content'  TEXT,'imageUrl'  TEXT,'msgType' INTEGER NOT NULL)";
     NSString * sql1 = @"create table if not exists chatPersons ('Id' TEXT, 'name' TEXT,'imgUrl'  TEXT)";
   
     //5.执行更新操作 此处database直接操作，不考虑多线程问题，多线程问题，用FMDatabaseQueue 每次数据库操作之后都会返回bool数值，YES，表示success，NO，表示fail,可以通过 @see lastError @see lastErrorCode @see lastErrorMessage
@@ -66,15 +66,18 @@ static DBTool *shared = nil;
     
     
 //    NSString *sql = @"select * from 'chatMessages' where";
+
     FMResultSet *result = [_db executeQuery:@"select * from 'chatMessages' where target = ?" withArgumentsInArray:@[target]];
     while ([result next]) {
         MsgModel *message = [MsgModel new];
+        message.headIcon = [result stringForColumn:@"headIcon"];
         message.sendId = [result stringForColumn:@"sendId"];
         message.receivedId = [result stringForColumn:@"sendId"];
         message.content = [result stringForColumn:@"content"];
         message.target = [result stringForColumn:@"target"];
         message.msgType = [result intForColumn:@"msgType"];
         message.imageUrl = [result stringForColumn:@"imageUrl"];
+        
        
         [arr addObject:message];
         
@@ -92,14 +95,16 @@ static DBTool *shared = nil;
     [_db open];
     
     NSString * targets = [NSString stringWithFormat:@"%@",model.target];
+    NSString * headIcon = [NSString stringWithFormat:@"%@",model.headIcon];
     NSString * sendId = [NSString stringWithFormat:@"%@",model.sendId];
     NSString * receivedId = [NSString stringWithFormat:@"%@",model.receivedId];
     NSString * content = [NSString stringWithFormat:@"%@",model.content];
     NSString * imageUrl = [NSString stringWithFormat:@"%@",model.imageUrl];
+
     NSInteger  msgType = model.msgType;
     
     
-    BOOL result = [_db executeUpdate:@"insert into 'chatMessages'(target,sendId,receivedId,content,imageUrl,msgType) values(?,?,?,?,?,?)" withArgumentsInArray:@[targets,sendId,receivedId,content,imageUrl,@(msgType)]];
+    BOOL result = [_db executeUpdate:@"insert into 'chatMessages'(target,headIcon,sendId,receivedId,content,imageUrl,msgType) values(?,?,?,?,?,?,?)" withArgumentsInArray:@[targets,headIcon,sendId,receivedId,content,imageUrl,@(msgType)]];
     if (response) {
         response(result);
     }

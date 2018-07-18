@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface BaseViewController : UIViewController
+
+@property (nonatomic,assign)BOOL hiddeNavi;
 -(void)initNavi;
 -(void)initData;
 -(void)initUI;

@@ -18,6 +18,8 @@ typedef NS_ENUM(NSUInteger,MsgType) {
 //@property (nonatomic,strong)NSString * msg;
 //@property (nonatomic,strong)NSString * Id;
 @property (nonatomic,strong)NSString * target;
+//@property (nonatomic,strong)NSString * targetHeadName;
+
 @property (nonatomic,strong)NSString * sendId;
 @property (nonatomic,strong)NSString * receivedId;
 @property (nonatomic,strong)NSString * realName;
