@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "AppDelegate.h"
+#import "UserInfoModel.h"
 
 
 @interface LoginViewController ()<UITextFieldDelegate>
@@ -78,28 +79,40 @@
 //    setCurrentUserId(_userNameTF.text);
 //    setCurrentUserIcon(@"1");
 //    [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
+//    
+//
 //    return;
     
     
-    
+    [ProgressTool show];
     [Request loginWithUserName:_userNameTF.text passWord:_passwordTF.text success:^(NSUInteger code, NSString *msg, id data) {
+           [ProgressTool hidden];
+        
         if (code == 200) {
 //            setCurrentUserId(self->_userNameTF.text);
 //            [[NSUserDefaults standardUserDefaults] setValue:self->_userNameTF.text forKey:@"UserName"];
 
-          
+//          Request get
             
-            [Request getUserInfoWithIdOrName:self->_userNameTF.text success:^(NSUInteger code, NSString *msg, id data) {
+            [Request getUserInfo1WithIdOrName:self->_userNameTF.text success:^(NSUInteger code, NSString *msg, id data) {
                 if (code == 200) {
-                    NSString *  HeadName = [NSString stringWithFormat:@"%@",data[@"HeadName"]];
-                    NSString *  UnderWrite = [NSString stringWithFormat:@"%@",data[@"UnderWrite"]];
-                    NSString *  userID = [NSString stringWithFormat:@"%@",data[@"userID"]];
-                    NSString *  userName = [NSString stringWithFormat:@"%@",data[@"userName"]];
+                    UserInfoModel * model = [UserInfoModel new];
+                    [model setValuesForKeysWithDictionary:data];
+                    
+                    
+                    
+                    
+                    NSString *  HeadName = model.HeadName;
+                    NSString *  UnderWrite = model.UnderWrite;
+                    NSString *  userID = model.userID;
+                    NSString *  userName = model.RealName;
+                    NSString *  UserStatus = model.UserStatus;
                     
                     setCurrentUserId(userID);
                     setCurrentUserIcon(HeadName);
                     setCurrentUserName(userName);
                     setCurrentUserUnderWrite(UnderWrite);
+                    setCurrentUserStatus([UserStatus integerValue]);
                     [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
                 }else{
                     [self.view makeToast:msg duration:2 position:CSToastPositionCenter];
@@ -110,6 +123,7 @@
        
      }
     } failure:^(NSError *error) {
+            [ProgressTool hidden];
         [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];
     }];
     

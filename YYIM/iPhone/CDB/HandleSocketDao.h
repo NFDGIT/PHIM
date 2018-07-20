@@ -13,12 +13,6 @@
 +(void)solveWith:(NSDictionary *)receiveDic;
 
 
-
-
-
-
-
-
 #pragma mark -- 压缩 解压
 
 /**

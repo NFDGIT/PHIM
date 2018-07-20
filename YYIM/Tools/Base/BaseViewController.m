@@ -20,11 +20,11 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor  = [UIColor whiteColor];
+    self.view.backgroundColor  = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1];
     self.navigationController.navigationBar.translucent = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userStatusChange:) name:NotiForReceiveTypeUserStatusChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoChange:) name:NotiForReceiveTypeUserInfoChange object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatNewMessage:) name:NotiForReceiveTypeChat object:nil];
 
     // Do any additional setup after loading the view.
 }
@@ -46,7 +46,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+#pragma mark -- 通知的方法
 -(void)userStatusChange:(NSNotification *)noti{
     if (_userStatusChangeBlock) {
         _userStatusChangeBlock(noti.object);
@@ -56,7 +56,11 @@
     if (_userInfoChangeBlock) {
         _userInfoChangeBlock(noti.object);
     }
-    
+}
+-(void)chatNewMessage:(NSNotification *)noti{
+    if (_chatNewMessageBlock) {
+        _chatNewMessageBlock(noti.object);
+    }
 }
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];

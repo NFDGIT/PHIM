@@ -35,18 +35,17 @@
     [self initNavi];
     [self initUI];
     [self refreshData];
-    
-//    if (!_targetModel) {
-//        _targetModel = [MessageTargetModel new];
-//        _targetModel.Id = _userId;
-//    };
-//    [self refreshData];
+
     // Do any additional setup after loading the view.
 }
 
 -(void)initData{
     _datas = [NSMutableArray array];
-
+    
+    __weak typeof(self) weakSelf = self;
+    self.chatNewMessageBlock = ^(NSDictionary *data) {
+        [weakSelf refreshData];
+    };
 }
 
 
@@ -90,7 +89,7 @@
     [_tableView registerClass:[ChatCell class] forCellReuseIdentifier:@"cell"];
     [scrollView addSubview:_tableView];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.estimatedRowHeight = 100;
+    _tableView.estimatedRowHeight = 300;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
@@ -107,9 +106,15 @@
 
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [self scrollTableToFoot:YES];
-        [self scrollToBottomisAnimated:YES];
-    });
+//////        [self scrollTableToFoot:YES];
+////        [self scrollToBottomisAnimated:YES];
+    [self scrollToBottom:YES];
+   });
+//    [self scrollToBottom:YES];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//
+//    });
+
  
 }
 -(void)refreshData{
@@ -117,10 +122,13 @@
     NSString * targetId = _conversationModel.Id;
     [[MessageManager share]getMessagesWithTargetId:targetId success:^(NSArray * result) {
         self->_datas = [NSMutableArray arrayWithArray:result];
+        
         [self refreshUI];
+        
+    
+        
+    
     }];
-//     [self refreshUI];
-   
 }
 -(void)layout{
     _inputView.bottom = _scrollView.height;
@@ -169,10 +177,6 @@
     
 }
 
--(void)receiveNewMsg:(NSNotification *)noti{
-    [self refreshData];
-}
-
 
 #pragma mark -- delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -209,26 +213,38 @@
     return cell;
 }
 #pragma mark  - 滑到最底部
-- (void)scrollTableToFoot:(BOOL)animated
-{
-    NSInteger s = [self.tableView numberOfSections];  //有多少组
-    if (s<1) return;  //无数据时不执行 要不会crash
-    NSInteger r = [self.tableView numberOfRowsInSection:s-1]; //最后一组有多少行
-    if (r<1) return;
-    NSIndexPath *ip = [NSIndexPath indexPathForRow:r-1 inSection:s-1];  //取最后一行数据
-    [_tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:animated]; //滚动到最后一行
+-(void)scrollToBottom:(BOOL)animated{
+//    [self scrollTableToFoot:YES];
+//
+//    [self scrollToBottomisAnimated:YES];
+    
+    [_tableView setContentOffset:CGPointMake(0, _tableView.contentSize.height - _tableView.height) animated:YES];
+//    _tableView.contentOffset = ;
 }
-- (void)scrollToBottomisAnimated:(BOOL)isAnimated {
-    if (self.datas.count == 0) {
-        return;
-    }
-    double delayInSeconds = 0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        NSIndexPath *lastIndex = [NSIndexPath indexPathForRow:0 inSection:self.datas.count-1];
-        [self.tableView scrollToRowAtIndexPath:lastIndex atScrollPosition:UITableViewScrollPositionBottom animated:isAnimated];
-    });
-}
+
+
+
+//- (void)scrollTableToFoot:(BOOL)animated
+//{
+//    NSInteger s = [self.tableView numberOfSections];  //有多少组
+//    if (s<1) return;  //无数据时不执行 要不会crash
+//    NSInteger r = [self.tableView numberOfRowsInSection:s-1]; //最后一组有多少行
+//    if (r<1) return;
+//    NSIndexPath *ip = [NSIndexPath indexPathForRow:r-1 inSection:s-1];  //取最后一行数据
+//    [_tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:animated]; //滚动到最后一行
+//}
+//- (void)scrollToBottomisAnimated:(BOOL)isAnimated {
+//    if (self.datas.count == 0) {
+//        return;
+//    }
+//    double delayInSeconds = 0;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        NSIndexPath *lastIndex = [NSIndexPath indexPathForRow:0 inSection:self.datas.count-1];
+//        [self.tableView scrollToRowAtIndexPath:lastIndex atScrollPosition:UITableViewScrollPositionBottom animated:isAnimated];
+//    });
+//}
+
 
 #pragma mark -- 点击事件
 -(void)rightClick{

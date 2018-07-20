@@ -84,8 +84,7 @@
     [self refreshUI];
     
     
-        NSString * userName =  [[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"];
-        userName = @"15701344579";
+        NSString * userName =  CurrentUserId;
     
         [ProgressTool show];
         [Request getUserInfoWithIdOrName:userName success:^(NSUInteger code, NSString *msg, id data) {

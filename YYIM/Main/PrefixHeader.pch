@@ -22,5 +22,6 @@
 #import "Request.h"
 #import "Define.h"
 #import "NSString+Helper.h"
+#import "PHAlert.h"
 
 #endif /* PrefixHeader_pch */

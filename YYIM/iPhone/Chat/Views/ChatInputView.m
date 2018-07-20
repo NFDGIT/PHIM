@@ -41,9 +41,7 @@
     
     
     
-    self.backgroundColor = [UIColor whiteColor];
-    [[IQKeyboardManager sharedManager] setEnableAutoToolbar:NO];
-    
+    self.backgroundColor = [UIColor whiteColor];    
 //    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.width, 60)];
 //    topView.backgroundColor = [UIColor whiteColor];
 //    [self addSubview:topView];

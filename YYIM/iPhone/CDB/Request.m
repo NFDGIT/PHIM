@@ -154,18 +154,21 @@
     
 }
 /**
- 查询好友
+ 获取用户信息
  @param idOrName id 或用户名
  @param success 成功的回调
  @param failure 失败的回调
  */
-+(void)getFriendsWithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure{
++(void)getUserInfo1WithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure{
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setValue:idOrName forKey:@"idOrName"];
     
     [Request getWithUrlPath:UrlPath AndUrl:@"/SearchUser" params:param success:^(NSUInteger code, NSString *msg, id data) {
         if (success) {
-            success(code,msg,data[@"data"]);
+            
+            NSArray  * datas = data[@"data"];
+            NSDictionary * datasFirstDic =[NSDictionary dictionaryWithDictionary:datas.firstObject];
+            success(code,msg,datasFirstDic);
         }
     } failure:^(NSError *error) {
         if (failure) {

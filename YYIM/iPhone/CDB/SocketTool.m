@@ -149,8 +149,6 @@ static SocketTool *shared = nil;
     [param setValue:[HandleSocketDao getBase64WithDictionary:ClassTextMsg] forKey:@"ClassTextMsg"];
     
     return [HandleSocketDao getBase64WithDictionary:ClassTextMsg];
-    
-//    return [self getBase64WithDictionary:param];
 }
 #pragma mark -- 心跳包的 msgcontent
 -(NSString *)getHeartBeatMsgContent{
@@ -162,13 +160,8 @@ static SocketTool *shared = nil;
     [param setValue:@([NetTool getNetPort]) forKey:@"Port"];
     [param setValue:@"" forKey:@"StateInfo"];
     [param setValue:@(1) forKey:@"State"];
-    
-    NSString * jsonString =   [NSString convertToJsonData:param];
-    NSData * jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSData * dataGzip = [NSData gzipDeflate:jsonData];
-    
-    NSString * base64 = [dataGzip base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
-    
+
+    NSString *  base64 = [HandleSocketDao getBase64WithDictionary:param];
     return base64;
 }
 

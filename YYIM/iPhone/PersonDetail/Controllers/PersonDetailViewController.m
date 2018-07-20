@@ -43,11 +43,11 @@
 //    } failure:^(NSError *error) {
 //
 //    }];
-    [Request getFriendsWithIdOrName:@"" success:^(NSUInteger code, NSString *msg, id data) {
-        
-    } failure:^(NSError *error) {
-        
-    }];
+//    [Request getFriendsWithIdOrName:@"" success:^(NSUInteger code, NSString *msg, id data) {
+//        
+//    } failure:^(NSError *error) {
+//        
+//    }];
     
 }
 #pragma mark --

@@ -74,5 +74,13 @@
  
  @param success 获取成功
  */
--(void)getUserModels:(void (^)(NSArray *))success;
+-(void)getUserModels:(void (^)(NSDictionary *))success;
+
+/**
+ 根据 userid 获取 model
+
+ @param userId 用户id
+ @param model 用户的model
+ */
+-(void)getUserModelWithUserId:(NSString *)userId response:(UserInfoModel *)model;
 @end

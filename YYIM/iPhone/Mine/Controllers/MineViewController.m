@@ -11,11 +11,15 @@
 
 #import "MyFriendsViewController.h"
 #import "MyGroupChatViewController.h"
+#import "UserChangeStatus.h"
 
 
 #import "AppDelegate.h"
 @interface MineViewController ()
+@property (nonatomic,strong)UIImageView * headView;
 @property (nonatomic,strong)UILabel * labelName;
+@property (nonatomic,strong)UILabel * labelDesc;
+@property (nonatomic,strong)UIButton * btnStatus;
 @end
 
 @implementation MineViewController
@@ -24,70 +28,133 @@
     [super viewDidLoad];
     [self initNavi];
     [self initUI];
-    [self refreshData];
+    [self refreshUI];
+    
+    
+    
     // Do any additional setup after loading the view.
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+
+    
 }
 
 -(void)initNavi{
     self.title = @"我的";
 }
 -(void)initUI{
-    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, NaviHeight, ScreenWidth, ContentHeight)];
+    UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ContentHeight)];
     [self.view addSubview:scrollView];
+    
     
     CGFloat setY = 0;
     
+    UIView * userBackView = [[UIView alloc]initWithFrame:CGRectMake(0, setY + 20, scrollView.width, 100)];
+    userBackView.backgroundColor  =[UIColor whiteColor];
+    setY = userBackView.bottom + 20;
+    [scrollView addSubview:userBackView];
     
-    UILabel * labelName =[[UILabel alloc]initWithFrame:CGRectMake(100, setY, 200, 20)];
-    labelName.textColor  = ColorBlack;
-    labelName.font = FontBig;
-    [scrollView addSubview:labelName];
-    labelName.text = [NSString stringWithFormat:@"当前用户：%@",CurrentUserId];
-    _labelName = labelName;
-    setY  = labelName.bottom;
+    {
+        UIImageView * headImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 60, 60)];
+        headImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",CurrentUserIcon]];
+        [userBackView addSubview:headImg];
+        _headView = headImg;
+        
+        
+        UILabel * labelName =[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
+        labelName.textColor  = ColorBlack;
+        labelName.font = FontBig;
+        [userBackView addSubview:labelName];
+        labelName.text = [NSString stringWithFormat:@"%@",CurrentUserId];
+        _labelName = labelName;
+        
+        
+        UILabel * labelDesc = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
+        labelDesc.textColor  = ColorBlack;
+        labelDesc.font = FontBig;
+        [userBackView addSubview:labelDesc];
+        labelDesc.text = [NSString stringWithFormat:@"%@",CurrentUserId];
+        _labelDesc = labelDesc;
+        
+        
+        UIButton * btnStatus = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 30)];
+        [btnStatus setTitleColor:ColorRed forState:UIControlStateNormal];
+        btnStatus.titleLabel.font = FontBig;
+        [userBackView addSubview:btnStatus];
+        [btnStatus addTarget:self action:@selector(changeStatus) forControlEvents:UIControlEventTouchUpInside];
+        _btnStatus = btnStatus;
+        
+        
+        _headView.centerY = userBackView.height/2;
+        _headView.left = 10;
+     
+        
+        _labelName.left = headImg.right  +10;
+        _labelName.bottom = headImg.centerY - 5;
+        
+        _labelDesc.left = headImg.right  + 10;
+        _labelDesc.top = headImg.centerY + 5;
+        
+        
+        _btnStatus.right = userBackView.width - 20;
+        _btnStatus.top = 20;
+
+    }
+
     
     
     
-    UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(100, setY + 20, 100, 30)];
-    [btn setTitle:@"我的好友" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8] forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [scrollView addSubview:btn];
-    [btn addTarget:self action:@selector(jumpToMyFriend) forControlEvents:UIControlEventTouchUpInside];
-    setY  = btn.bottom;
+
+
     
-    UIButton * btngroup = [[UIButton alloc]initWithFrame:CGRectMake(100, setY + 20, 100, 30)];
-    [btngroup setTitle:@"我的群聊" forState:UIControlStateNormal];
-    [btngroup setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8] forState:UIControlStateNormal];
-    btngroup.titleLabel.font = [UIFont systemFontOfSize:15];
-    [scrollView addSubview:btngroup];
-    [btngroup addTarget:self action:@selector(jumpToMyGroup) forControlEvents:UIControlEventTouchUpInside];
-    setY  = btngroup.bottom;
+
     
     
-    UIButton * logoutBtn = [[UIButton alloc]initWithFrame:CGRectMake(100, setY + 20, 100, 30)];
+    UIButton * logoutBtn = [[UIButton alloc]initWithFrame:CGRectMake(100, setY + 20, 100, 40)];
+    logoutBtn.layer.cornerRadius = 5;
+    logoutBtn.layer.masksToBounds = YES;
+    [logoutBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [logoutBtn setBackgroundColor:ColorRed];
     [logoutBtn setTitle:@"退出登录" forState:UIControlStateNormal];
-    [logoutBtn setTitleColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8] forState:UIControlStateNormal];
     logoutBtn.titleLabel.font = [UIFont systemFontOfSize:15];
     [scrollView addSubview:logoutBtn];
     [logoutBtn addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
         setY  = logoutBtn.bottom;
     
+    logoutBtn.width = scrollView.width * 0.5;
+    logoutBtn.bottom = scrollView.height - 100;
+    logoutBtn.centerX = scrollView.width /2;
+    
+    
+    
+}
+-(void)refreshUI{
+    _headView.image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",CurrentUserIcon]];
+    _labelName.text = CurrentUserName;
+    _labelDesc.text = CurrentUserUnderWrite;
+    
+    NSArray * titles = @[@"离线",@"在线",@"隐身",@"离开",@"繁忙",@"勿扰"];
+    [_btnStatus setTitle:[NSString stringWithFormat:@"%@",titles[CurrentUserStatus]] forState:UIControlStateNormal];
+    [[SocketTool share]sendMsg:@"" receiveId:@"" msgInfoClass:InformationTypeNewUserLogin isGroup:NO];
 }
 
--(void)refreshData{
-    _labelName.text = [NSString stringWithFormat:@"当前用户：%@",CurrentUserId];
+#pragma mark -- 点击事件
+-(void)changeStatus{
+    UserChangeStatus * userchange = [UserChangeStatus new];
+    __weak typeof(userchange) weakChange = userchange;
+    __weak typeof(self)   weakSelf = self;
     
-    NSString * UserName =   CurrentUserId;
+    [userchange appear];
+    userchange.userStatus = CurrentUserStatus;
     
+    userchange.changeStatusBlock = ^(UserStatus userStatus) {
+        setCurrentUserStatus(userStatus);
+        [weakChange disAppear];
+        [weakSelf refreshUI];
     
-    [Request getUserInfoWithIdOrName:UserName success:^(NSUInteger code, NSString *msg, id data) {
-        if (code == 200) {
-            _labelName.text = [NSString stringWithFormat:@"当前用户：%@",CurrentUserId];
-        }
-    } failure:^(NSError *error) {
         
-    }];
+    };
     
 }
 -(void)jumpToMyFriend{

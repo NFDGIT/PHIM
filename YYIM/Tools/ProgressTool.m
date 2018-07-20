@@ -19,6 +19,5 @@
 }
 +(void)showNetError{
 
-    
 }
 @end

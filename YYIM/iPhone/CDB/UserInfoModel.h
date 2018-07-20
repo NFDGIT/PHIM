@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @interface UserInfoModel : NSObject
-@property (nonatomic,strong)NSString * userID;
+@property (nonatomic,strong)NSString * userID; 
 @property (nonatomic,strong)NSString * userName;
 @property (nonatomic,strong)NSString * UnderWrite;
 @property (nonatomic,strong)NSString * HeadName;
 @property (nonatomic,strong)NSString * UserStatus;
+@property (nonatomic,strong)NSString * RealName;
 
 @property (nonatomic,strong)NSArray * FriendDicationary;
 @property (nonatomic,strong)NSArray * Groups;

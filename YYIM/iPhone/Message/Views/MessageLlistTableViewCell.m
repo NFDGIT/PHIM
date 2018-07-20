@@ -72,7 +72,7 @@
         if (image) {
             _imgView.image = image;
         }
-        if (![userInfoModel.UserStatus isEqualToString:@"1"]) {
+        if (![[NSString stringWithFormat:@"%@",userInfoModel.UserStatus] isEqualToString:@"1"]) {
             _imgView.image = [UIImage changeGrayImage:_imgView.image];
         }
         

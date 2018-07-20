@@ -7,6 +7,7 @@
 //
 
 #import "PersonManager.h"
+#import "DBTool.h"
 
 
 static PersonManager *shared = nil;
@@ -28,6 +29,9 @@ static PersonManager *shared = nil;
 }
 -(void)initData{
     _dataDic = [NSMutableDictionary dictionary];
+    [[DBTool share] getUserModels:^(NSDictionary * dataDic) {
+        self->_dataDic = [NSMutableDictionary dictionaryWithDictionary:dataDic];
+    }];
     
 }
 
@@ -37,8 +41,12 @@ static PersonManager *shared = nil;
     UserInfoModel * lastModel = [UserInfoModel new];
     lastModel = model;
     [_dataDic setObject:model forKey:Id];
+
+    [[DBTool share] addUserModel:model response:^(BOOL success) {
+    }];
 }
 -(UserInfoModel *)getModelWithId:(NSString *)Id{
+   
     UserInfoModel * model = [UserInfoModel new];
     model.userID = Id;
     
@@ -61,6 +69,8 @@ static PersonManager *shared = nil;
     UserInfoModel * model = [self getModelWithId:Id];
     model.UserStatus = UserStatus;
     [self updateModel:model];
+    
+    
 }
 -(NSString *)getStatusWithId:(NSString *)Id{
    UserInfoModel * model = [self getModelWithId:Id];
@@ -72,7 +82,7 @@ static PersonManager *shared = nil;
 
 #pragma mark -- 网络请求数据
 -(void)getUserInfoWithId:(NSString *)Id response:(void(^)(BOOL success))response{
-    [Request getUserInfoWithIdOrName:Id success:^(NSUInteger code, NSString *msg, id data) {
+    [Request getUserInfo1WithIdOrName:Id success:^(NSUInteger code, NSString *msg, id data) {
         if (code == 200) {
             UserInfoModel * model = [UserInfoModel new];
             [model setValuesForKeysWithDictionary:data];

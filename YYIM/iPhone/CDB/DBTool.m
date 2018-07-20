@@ -20,6 +20,7 @@ static DBTool *shared = nil;
     dispatch_once(&onceToken, ^{
         shared = [[DBTool alloc] init];
         [shared createDB];
+
     });
     
     return shared;
@@ -47,33 +48,9 @@ static DBTool *shared = nil;
     
     NSString * sql1 = @"create table if not exists conversations ('Id' TEXT, 'name' TEXT,'imgUrl'  TEXT,'GroupMsg'  INTEGER)"; // 会话的表
     
-    NSString * sql2 = @"create table if not exists userList ('AssemblyVersion' TEXT, 'ClientType' TEXT,'Dep'  TEXT,'DepInfo'  TEXT,'Email'  TEXT,'FilePort'  TEXT,'HeadName'  TEXT,'HeartBeatTime'  TEXT,'IP'  TEXT,'NewNode'  TEXT,'Phone'  TEXT,'PhotoContent'  TEXT,'PhotoName'  TEXT,'Port'  TEXT,'RealName'  TEXT,'Sex'  TEXT,'State'  TEXT,'StateInfo'  TEXT,'UnderWrite'  TEXT,'UserId'  TEXT,'UserStatus'  TEXT,'assemblyVersion'  TEXT,'headName'  TEXT)"; // 用户详情的表
+    NSString * sql2 = @"create table if not exists userList ('userID' TEXT, 'userName' TEXT,'UnderWrite'  TEXT,'HeadName'  TEXT,'UserStatus'  TEXT)"; // 用户详情的表
     
-//    @property (nonatomic,strong)NSString *AssemblyVersion;
-//    @property (nonatomic,strong)NSString *ClientType;
-//    @property (nonatomic,strong)NSString *Dep;
-//    @property (nonatomic,strong)NSString *DepInfo;
-//    @property (nonatomic,strong)NSString *Email;
-//    @property (nonatomic,strong)NSString *FilePort;
-//    @property (nonatomic,strong)NSString *HeadName;
-//    @property (nonatomic,strong)NSString *HeartBeatTime;
-//    @property (nonatomic,strong)NSString *IP;
-//    @property (nonatomic,strong)NSString *NewNode;
-//    @property (nonatomic,strong)NSString *Phone;
-//    @property (nonatomic,strong)NSString *PhotoContent;
-//    @property (nonatomic,strong)NSString *PhotoName;
-//    @property (nonatomic,strong)NSString *Port;
-//    @property (nonatomic,strong)NSString *RealName;
-//    @property (nonatomic,strong)NSString *Sex;
-//    @property (nonatomic,strong)NSString *State;
-//    @property (nonatomic,strong)NSString *StateInfo;
-//    @property (nonatomic,strong)NSString *UnderWrite;
-//    @property (nonatomic,strong)NSString *UserId;
-//    @property (nonatomic,strong)NSString *UserStatus;
-//    @property (nonatomic,strong)NSString *assemblyVersion;
-//    @property (nonatomic,strong)NSString *headName;
-    
-  
+
     //5.执行更新操作 此处database直接操作，不考虑多线程问题，多线程问题，用FMDatabaseQueue 每次数据库操作之后都会返回bool数值，YES，表示success，NO，表示fail,可以通过 @see lastError @see lastErrorCode @see lastErrorMessage
     BOOL result = [db executeUpdate:sql];
     BOOL result1 = [db executeUpdate:sql1];
@@ -232,39 +209,17 @@ static DBTool *shared = nil;
 -(void)addUserModel:(UserInfoModel *)model response:(void (^)(BOOL))response{
     [_db open];
     
+    NSString *userID = [NSString stringWithFormat:@"%@",model.userID];
+    NSString *userName = [NSString stringWithFormat:@"%@",model.userName];
+    NSString *UnderWrite = [NSString stringWithFormat:@"%@",model.UnderWrite];
+    NSString *HeadName = [NSString stringWithFormat:@"%@",model.HeadName];
+    NSString *UserStatus = [NSString stringWithFormat:@"%@",model.UserStatus];
     
     
-////@"create table if not exists userList ('AssemblyVersion' TEXT, 'ClientType' TEXT,'Dep'  TEXT,'DepInfo'  TEXT,'Email'  TEXT,'FilePort'  TEXT,'HeadName'  TEXT,'HeartBeatTime'  TEXT,'IP'  TEXT,'NewNode'  TEXT,'Phone'  TEXT,'PhotoContent'  TEXT,'PhotoName'  TEXT,'Port'  TEXT,'RealName'  TEXT,'Sex'  TEXT,'State'  TEXT,'StateInfo'  TEXT,'UnderWrite'  TEXT,'UserId'  TEXT,'UserStatus'  TEXT,'assemblyVersion'  TEXT,'headName'  TEXT,)"
-//
-//
-//NSString *AssemblyVersion = [NSString stringWithFormat:@"%@",model.assemblyVersion];
-//NSString *ClientType = [NSString stringWithFormat:@"%@",model.ClientType];
-//NSString *Dep = [NSString stringWithFormat:@"%@",model.Dep];
-//NSString *DepInfo = [NSString stringWithFormat:@"%@",model.DepInfo];
-//NSString *Email = [NSString stringWithFormat:@"%@",model.Email];
-//NSString *FilePort = [NSString stringWithFormat:@"%@",model.FilePort];
-//NSString *HeadName = [NSString stringWithFormat:@"%@",model.headName];
-//NSString *HeartBeatTime = [NSString stringWithFormat:@"%@",model.HeartBeatTime];
-//NSString *IP = [NSString stringWithFormat:@"%@",model.IP];
-//NSString *NewNode = [NSString stringWithFormat:@"%@",model.NewNode];
-//NSString *Phone = [NSString stringWithFormat:@"%@",model.Phone];
-//NSString *PhotoContent = [NSString stringWithFormat:@"%@",model.PhotoContent];
-//NSString *PhotoName = [NSString stringWithFormat:@"%@",model.PhotoName];
-//NSString *Port = [NSString stringWithFormat:@"%@",model.Port];
-//NSString *RealName = [NSString stringWithFormat:@"%@",model.RealName];
-//NSString *Sex = [NSString stringWithFormat:@"%@",model.Sex];
-//NSString *State = [NSString stringWithFormat:@"%@",model.State];
-//NSString *StateInfo = [NSString stringWithFormat:@"%@",model.StateInfo];
-//NSString *UnderWrite = [NSString stringWithFormat:@"%@",model.UnderWrite];
-//NSString *UserId = [NSString stringWithFormat:@"%@",model.UserId];
-//NSString *UserStatus = [NSString stringWithFormat:@"%@",model.UserStatus];
-//NSString *assemblyVersion = [NSString stringWithFormat:@"%@",model.assemblyVersion];
-//NSString *headName = [NSString stringWithFormat:@"%@",model.headName];
-//
-//    BOOL result = [_db executeUpdate:@"insert into 'conversations' (AssemblyVersion,ClientType,Dep,DepInfo,'Email'  TEXT,'FilePort'  TEXT,'HeadName'  TEXT,'HeartBeatTime'  TEXT,'IP'  TEXT,'NewNode'  TEXT,'Phone'  TEXT,'PhotoContent'  TEXT,'PhotoName'  TEXT,'Port'  TEXT,'RealName'  TEXT,'Sex'  TEXT,'State'  TEXT,'StateInfo'  TEXT,'UnderWrite'  TEXT,'UserId'  TEXT,'UserStatus'  TEXT,'assemblyVersion'  TEXT,'headName'  TEXT) values(?,?,?,?)" withArgumentsInArray:@[Id,name,imgUrl,@(GroupMsg)]];
-//    if (response) {
-//        response(result);
-//    }
+    BOOL result = [_db executeUpdate:@"insert into 'userList' (userID,userName,UnderWrite,HeadName,UserStatus) values(?,?,?,?,?)" withArgumentsInArray:@[userID,userName,UnderWrite,HeadName,UserStatus]];
+    if (response) {
+        response(result);
+    }
     [_db close];
     
 }
@@ -273,8 +228,37 @@ static DBTool *shared = nil;
  
  @param success 获取成功
  */
--(void)getUserModels:(void (^)(NSArray *))success{
+-(void)getUserModels:(void (^)(NSDictionary *))success{
+    [_db open];
+    NSMutableDictionary * mdic = [NSMutableDictionary dictionary];
+    
+    //    NSString *sql = @"select * from 'chatMessages' where";
+    FMResultSet *result = [_db executeQuery:@"select * from 'userList'"];
+    while ([result next]) {
+        UserInfoModel * userInfoModel = [UserInfoModel new];
+        userInfoModel.userID = [result stringForColumn:@"userID"];
+        userInfoModel.userName = [result stringForColumn:@"userName"];
+        userInfoModel.UnderWrite = [result stringForColumn:@"UnderWrite"];
+        userInfoModel.HeadName = [result stringForColumn:@"HeadName"];
+        userInfoModel.UserStatus = [result stringForColumn:@"UserStatus"];
+        
+        [mdic addEntriesFromDictionary:@{userInfoModel.userID:userInfoModel}];
+        //        NSLog(@"从数据库查询到的人员 %@",target.Id);
+    }
+    if(success)
+    {
+        success(mdic);
+    }
+    [_db close];
+}
+/**
+ 根据 userid 获取 model
+ 
+ @param userId 用户id
+ @param model 用户的model
+ */
+-(void)getUserModelWithUserId:(NSString *)userId response:(UserInfoModel *)model{
+    
     
 }
-
 @end

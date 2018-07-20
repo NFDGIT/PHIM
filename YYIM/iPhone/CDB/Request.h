@@ -38,10 +38,10 @@ typedef void (^failureBlock)(NSError *error);
  */
 +(void)getUserInfoWithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure;
 /**
- 查询好友
+ 获取用户信息1
  @param idOrName id 或用户名
  @param success 成功的回调
  @param failure 失败的回调
  */
-+(void)getFriendsWithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure;
++(void)getUserInfo1WithIdOrName:(NSString *)idOrName success:(successBlock)success  failure:(failureBlock)failure;
 @end

@@ -14,9 +14,9 @@
 #define FontSmall  [UIFont systemFontOfSize:12]
 
 
-
+#pragma mark -- 颜色
 #define ColorBlack  [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8]
-
+#define ColorRed    [UIColor colorWithRed:235/255.0 green:51/255.0 blue:51/255.0 alpha:1]
 
 
 #define NotiForReceive @"NotiForReceive"
@@ -57,7 +57,7 @@
  用户 状态
  */
 
-#define CurrentUserStatus             [[NSUserDefaults standardUserDefaults] valueForKey:@"CurrentUserStatus"]
+#define CurrentUserStatus             [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentUserStatus"]
 #define setCurrentUserStatus(currentUserStatus)  [[NSUserDefaults standardUserDefaults] setInteger:currentUserStatus forKey:@"CurrentUserStatus"];
 
 
@@ -73,9 +73,25 @@ typedef NS_ENUM(NSUInteger,InformationType) {
     InformationTypeNoticeArrival = 7,      // 收到联系人发送来的群发通知消
     InformationTypeBroadcastChatPic = 8,   // 群自定义图片
     InformationTypeChatPic = 9,            // 消息自定义图片
+    
     InformationTypeSendFileRequest = 10,   // 收到联系人发出发送文件请求
     InformationTypeSendPicRequest = 11,    // 收到联系人发出发送自定义图片请求
     InformationTypeChat = 12,              // 聊天信息 12
+    InformationTypeVibration = 13,              // 窗口抖动
+    InformationTypeGetOfflineMessage = 14,              // 请求离线消息
+    InformationTypeOfflineMessage = 15,              // 服务端转发离线消息给客户端
+    InformationTypeUpdate = 16,              // 服务器通知升级到最新版本
+    
+    InformationTypeUpdateHead = 20,              // 服务器更新头像
+    InformationTypeUpdateFriendHead = 21,              // 服务器更新好友头像
+    InformationTypeUpdateMySelfMsg = 22,              // 更新自己基本信息
+    InformationTypeUpdateFriendMsg = 23,              // 更新好友基本信息
+    InformationTypeLeaveOut = 24,              // 强制下线
+
+    
+    
+    
+
     
     
 

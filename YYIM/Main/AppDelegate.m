@@ -23,7 +23,7 @@
     // Override point for customization after application launch.
     [[IQKeyboardManager sharedManager] setEnable:YES];
     [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = YES;;
-    
+    [[IQKeyboardManager sharedManager] setEnableAutoToolbar:NO];
 
     [self switchRootVC];
 
@@ -43,6 +43,15 @@
         [[SocketTool share] startHeartBeat];
         
     };
+}
+-(void)logout{
+    setCurrentUserId(@"");
+    setCurrentUserIcon(@"");
+    setCurrentUserName(@"");
+    setCurrentUserStatus(0);
+    setCurrentUserUnderWrite(@"");
+
+    [self switchRootVC];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
