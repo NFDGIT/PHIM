@@ -143,6 +143,14 @@
             failure(error);
         }
     }];
+//    {
+//        FriendDicationary = "[{\"Dicationary\":\"\U6211\U7684\U597d\U53cb\",\"Friend\":[]}]";
+//        Groups = "[]";
+//        HeadName = 63;
+//        UnderWrite = aaa;
+//        userID = 13383824275;
+//        userName = "\U5f6d\U8f89";
+//    }
     
 }
 /**
@@ -164,5 +172,6 @@
             failure(error);
         }
     }];
+//    {"code":"200","msg":"成功","data":[{"PassWord":"e10adc3949ba59abbe56e057f20f883e","UserName":"13383824275","RealName":"彭辉","ID":"13383824275","RoleId":"1|3|8","Groups":"","CreateTime":"2018-07-19T16:09:40","UnderWrite":"aaa","Department":null,"OrgPath":["1","3","8"],"IsInOrg":true,"HeadName":63,"PhotoContent":null,"State":"1","Version":31,"LastWords":"","IsGroup":false,"Sex":"保密","Phone":"13522220189","Email":"123456@qq.com","PhotoName":"2018522151034.Jpeg","Friends":"我的好友:","FriendDicationary":{"我的好友":[]},"DefaultFriendCatalog":"我的好友","UserStatus":0,"Tag":null,"OnlineOrHide":false,"OfflineOrHide":true}]}
 }
 @end

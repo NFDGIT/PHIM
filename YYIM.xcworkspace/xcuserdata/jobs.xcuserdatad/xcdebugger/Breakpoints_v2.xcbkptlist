@@ -19,14 +19,107 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/MyFriends/Controllers/MyFriendsViewController.m"
-            timestampString = "553598601.575261"
+            filePath = "YYIM/iPhone/Contacts/Controllers/ContactsListViewController.m"
+            timestampString = "553751591.202746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
-            landmarkName = "-refreshData"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "-initData"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YYIM/Tools/PersonManager.m"
+            timestampString = "553751591.204645"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
+            landmarkName = "-getUserInfoWithId:response:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[PersonManager getUserInfoWithId:response:]"
+                  moduleName = "YYIM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
+                  timestampString = "553751142.701501"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "81"
+                  endingLineNumber = "81"
+                  offsetFromSymbolStart = "246">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__44-[PersonManager getUserInfoWithId:response:]_block_invoke"
+                  moduleName = "YYIM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
+                  timestampString = "553751142.706414"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "81"
+                  endingLineNumber = "81"
+                  offsetFromSymbolStart = "269">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__copy_helper_block_"
+                  moduleName = "YYIM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
+                  timestampString = "553751142.709475"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__44-[PersonManager getUserInfoWithId:response:]_block_invoke.50"
+                  moduleName = "YYIM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
+                  timestampString = "553751142.71254"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "81"
+                  endingLineNumber = "81"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_.52"
+                  moduleName = "YYIM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
+                  timestampString = "553751142.715492"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "81"
+                  endingLineNumber = "81"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -35,45 +128,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/MyGroupChat/Controllers/MyGroupChatViewController.m"
-            timestampString = "553598601.57653"
+            filePath = "YYIM/Tools/PersonManager.m"
+            timestampString = "553751591.205261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "-refreshData"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "YYIM/Tools/SocketTool.m"
-            timestampString = "553598601.576984"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
-            landmarkName = "-handleChatMsgDic:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/MyFriends/Controllers/MyFriendsViewController.m"
-            timestampString = "553598752.5177341"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
-            landmarkName = "-refreshData"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "-getUserInfoWithId:response:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

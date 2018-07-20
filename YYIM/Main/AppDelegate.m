@@ -36,6 +36,7 @@
     
     if ([CurrentUserId isEmptyString]) {
         self.window.rootViewController = loginVC;
+        [[SocketTool share] stopHeartBeat];
     }else
     {
         self.window.rootViewController = tabbar;

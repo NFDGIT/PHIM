@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MessageTargetModel.h"
+#import "ConversationModel.h"
 #import "PHCellHeight.h"
 
 @interface MessageLlistTableViewCell : UITableViewCell
-
-@property (nonatomic,strong)MessageTargetModel * model;
+@property (nonatomic,strong)ConversationModel * model;
 @end

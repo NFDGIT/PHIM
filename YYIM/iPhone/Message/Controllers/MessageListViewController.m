@@ -10,7 +10,7 @@
 #import "MessageLlistTableViewCell.h"
 #import "ChatViewController.h"
 #import "MessageManager.h"
-#import "MessageTargetModel.h"
+#import "ConversationModel.h"
 //
 //#import "DBTool.h"
 
@@ -31,8 +31,7 @@
     [self initUI];
     [self refreshData];
     
-    
-    
+
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -45,20 +44,15 @@
 }
 -(void)initData{
     _datas = [NSMutableArray array];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:NotiForReceiveTypeChat object:nil];
     
-//    MessageTargetModel * model = [MessageTargetModel new];
-//    model.Id = @"13383824275";
-//    model.name = @"彭辉";
-//    model.imgUrl = @"";
-//
-//    MessageTargetModel * model1 = [MessageTargetModel new];
-//    model1.Id = @"15701344579";
-//    model1.name = @"郭二明";
-//    model1.imgUrl = @"";
-//
-//    [[MessageManager share] addMsgTarget:model];
-//    [[MessageManager share] addMsgTarget:model1];
+    __weak typeof(self) weakSelf = self;
+    self.userStatusChangeBlock = ^(NSDictionary *data) {
+        [weakSelf refreshUI];
+    };
+    self.userInfoChangeBlock = ^(NSDictionary *data) {
+        [weakSelf refreshUI];
+    };
 }
 -(void)initUI{
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) style:UITableViewStyleGrouped];
@@ -74,9 +68,14 @@
 }
 
 - (void)refreshData{
-    [[MessageManager share] getMsgTargetsSuccess:^(NSArray * result) {
+//    [[MessageManager share] getMsgTargetsSuccess:^(NSArray * result) {
+//        self->_datas = [NSMutableArray arrayWithArray:result];
+//
+//        [self refreshUI];
+//    }];
+    [[MessageManager share]getConversations:^(NSArray * result) {
         self->_datas = [NSMutableArray arrayWithArray:result];
-    
+        
         [self refreshUI];
     }];
     
@@ -122,13 +121,28 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
    return  [tableView cellHeightWithIndexPath:indexPath];
 }
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
+    ConversationModel * model = _datas[_datas.count - 1 - indexPath.section];
 
+    UITableViewRowAction * action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        [[MessageManager share] deleteConversationId:model.Id response:^(BOOL success) {
+            if (success) {
+                [self refreshData];
+            }
+        }];
+    }];
+    
+    return @[action];
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MessageLlistTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
     cell.indexPath = indexPath;
-    MessageTargetModel * model = _datas[_datas.count - 1 - indexPath.section];
+    ConversationModel * model = _datas[_datas.count - 1 - indexPath.section];
     cell.model = model;
     return cell;
     
@@ -137,10 +151,10 @@
     
     
     ChatViewController * chatvc = [ChatViewController new];
-    MessageTargetModel * target = _datas[_datas.count - 1 - indexPath.section];;
+    ConversationModel * target = _datas[_datas.count - 1 - indexPath.section];;
 
 
-    chatvc.targetModel = target;
+    chatvc.conversationModel = target;
     [self.navigationController pushViewController:chatvc animated:YES];
     
 }
@@ -156,6 +170,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (void)dealloc
+{
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 /*
 #pragma mark - Navigation
 

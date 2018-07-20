@@ -20,6 +20,11 @@
 		C50937EB20FF0C7600A70E41 /* PHTabbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C50937E720FF0C7500A70E41 /* PHTabbarView.m */; };
 		C50937EC20FF0C7600A70E41 /* PHSegmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C50937EA20FF0C7500A70E41 /* PHSegmentViewController.m */; };
 		C50937EE20FF20F600A70E41 /* LocalHeadIcon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C50937ED20FF20F500A70E41 /* LocalHeadIcon.bundle */; };
+		C50937F221003C6200A70E41 /* GroupDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C50937F121003C6200A70E41 /* GroupDetailViewController.m */; };
+		C50937F6210073BE00A70E41 /* HandleSocketDao.m in Sources */ = {isa = PBXBuildFile; fileRef = C50937F5210073BE00A70E41 /* HandleSocketDao.m */; };
+		C50937F92100809D00A70E41 /* PersonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C50937F82100809D00A70E41 /* PersonManager.m */; };
+		C50937FF2100936400A70E41 /* UIImage+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = C50937FE2100936400A70E41 /* UIImage+Helper.m */; };
+		C50938022101825A00A70E41 /* UserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C50938012101825A00A70E41 /* UserInfoModel.m */; };
 		C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */; };
 		C55FF5F320F6EB3A00A86F00 /* EmotionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5F220F6EB3A00A86F00 /* EmotionView.m */; };
 		C55FF5F920F72A3B00A86F00 /* ChatAddView.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5F820F72A3B00A86F00 /* ChatAddView.m */; };
@@ -64,7 +69,7 @@
 		C59021B720F5FC49001296C4 /* ProgressTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021B620F5FC49001296C4 /* ProgressTool.m */; };
 		C59021BA20F6088B001296C4 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = C59021B920F6088B001296C4 /* NSString+Base64.m */; };
 		C5EFFCB420FC2CE3003BDB2E /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFCB320FC2CE3003BDB2E /* MessageManager.m */; };
-		C5EFFCB720FC3651003BDB2E /* MessageTargetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFCB620FC3651003BDB2E /* MessageTargetModel.m */; };
+		C5EFFCB720FC3651003BDB2E /* ConversationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFCB620FC3651003BDB2E /* ConversationModel.m */; };
 		C5EFFCBD20FC5F34003BDB2E /* NSString+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFCBC20FC5F34003BDB2E /* NSString+Helper.m */; };
 		C5EFFE5B20FC6F42003BDB2E /* Emotion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C5EFFE5A20FC6F42003BDB2E /* Emotion.bundle */; };
 		C5EFFE5E20FC923A003BDB2E /* RishTextAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = C5EFFE5D20FC923A003BDB2E /* RishTextAdapter.m */; };
@@ -117,6 +122,16 @@
 		C50937E920FF0C7500A70E41 /* PHSegmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHSegmentViewController.h; sourceTree = "<group>"; };
 		C50937EA20FF0C7500A70E41 /* PHSegmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHSegmentViewController.m; sourceTree = "<group>"; };
 		C50937ED20FF20F500A70E41 /* LocalHeadIcon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = LocalHeadIcon.bundle; sourceTree = "<group>"; };
+		C50937F021003C6200A70E41 /* GroupDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupDetailViewController.h; sourceTree = "<group>"; };
+		C50937F121003C6200A70E41 /* GroupDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupDetailViewController.m; sourceTree = "<group>"; };
+		C50937F4210073BE00A70E41 /* HandleSocketDao.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HandleSocketDao.h; sourceTree = "<group>"; };
+		C50937F5210073BE00A70E41 /* HandleSocketDao.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HandleSocketDao.m; sourceTree = "<group>"; };
+		C50937F72100809D00A70E41 /* PersonManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonManager.h; sourceTree = "<group>"; };
+		C50937F82100809D00A70E41 /* PersonManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonManager.m; sourceTree = "<group>"; };
+		C50937FD2100936400A70E41 /* UIImage+Helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Helper.h"; sourceTree = "<group>"; };
+		C50937FE2100936400A70E41 /* UIImage+Helper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Helper.m"; sourceTree = "<group>"; };
+		C50938002101825A00A70E41 /* UserInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserInfoModel.h; sourceTree = "<group>"; };
+		C50938012101825A00A70E41 /* UserInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserInfoModel.m; sourceTree = "<group>"; };
 		C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHCellHeight.m; sourceTree = "<group>"; };
 		C55FF5EF20F6E57500A86F00 /* PHCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHCellHeight.h; sourceTree = "<group>"; };
 		C55FF5F120F6EB3A00A86F00 /* EmotionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmotionView.h; sourceTree = "<group>"; };
@@ -204,8 +219,8 @@
 		C59021B920F6088B001296C4 /* NSString+Base64.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
 		C5EFFCB220FC2CE3003BDB2E /* MessageManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageManager.h; sourceTree = "<group>"; };
 		C5EFFCB320FC2CE3003BDB2E /* MessageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageManager.m; sourceTree = "<group>"; };
-		C5EFFCB520FC3651003BDB2E /* MessageTargetModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTargetModel.h; sourceTree = "<group>"; };
-		C5EFFCB620FC3651003BDB2E /* MessageTargetModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTargetModel.m; sourceTree = "<group>"; };
+		C5EFFCB520FC3651003BDB2E /* ConversationModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConversationModel.h; sourceTree = "<group>"; };
+		C5EFFCB620FC3651003BDB2E /* ConversationModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConversationModel.m; sourceTree = "<group>"; };
 		C5EFFCBB20FC5F34003BDB2E /* NSString+Helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Helper.h"; sourceTree = "<group>"; };
 		C5EFFCBC20FC5F34003BDB2E /* NSString+Helper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helper.m"; sourceTree = "<group>"; };
 		C5EFFCC220FC6A64003BDB2E /* Emotion.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Emotion.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -363,11 +378,28 @@
 			path = PHSegment;
 			sourceTree = "<group>";
 		};
+		C50937EF21003C4400A70E41 /* GroupDetail */ = {
+			isa = PBXGroup;
+			children = (
+				C50937F321003C6800A70E41 /* Controllers */,
+			);
+			path = GroupDetail;
+			sourceTree = "<group>";
+		};
+		C50937F321003C6800A70E41 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C50937F021003C6200A70E41 /* GroupDetailViewController.h */,
+				C50937F121003C6200A70E41 /* GroupDetailViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		C55FF60F20F872D300A86F00 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C5EFFCB520FC3651003BDB2E /* MessageTargetModel.h */,
-				C5EFFCB620FC3651003BDB2E /* MessageTargetModel.m */,
+				C5EFFCB520FC3651003BDB2E /* ConversationModel.h */,
+				C5EFFCB620FC3651003BDB2E /* ConversationModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -445,6 +477,7 @@
 		C590213620F44DED001296C4 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				C50937EF21003C4400A70E41 /* GroupDetail */,
 				C50937E120FF05FE00A70E41 /* ContactsOf */,
 				C50937DA20FF04DD00A70E41 /* PersonDetail */,
 				C50937CD20FEED0200A70E41 /* MyGroupChat */,
@@ -460,6 +493,8 @@
 				C590219420F4BE93001296C4 /* Define.h */,
 				C5EFFCB220FC2CE3003BDB2E /* MessageManager.h */,
 				C5EFFCB320FC2CE3003BDB2E /* MessageManager.m */,
+				C50938002101825A00A70E41 /* UserInfoModel.h */,
+				C50938012101825A00A70E41 /* UserInfoModel.m */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -494,6 +529,12 @@
 				C5EFFCBC20FC5F34003BDB2E /* NSString+Helper.m */,
 				C5EFFE6220FDBE23003BDB2E /* NSDictionary+Helper.h */,
 				C5EFFE6320FDBE23003BDB2E /* NSDictionary+Helper.m */,
+				C50937F4210073BE00A70E41 /* HandleSocketDao.h */,
+				C50937F5210073BE00A70E41 /* HandleSocketDao.m */,
+				C50937F72100809D00A70E41 /* PersonManager.h */,
+				C50937F82100809D00A70E41 /* PersonManager.m */,
+				C50937FD2100936400A70E41 /* UIImage+Helper.h */,
+				C50937FE2100936400A70E41 /* UIImage+Helper.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -962,11 +1003,14 @@
 				C59021AB20F5F583001296C4 /* MsgModel.m in Sources */,
 				C590210320F44D49001296C4 /* ViewController.m in Sources */,
 				C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */,
+				C50937F92100809D00A70E41 /* PersonManager.m in Sources */,
 				C50937CC20FEE04D00A70E41 /* MyFriendsGroupHeaderView.m in Sources */,
 				C5EFFCB420FC2CE3003BDB2E /* MessageManager.m in Sources */,
 				C50937D920FEEE8000A70E41 /* MyGroupChatModel.m in Sources */,
 				C590214720F44FD2001296C4 /* ContactsListViewController.m in Sources */,
 				C50937EB20FF0C7600A70E41 /* PHTabbarView.m in Sources */,
+				C50937F221003C6200A70E41 /* GroupDetailViewController.m in Sources */,
+				C50938022101825A00A70E41 /* UserInfoModel.m in Sources */,
 				C590215720F45AA2001296C4 /* MessageLlistTableViewCell.m in Sources */,
 				C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */,
 				C55FF60520F7568000A86F00 /* NSAttributedString+SmiliesId.m in Sources */,
@@ -975,9 +1019,10 @@
 				C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */,
 				C5EFFE5E20FC923A003BDB2E /* RishTextAdapter.m in Sources */,
 				C590214420F44FB3001296C4 /* MessageListViewController.m in Sources */,
-				C5EFFCB720FC3651003BDB2E /* MessageTargetModel.m in Sources */,
+				C5EFFCB720FC3651003BDB2E /* ConversationModel.m in Sources */,
 				C590214A20F44FE1001296C4 /* MineViewController.m in Sources */,
 				C59021B720F5FC49001296C4 /* ProgressTool.m in Sources */,
+				C50937FF2100936400A70E41 /* UIImage+Helper.m in Sources */,
 				C5EFFCBD20FC5F34003BDB2E /* NSString+Helper.m in Sources */,
 				C59021A720F5A76A001296C4 /* NSString+Json.m in Sources */,
 				C5EFFE6420FDBE23003BDB2E /* NSDictionary+Helper.m in Sources */,
@@ -986,6 +1031,7 @@
 				C50937D620FEEE5E00A70E41 /* MyGroupChatTableViewCell.m in Sources */,
 				C59021A220F5A3ED001296C4 /* NSData+GZip.m in Sources */,
 				C50937C920FEDF3400A70E41 /* MyFriendsGroupModel.m in Sources */,
+				C50937F6210073BE00A70E41 /* HandleSocketDao.m in Sources */,
 				C590215B20F45FC5001296C4 /* ContactsListModel.m in Sources */,
 				C590217E20F4AEA4001296C4 /* MyFriendsViewController.m in Sources */,
 				C590213B20F44E1D001296C4 /* BaseViewController.m in Sources */,

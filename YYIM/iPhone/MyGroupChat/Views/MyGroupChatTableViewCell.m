@@ -8,6 +8,7 @@
 
 #import "MyGroupChatTableViewCell.h"
 @interface MyGroupChatTableViewCell()
+@property (nonatomic,strong)UIImageView * headImg;
 @property (nonatomic,strong)UILabel * labelName;
 @property (nonatomic,strong)UILabel * labelDesc;
 @end
@@ -19,6 +20,11 @@
     return self;
 }
 -(void)initUI{
+    _headImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 60, 60)];
+    _headImg.layer.cornerRadius = _headImg.height/2;
+    _headImg.layer.masksToBounds = YES;
+    [self.contentView addSubview:_headImg];
+    
     _labelName = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 20)];
     _labelName.font = FontBig;
     _labelName.textColor = ColorBlack;
@@ -33,6 +39,8 @@
 -(void)setModel:(MyGroupChatModel *)model{
     _model = model;
 
+    
+    _headImg.image = [UIImage imageNamed:@"群组_default"];
     _labelName.text = [NSString stringWithFormat:@"%@",_model.groupName];
     _labelDesc.text = [NSString stringWithFormat:@"%@",_model.groupDep];
     [self layoutSubviews];
@@ -48,8 +56,11 @@
     [self layout];
 }
 -(void)layout{
-    _labelName.left = 10;
-    _labelName.width = self.width - _labelName.left;
+    _headImg.left = 10;
+    _headImg.top = 10;
+    
+    _labelName.left = _headImg.right + 10;
+    _labelName.width = self.width - _headImg.right - 20;
     _labelName.top = 10;
     
     

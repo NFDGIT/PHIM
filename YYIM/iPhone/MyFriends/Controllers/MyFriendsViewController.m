@@ -32,17 +32,22 @@
     [self initData];
     [self initNavi];
     [self initUI];
-    
     [self refreshData];
+
+    
+    
+    
+
     // Do any additional setup after loading the view.
 }
 
 -(void)initData{
     _datas = [NSMutableArray array];
 
-    
-
-
+    __weak typeof(self) weakSelf = self;
+    self.userStatusChangeBlock = ^(NSDictionary *data) {
+        [weakSelf refreshUI];
+    };
 }
 -(void)initNavi{
     self.title = @"我的好友";
@@ -97,7 +102,7 @@
 
     
     NSString * userName =  [[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"];
-    userName = @"15701344579";
+//    userName = @"15701344579";
 
     [ProgressTool show];
     [Request getUserInfoWithIdOrName:userName success:^(NSUInteger code, NSString *msg, id data) {
@@ -124,6 +129,7 @@
             [self refreshUI];
         }
     } failure:^(NSError *error) {
+        [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];
         [ProgressTool hidden];
     }];
     
@@ -182,19 +188,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     MyFriendsGroupModel * groupModel = _datas[indexPath.section];
     NSArray * friends = groupModel.Friend;
-    
     MyFriendsModel * model = friends[indexPath.row];
-    MessageTargetModel * target = [MessageTargetModel new];
-    target.Id = model.userID;
-    target.name = model.userName;
-    target.imgUrl = model.HeadName;
-//    
-//    PersonDetailViewController * detail = [PersonDetailViewController new];
-//    detail.Id = model.userID;
-//    [self.navigationController pushViewController:detail animated:YES];
+    
+    
+    
+
+    ConversationModel * conversationModel = [ConversationModel new];
+    conversationModel.Id = model.userID;
+    conversationModel.name = model.userName;
+    conversationModel.imgUrl = model.HeadName;
+    conversationModel.GroupMsg = NO;
     
     ChatViewController * chat=  [ChatViewController new];
-    chat.targetModel = target;
+    chat.conversationModel = conversationModel;
     [self.navigationController pushViewController:chat animated:YES];
 }
 - (void)didReceiveMemoryWarning {

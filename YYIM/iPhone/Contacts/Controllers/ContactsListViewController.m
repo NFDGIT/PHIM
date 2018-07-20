@@ -32,8 +32,9 @@
     [self initData];
     [self initNavi];
     [self initUI];
-    
     [self refreshData];
+    
+
     // Do any additional setup after loading the view.
 }
 -(void)initNavi{
@@ -42,6 +43,11 @@
 -(void)initData{
     _showDatas = [NSMutableArray array];
     _datas = [NSMutableArray array];
+    
+    __weak typeof(self) weakSelf = self;
+    self.userStatusChangeBlock = ^(NSDictionary *data) {
+        [weakSelf refreshUI];
+    };
 }
 -(void)initUI{
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) style:UITableViewStyleGrouped];
@@ -91,9 +97,7 @@
         [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];
         
     }];
-
-//
-//
+    
     NSDictionary * data =  @{
                              @"code":@"200",
                              @"msg":@"成功",
@@ -134,6 +138,30 @@
                                                                                                      @"Checked": @"false",
                                                                                                      @"Expanded": @(NO),
                                                                                                      @"Tag": @"15801603945",
+                                                                                                     @"Nodes": @[]
+                                                                                                     }, @{
+                                                                                                     @"Text": @"郭二明-15701344579",
+                                                                                                     @"ImageIndex": @"22",
+                                                                                                     @"SelectedImageIndex": @"0",
+                                                                                                     @"Checked": @"false",
+                                                                                                     @"Expanded": @(NO),
+                                                                                                     @"Tag": @"15701344579",
+                                                                                                     @"Nodes": @[]
+                                                                                                     },@{
+                                                                                                     @"Text": @"彭辉-13383824275",
+                                                                                                     @"ImageIndex": @"63",
+                                                                                                     @"SelectedImageIndex": @"0",
+                                                                                                     @"Checked": @"false",
+                                                                                                     @"Expanded": @(NO),
+                                                                                                     @"Tag": @"13383824275",
+                                                                                                     @"Nodes": @[]
+                                                                                                     },@{
+                                                                                                     @"Text": @"黄华东-13522220187",
+                                                                                                     @"ImageIndex": @"63",
+                                                                                                     @"SelectedImageIndex": @"0",
+                                                                                                     @"Checked": @"false",
+                                                                                                     @"Expanded": @(NO),
+                                                                                                     @"Tag": @"13522220187",
                                                                                                      @"Nodes": @[]
                                                                                                      }]
                                                                                      }, @{
@@ -271,21 +299,17 @@
         
         
         
-        MessageTargetModel * target = [MessageTargetModel new];
-        target.Id = model.Tag;
-        target.imgUrl = model.ImageIndex;
-        target.name = model.Text;
+        ConversationModel * conversationModel = [ConversationModel new];
+        conversationModel.Id = model.Tag;
+        conversationModel.name = model.Text;
+        conversationModel.imgUrl = model.ImageIndex;
+        conversationModel.GroupMsg = NO;
         
-        ChatViewController * chatvc = [ChatViewController new];
-//        chatvc.userId = model.Tag;
-        chatvc.targetModel = target;
-        [self.navigationController pushViewController:chatvc animated:YES];
+        ChatViewController * chat=  [ChatViewController new];
+        chat.conversationModel = conversationModel;
+        [self.navigationController pushViewController:chat animated:YES];
         
-        
-        
-//        PersonDetailViewController * detail = [PersonDetailViewController new];
-//        detail.Id = @"";
-//        [self.navigationController pushViewController:detail animated:YES];
+
         
         return;
     }

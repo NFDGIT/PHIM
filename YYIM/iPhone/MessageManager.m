@@ -34,27 +34,67 @@ static MessageManager *shared = nil;
 }
 
 
-
--(void)getMsgTargetsSuccess:(void (^)(NSArray *))success{
-//    NSArray * msgTargets = [NSArray array];
-//    if (_messageTargets) {
-//        msgTargets = _messageTargets;
-//    }
-//    return msgTargets;
-    [[DBTool share] getChatPersons:^(NSArray *result) {
+#pragma mark -- 会话
+/**
+ 获取所有的会话
+ 
+ @param success 获取成功
+ */
+-(void)getConversations:(void (^)(NSArray *))success{
+    [[DBTool share]getConversations:^(NSArray *result) {
         if (success){
             success(result);
         }
     }];
+}
+
+/**
+ 添加会画
+ 
+ @param model 会话的模型
+ @param response 添加会话的结果
+ */
+-(void)addConversationModel:(ConversationModel *)model response:(void (^)(BOOL))response{
+    [[DBTool share] addConversationModel:model response:^(BOOL success) {
+        if (response) {
+            response(success);
+        }
+    }];
     
 }
-
--(void)addMsgTarget:(MessageTargetModel *)target{
-    [[DBTool share] addTargetModel:target response:^(BOOL success) {
-        
+/**
+ 删除某个会话
+ 
+ @param conversationId 会话Id
+ @param response 结果
+ */
+-(void)deleteConversationId:(NSString *)conversationId response:(void (^)(BOOL))response{
+    [[DBTool share] deleteConversationId:conversationId response:^(BOOL success) {
+        if (response) {
+            response(success);
+        }
     }];
-
 }
+//-(void)getMsgTargetsSuccess:(void (^)(NSArray *))success{
+////    NSArray * msgTargets = [NSArray array];
+////    if (_messageTargets) {
+////        msgTargets = _messageTargets;
+////    }
+////    return msgTargets;
+//    [[DBTool share] getChatPersons:^(NSArray *result) {
+//        if (success){
+//            success(result);
+//        }
+//    }];
+//
+//}
+
+//-(void)addMsgTarget:(MessageTargetModel *)target{
+//    [[DBTool share] addTargetModel:target response:^(BOOL success) {
+//
+//    }];
+//
+//}
 -(void)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success{
     NSArray * messages = [NSArray array];
     
@@ -73,18 +113,17 @@ static MessageManager *shared = nil;
     
 //    return messages;
 }
--(void)addMsg:(MsgModel *)msg toTarget:(MessageTargetModel *)target{
+-(void)addMsg:(MsgModel *)msg toTarget:(ConversationModel *)target{
     
     [[DBTool share]addModel:msg withTarget:target.Id response:^(BOOL success) {
         
     }];
+
+    ConversationModel * targetModel = target;
+    [self addConversationModel:targetModel response:^(BOOL success) {
+        
+    }];
     
-    MessageTargetModel * targetModel = target;
-//    targetModel.Id = targetId;
-//    targetModel.name = @"";
-//    targetModel.imgUrl = @"";
-    
-    [self addMsgTarget:targetModel];
 //    [self getMessagesWithTargetId:targetId success:^(NSArray * result) {
 //        
 ////        NSMutableArray * messages = [NSMutableArray arrayWithArray:result];

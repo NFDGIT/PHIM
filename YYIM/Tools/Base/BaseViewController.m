@@ -21,14 +21,45 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor  = [UIColor whiteColor];
-  
     self.navigationController.navigationBar.translucent = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userStatusChange:) name:NotiForReceiveTypeUserStatusChange object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoChange:) name:NotiForReceiveTypeUserInfoChange object:nil];
+    
+
     // Do any additional setup after loading the view.
 }
+-(void)initNavi{
+}
+-(void)initData{
+}
+-(void)initUI{
+}
+-(void)refreshData{
+}
+-(void)refreshUI{
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+-(void)userStatusChange:(NSNotification *)noti{
+    if (_userStatusChangeBlock) {
+        _userStatusChangeBlock(noti.object);
+    }
+}
+-(void)userInfoChange:(NSNotification *)noti{
+    if (_userInfoChangeBlock) {
+        _userInfoChangeBlock(noti.object);
+    }
+    
+}
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 /*
@@ -40,5 +71,7 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
 
 @end

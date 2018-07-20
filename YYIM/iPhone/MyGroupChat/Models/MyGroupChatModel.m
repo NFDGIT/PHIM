@@ -14,7 +14,7 @@
 }
 -(void)setValue:(id)value forKey:(NSString *)key{
     
-    if ([key isEqualToString:@""]) {
+    if ([key isEqualToString:@"memberList"]) {
         NSMutableArray * arr = [NSMutableArray array];
         for (NSDictionary * dic in value) {
             MyFriendsModel * model = [MyFriendsModel new];

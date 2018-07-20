@@ -17,6 +17,7 @@
 
 #import "MsgModel.h"
 #import "MessageManager.h"
+#import "HandleSocketDao.h"
 
 
 
@@ -76,38 +77,45 @@ static SocketTool *shared = nil;
      *  TimeInterval:心跳包执行间隔时间
      *
      */
-    [self.connectTimer invalidate];
-    self.connectTimer = nil;
+    [self stopHeartBeat];
     self.connectTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(longConnectToSocket) userInfo:nil repeats:YES];// 在longConnectToSocket方法中进行长连接需要向服务器发送的讯息
     /**
      *  启动定时器
      */
     [self.connectTimer fire];
 }
+-(void)stopHeartBeat{
+    [self.connectTimer invalidate];
+    self.connectTimer = nil;
+}
+
 -(void)longConnectToSocket{
-    [self sendMsg:@"心跳包" receiveId:@"" msgInfoClass:82];
+    [self sendMsg:@"心跳包" receiveId:@"" msgInfoClass:InformationTypeHeartBeat isGroup:NO];
     
 }
 
 
--(void)sendMsg:(NSString *)msg receiveId:(NSString *)receiveId  msgInfoClass:(NSInteger)msgInfoClass{
+/**
+ 发送消息
+
+ @param msg 发送的消息内容
+ @param receiveId 发送给谁
+ @param msgInfoClass 消息的类型
+ @param isGroup 是不是群聊
+ */
+-(void)sendMsg:(NSString *)msg receiveId:(NSString *)receiveId  msgInfoClass:(InformationType)msgInfoClass isGroup:(BOOL)isGroup{
     NSString * SendID = CurrentUserId;
     NSString * ReceiveId = receiveId;
-    NSInteger MsgInfoClass = msgInfoClass;
-    
-    
-    
+    InformationType MsgInfoClass = msgInfoClass;
     
     
     NSString * MsgContent = [self getHeartBeatMsgContent]; // 心跳包
-    if (msgInfoClass == 12) { // 消息
+    if (msgInfoClass == InformationTypeChat) { // 消息
         MsgContent = [self getMsgContentWithMsg:msg];
     };
  
     
-    
-    
-    BOOL  GroupMsg = NO;
+    BOOL  GroupMsg = isGroup;
     NSString * Type = @"mobile";
 
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
@@ -136,20 +144,19 @@ static SocketTool *shared = nil;
     NSMutableDictionary * ClassTextMsg = [NSMutableDictionary dictionary];
     [ClassTextMsg setValue:msg forKey:@"MsgContent"];
     [ClassTextMsg setValue:@"" forKey:@"ImageInfo"];
-    
-    NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setValue:[self getBase64WithDictionary:ClassTextMsg] forKey:@"ClassTextMsg"];
 
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    [param setValue:[HandleSocketDao getBase64WithDictionary:ClassTextMsg] forKey:@"ClassTextMsg"];
     
-    return [self getBase64WithDictionary:ClassTextMsg];
+    return [HandleSocketDao getBase64WithDictionary:ClassTextMsg];
     
 //    return [self getBase64WithDictionary:param];
 }
 #pragma mark -- 心跳包的 msgcontent
 -(NSString *)getHeartBeatMsgContent{
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
-    [param setValue:@"13383824275" forKey:@"ClassUserInfo"];
-    [param setValue:@"彭辉" forKey:@"RealName"];
+    [param setValue:CurrentUserName forKey:@"ClassUserInfo"];
+    [param setValue:CurrentUserName forKey:@"RealName"];
     [param setValue:CurrentUserId forKey:@"UserId"];
     [param setValue:@"10.120.35.203" forKey:@"IP"];
     [param setValue:@([NetTool getNetPort]) forKey:@"Port"];
@@ -180,26 +187,23 @@ static SocketTool *shared = nil;
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
 {
     NSLog(@"接收到%@的消息:%@",address,data);//自行转换格式吧
-    NSDictionary * receiceDic = [self resolveReceiveDataWithData:data];
+    NSDictionary * receiceDic = [self analysisReceiveDataWithData:data];
     NSLog(@"%@",receiceDic);
-    [self postNotiWith:receiceDic];
-    
-    
-
+    [HandleSocketDao solveWith:receiceDic];
 }
 
 
 #pragma mark  处理接收到的数据
--(NSDictionary *)resolveReceiveDataWithData:(NSData *)data{
+-(NSDictionary *)analysisReceiveDataWithData:(NSData *)data{
     NSData * inflateData =  [NSData gzipInflate:data];
     NSString * jsonString = [[NSString alloc] initWithData:inflateData encoding:NSUTF8StringEncoding];
     NSDictionary * dataDic = [NSString dictionaryWithJsonString:jsonString];
     
     
     if ([dataDic.allKeys containsObject:@"MsgContent"]) {
-        NSDictionary * MsgContentDic = [self getDictionaryWithBase64:dataDic[@"MsgContent"]];
+        NSDictionary * MsgContentDic = [HandleSocketDao getDictionaryWithBase64:dataDic[@"MsgContent"]];
         if ([MsgContentDic.allKeys containsObject:@"ClassTextMsg"]) {
-            NSDictionary * ClassTextMsgDic = [self getDictionaryWithBase64:MsgContentDic[@"ClassTextMsg"]];
+            NSDictionary * ClassTextMsgDic = [HandleSocketDao getDictionaryWithBase64:MsgContentDic[@"ClassTextMsg"]];
 
             [MsgContentDic setValue:ClassTextMsgDic forKey:@"ClassTextMsg"];
         }
@@ -208,109 +212,6 @@ static SocketTool *shared = nil;
     
     return dataDic;
 }
-#pragma mark -- 根据  MsgInfoClass  发送通知
--(void)postNotiWith:(NSDictionary *)receiveDic{
-    
-//    [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceive object:receiveDic userInfo:nil];
-    
-    NSString *  MsgInfoClass = [NSString stringWithFormat:@"%@",receiveDic[@"MsgInfoClass"]];
-    switch ([MsgInfoClass integerValue]) {
-        case 12: /// 个人发送的消息
-            [self handleChatMsgDic:receiveDic];
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveMsgInfoClass12 object:receiveDic userInfo:nil];
 
-            
-            break;
-        case 3: /// 上线通知
-//            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveMsgInfoClass12 object:receiveDic userInfo:nil];
-            break;
-        default:
-            break;
-    }
-    
-}
-
-
-#pragma mark -- 压缩 解压
-
--(NSData *)getGzipWithDictionary:(NSDictionary *)dictionary{
-    NSString * jsonString =   [NSString convertToJsonData:dictionary];
-    NSData * jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSData * dataGzip = [NSData gzipDeflate:jsonData];
-    return dataGzip;
-}
-
--(NSDictionary *)getDictionaryWithGzip:(NSData *)GzipData{
-    // 解压
-    NSData * data2 = [NSData gzipInflate:GzipData];
-    // data 转json 字符串
-    NSString * jsonString = [[NSString alloc] initWithData:data2 encoding:NSUTF8StringEncoding];
-    NSDictionary * dataDic = [NSString dictionaryWithJsonString:jsonString];
-    return dataDic;
-}
-
--(NSString *)getBase64WithDictionary:(NSDictionary *)dictionary{
-    NSData * dataGzip = [self getGzipWithDictionary:dictionary];
-    NSString * base64 = [dataGzip base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
-    return base64;
-}
--(NSDictionary *)getDictionaryWithBase64:(NSString*)base64{
-    if ([base64 isKindOfClass:[NSNull class]]) {
-        return [NSDictionary dictionary];
-    };
-    
-    if ([base64 isEmptyString]) {
-        return [NSDictionary dictionary];
-    };
-    
-    // base64 转为 data
-    NSData * gzipdata = [[NSData alloc]initWithBase64EncodedString:base64 options:NSDataBase64Encoding64CharacterLineLength];
-    return   [self getDictionaryWithGzip:gzipdata];
-}
-
-
-
-
-#pragma mark -- 聊天消息
-
-/**
- 把聊天消息保存到单例中
-
- @param msgDic 接收的消息
- */
--(void)handleChatMsgDic:(NSDictionary *)msgDic{
-    NSDictionary * MsgContent =[NSDictionary dictionaryWithDictionary:msgDic];
-    NSString *  MsgInfoClass = [NSString stringWithFormat:@"%@",MsgContent[@"MsgInfoClass"]];
-    NSString *  ReceiveId = [NSString stringWithFormat:@"%@",MsgContent[@"ReceiveId"]];
-    NSString *  SendID = [NSString stringWithFormat:@"%@",MsgContent[@"SendID"]];
-    
-    if ([MsgInfoClass isEqualToString:@"12"] && [ReceiveId isEqualToString:CurrentUserId]) {
-        
-        if (MsgContent && [MsgContent.allKeys containsObject:@"MsgContent"]) {
-            
-            NSString * msg = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"][@"MsgContent"]];
-        
-            MsgModel * model = [MsgModel new];
-//            model.headIcon = 
-            model.target = SendID;
-            model.sendId = SendID;
-            model.receivedId = ReceiveId;
-            model.content = msg;
-            model.msgType = 0;
-            
-            
-            MessageTargetModel * target = [MessageTargetModel new];
-            target.Id = SendID;
-            target.name = @"";
-            target.imgUrl = @"";
-    
-            
-            [[MessageManager share] addMsg:model toTarget:target];
-        }
-        
-        
-    }
-    
-}
 
 @end

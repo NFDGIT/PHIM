@@ -6,9 +6,9 @@
 //  Copyright © 2018年 Jobs. All rights reserved.
 //
 
-#import "MessageTargetModel.h"
+#import "ConversationModel.h"
 
-@implementation MessageTargetModel
+@implementation ConversationModel
 -(id)valueForKey:(NSString *)key{
     return [NSString stringWithFormat:@"%@",[super valueForKey:key]];
     

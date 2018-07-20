@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface BaseViewController : UIViewController
-
+@property (nonatomic,strong)void(^userStatusChangeBlock)(NSDictionary * data);// 当有用户的状态发生改变时 的回调
+@property (nonatomic,strong)void(^userInfoChangeBlock)(NSDictionary * data);// 当有用户的资料发生改变时 的回调
 @property (nonatomic,assign)BOOL hiddeNavi;
 -(void)initNavi;
 -(void)initData;

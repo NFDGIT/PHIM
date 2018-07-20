@@ -8,8 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MessageTargetModel : NSObject
-@property (nonatomic,strong)NSString * Id;
+@interface ConversationModel : NSObject
+@property (nonatomic,strong)NSString * Id;  // 聊天对象的 id
 @property (nonatomic,strong)NSString * name;
 @property (nonatomic,strong)NSString * imgUrl;
+
+@property (nonatomic,strong)NSString * lastMsg;
+@property (nonatomic,assign)BOOL  GroupMsg;     // 是否是群聊
 @end

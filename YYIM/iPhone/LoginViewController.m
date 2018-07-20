@@ -75,23 +75,34 @@
     }
     
     
-    setCurrentUserId(_userNameTF.text);
-    setCurrentUserIcon(@"1");
-    [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
-    return;
+//    setCurrentUserId(_userNameTF.text);
+//    setCurrentUserIcon(@"1");
+//    [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
+//    return;
     
     
     
     [Request loginWithUserName:_userNameTF.text passWord:_passwordTF.text success:^(NSUInteger code, NSString *msg, id data) {
         if (code == 200) {
-            setCurrentUserId(self->_userNameTF.text);
-            [[NSUserDefaults standardUserDefaults] setValue:self->_userNameTF.text forKey:@"UserName"];
-            [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
-            
+//            setCurrentUserId(self->_userNameTF.text);
+//            [[NSUserDefaults standardUserDefaults] setValue:self->_userNameTF.text forKey:@"UserName"];
+
+          
             
             [Request getUserInfoWithIdOrName:self->_userNameTF.text success:^(NSUInteger code, NSString *msg, id data) {
                 if (code == 200) {
+                    NSString *  HeadName = [NSString stringWithFormat:@"%@",data[@"HeadName"]];
+                    NSString *  UnderWrite = [NSString stringWithFormat:@"%@",data[@"UnderWrite"]];
+                    NSString *  userID = [NSString stringWithFormat:@"%@",data[@"userID"]];
+                    NSString *  userName = [NSString stringWithFormat:@"%@",data[@"userName"]];
                     
+                    setCurrentUserId(userID);
+                    setCurrentUserIcon(HeadName);
+                    setCurrentUserName(userName);
+                    setCurrentUserUnderWrite(UnderWrite);
+                    [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
+                }else{
+                    [self.view makeToast:msg duration:2 position:CSToastPositionCenter];
                 }
             } failure:^(NSError *error) {
                     [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];

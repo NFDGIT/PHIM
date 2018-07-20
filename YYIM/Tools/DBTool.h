@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "MsgModel.h"
-#import "MessageTargetModel.h"
+#import "ConversationModel.h"
+#import "UserInfoModel.h"
+//#import "PersonStatusModel.h"
 
 @interface DBTool : NSObject
 +(instancetype)share;
@@ -16,7 +18,7 @@
 
 
 
-
+#pragma mark -- 消息
 /**
  根据 target 获取 数据库中的 所有聊天数据
 
@@ -34,8 +36,43 @@
  */
 -(void)addModel:(MsgModel *)model withTarget:(NSString *)target response:(void(^)(BOOL success))response;
 
+#pragma mark -- 会话
+/**
+ 获取所有的会话
 
--(void)getChatPersons:(void(^)(NSArray *result))success;
--(void)addTargetModel:(MessageTargetModel *)model response:(void (^)(BOOL))response;
+ @param success 获取成功
+ */
+-(void)getConversations:(void (^)(NSArray *))success;
 
+/**
+ 添加会画
+
+ @param model 会话的模型
+ @param response 添加会话的结果
+ */
+-(void)addConversationModel:(ConversationModel *)model response:(void (^)(BOOL))response;
+
+/**
+ 删除某个会话
+
+ @param conversationId 会话Id
+ @param response 结果
+ */
+-(void)deleteConversationId:(NSString *)conversationId response:(void (^)(BOOL))response;
+
+#pragma mark -- 会话
+
+/**
+ 添加用户信息
+ 
+ @param model 用户信息model
+ @param response 添加用户信息的结果
+ */
+-(void)addUserModel:(UserInfoModel *)model response:(void (^)(BOOL))response;
+/**
+ 获取所有的用户信息
+ 
+ @param success 获取成功
+ */
+-(void)getUserModels:(void (^)(NSArray *))success;
 @end

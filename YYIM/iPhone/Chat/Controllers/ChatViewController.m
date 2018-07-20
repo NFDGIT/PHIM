@@ -12,6 +12,8 @@
 #import "SocketTool.h"
 #import "MessageManager.h"
 #import "DBTool.h"
+#import "PersonDetailViewController.h"
+
 
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -44,13 +46,19 @@
 
 -(void)initData{
     _datas = [NSMutableArray array];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNewMsg:) name:NotiForReceiveMsgInfoClass12 object:nil];
 
 }
 
 
 -(void)initNavi{
-    self.title = _targetModel.Id;
+    self.title = _conversationModel.Id;
+    NSString * rightImgName = @"联系人_单人";
+    if (_conversationModel.GroupMsg) {
+         rightImgName = @"联系人_多人";
+    }
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:rightImgName] style:UIBarButtonItemStyleDone target:self action:@selector(rightClick)];
+    
     
 }
 -(void)initUI{
@@ -106,7 +114,7 @@
 }
 -(void)refreshData{
     
-    NSString * targetId = _targetModel.Id;
+    NSString * targetId = _conversationModel.Id;
     [[MessageManager share]getMessagesWithTargetId:targetId success:^(NSArray * result) {
         self->_datas = [NSMutableArray arrayWithArray:result];
         [self refreshUI];
@@ -121,21 +129,21 @@
 }
 #pragma mark -- 点击事件
 -(void)sendAction:(NSString *)msg{
-    [[SocketTool share] sendMsg:msg receiveId:[NSString stringWithFormat:@"%@",_targetModel.Id]  msgInfoClass:12];
+    [[SocketTool share] sendMsg:msg receiveId:[NSString stringWithFormat:@"%@",_conversationModel.Id]  msgInfoClass:InformationTypeChat isGroup:_conversationModel.GroupMsg];
     
     MsgModel * model = [MsgModel new];
 
-    model.target =_targetModel.Id;
+    model.target =_conversationModel.Id;
     model.sendId = CurrentUserId;
-//    model.targetHeadName = _targetModel.imgUrl;
-    
-    
-    
-    model.receivedId = _targetModel.Id;
+    model.receivedId = _conversationModel.Id;
     model.content = msg;
     model.msgType = MsgTypeText;
     model.headIcon = CurrentUserIcon;
-    [[MessageManager share] addMsg:model toTarget:_targetModel];
+    model.MsgInfoClass = InformationTypeChat;
+    model.GroupMsg = _conversationModel.GroupMsg;
+    
+    
+    [[MessageManager share] addMsg:model toTarget:_conversationModel];
 
     [self refreshData];
 
@@ -145,15 +153,17 @@
     
     
     MsgModel * model = [MsgModel new];
-//    model.targetHeadName = _targetModel.imgUrl;
-    model.target = _targetModel.Id;
+    model.target = _conversationModel.Id;
     model.sendId = CurrentUserId;
-    model.receivedId = _targetModel.Id;
+    model.receivedId = _conversationModel.Id;
     model.msgType = MsgTypeImage;
     model.headIcon = CurrentUserIcon;
     model.content = @"";
     model.imageUrl = @"http://img1.imgtn.bdimg.com/it/?u=3920398476,1501488149&fm=27&gp=0.jpg&width=200&height=300";
-    [[MessageManager share] addMsg:model toTarget:_targetModel];
+    model.MsgInfoClass = InformationTypeChat;
+    model.GroupMsg = _conversationModel.GroupMsg;
+    
+    [[MessageManager share] addMsg:model toTarget:_conversationModel];
     
     [self refreshData];
     
@@ -218,6 +228,13 @@
         NSIndexPath *lastIndex = [NSIndexPath indexPathForRow:0 inSection:self.datas.count-1];
         [self.tableView scrollToRowAtIndexPath:lastIndex atScrollPosition:UITableViewScrollPositionBottom animated:isAnimated];
     });
+}
+
+#pragma mark -- 点击事件
+-(void)rightClick{
+    PersonDetailViewController * detail = [PersonDetailViewController new];
+    [self.navigationController pushViewController:detail animated:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning {

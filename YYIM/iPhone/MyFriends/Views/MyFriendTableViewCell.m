@@ -7,6 +7,9 @@
 //
 
 #import "MyFriendTableViewCell.h"
+#import "PersonManager.h"
+#import "UIImage+Helper.h"
+
 @interface MyFriendTableViewCell()
 @property (nonatomic,strong)UIImageView * headImg;
 @property (nonatomic,strong)UILabel * labelName;
@@ -26,7 +29,7 @@
     [self.contentView addSubview:headImg];
     _headImg = headImg;
     
-    
+
     
     
     _labelName = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 100, 20)];
@@ -44,11 +47,13 @@
 -(void)setModel:(MyFriendsModel *)model{
     _model = model;
     
-    
     _headImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",_model.HeadName]];
     _labelName.text = [NSString stringWithFormat:@"%@",_model.userName];
     _labelDesc.text = [NSString stringWithFormat:@"%@",_model.UnderWrite];
     
+    if (![[[PersonManager share]getStatusWithId:_model.userID] isEqualToString:@"1"]) {
+        _headImg.image = [UIImage changeGrayImage:_headImg.image];
+    }
     
     [self layoutSubviews];
 }

@@ -7,7 +7,9 @@
 //
 
 #import "MessageLlistTableViewCell.h"
-
+#import "PersonManager.h"
+#import "UIImage+Helper.h"
+#import "PersonManager.h"
 
 
 @interface MessageLlistTableViewCell()
@@ -47,19 +49,39 @@
     [self.contentView addSubview:_labelSignature];
 
 }
--(void)setModel:(MessageTargetModel *)model{
+-(void)setModel:(ConversationModel *)model{
     _model = model;
     
     
-//    [_imgView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_model.imgUrl]] placeholderImage:[UIImage imageNamed:@"touxiang_default"]];
-    _imgView.image = [UIImage imageNamed:@"touxiang_default"];
-    UIImage * image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",_model.imgUrl]];
-    if (image) {
-        _imgView.image = image;
-    }
-                    
     _labelName.text = _model.name;
     _labelSignature.text = _model.Id;
+    
+    if (_model.GroupMsg) {
+        _imgView.image = [UIImage imageNamed:@"群组_default"];
+    }else{
+    
+        
+        UserInfoModel * userInfoModel =  [[PersonManager share]getModelWithId:_model.Id];
+        _labelName.text = [NSString stringWithFormat:@"%@",userInfoModel.userName];
+        _labelSignature.text = [NSString stringWithFormat:@"%@",userInfoModel.UnderWrite];
+        
+        
+        
+        _imgView.image = [UIImage imageNamed:@"touxiang_default"];
+        UIImage * image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",userInfoModel.HeadName]];
+        if (image) {
+            _imgView.image = image;
+        }
+        if (![userInfoModel.UserStatus isEqualToString:@"1"]) {
+            _imgView.image = [UIImage changeGrayImage:_imgView.image];
+        }
+        
+    }
+
+   
+    
+    
+
     
     self.ph_Height = _imgView.bottom + 10;
 }

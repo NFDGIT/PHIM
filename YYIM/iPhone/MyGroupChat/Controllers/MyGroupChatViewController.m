@@ -85,17 +85,20 @@
     
     
         NSString * userName =  [[NSUserDefaults standardUserDefaults] valueForKey:@"UserName"];
-//        userName = @"15701344579";
+        userName = @"15701344579";
     
         [ProgressTool show];
         [Request getUserInfoWithIdOrName:userName success:^(NSUInteger code, NSString *msg, id data) {
             [ProgressTool hidden];
     
             if (code == 200) {
-                NSArray * data = dataDic[@"Groups"];
+//                NSArray * data = dataDic[@"Groups"];
+                NSString * dataString =[NSString stringWithFormat:@"%@",data[@"Groups"]];
+                NSArray * datas =   [NSJSONSerialization JSONObjectWithData:[dataString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
+                
                 
                 NSMutableArray * arr = [NSMutableArray array];
-                for (NSDictionary * dic in data) {
+                for (NSDictionary * dic in datas) {
                     MyGroupChatModel * model = [MyGroupChatModel new];
                     [model setValuesForKeysWithDictionary:dic];
                     [arr addObject:model];
@@ -103,9 +106,13 @@
                 [self->_datas removeAllObjects];
                 [self->_datas addObjectsFromArray:arr];
     
+                
+                
+                    [self refreshUI];
             }
         } failure:^(NSError *error) {
             [ProgressTool hidden];
+            [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];
         }];
     
 }
@@ -136,13 +143,15 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     MyGroupChatModel * groupModel = _datas[indexPath.section];
-    MessageTargetModel * target = [MessageTargetModel new];
-    target.Id = groupModel.groupID;
-    target.name = groupModel.groupName;
-    target.imgUrl = @"1";
+    ConversationModel * conversationModel = [ConversationModel new];
+    conversationModel.Id = groupModel.groupID;
+    conversationModel.name = groupModel.groupName;
+    conversationModel.imgUrl = @"1";
+    conversationModel.GroupMsg = YES;
+    
     
     ChatViewController * chat=  [ChatViewController new];
-    chat.targetModel = target;
+    chat.conversationModel = conversationModel;
     [self.navigationController pushViewController:chat animated:YES];
 }
 

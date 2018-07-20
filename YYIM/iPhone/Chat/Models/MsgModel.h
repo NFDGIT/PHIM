@@ -15,10 +15,8 @@ typedef NS_ENUM(NSUInteger,MsgType) {
 
 
 @interface MsgModel : NSObject
-//@property (nonatomic,strong)NSString * msg;
-//@property (nonatomic,strong)NSString * Id;
+
 @property (nonatomic,strong)NSString * target;
-//@property (nonatomic,strong)NSString * targetHeadName;
 
 @property (nonatomic,strong)NSString * sendId;
 @property (nonatomic,strong)NSString * receivedId;
@@ -31,4 +29,6 @@ typedef NS_ENUM(NSUInteger,MsgType) {
 @property (nonatomic,strong)NSString * imageLocal;
 
 
+@property (nonatomic,assign)BOOL      GroupMsg;     // 是否是群聊
+@property (nonatomic,assign)InformationType  MsgInfoClass; // 消息的种类。
 @end

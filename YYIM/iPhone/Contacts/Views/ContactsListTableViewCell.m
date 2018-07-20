@@ -8,6 +8,10 @@
 
 #import "ContactsListTableViewCell.h"
 
+#import "UIImage+Helper.h"
+
+#import "PersonManager.h"
+
 
 
 @interface ContactsListTableViewCell()
@@ -84,6 +88,10 @@
         
         _headImg.hidden = NO;
         _headImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",_model.ImageIndex]];
+        if (![[[PersonManager share]getStatusWithId:_model.Tag] isEqualToString:@"1"]) {
+            _headImg.image = [UIImage changeGrayImage:_headImg.image];
+        }
+        
         _headImg.left = _model.level.count * 20;
         
         _btnName.left = _headImg.right + 10;
