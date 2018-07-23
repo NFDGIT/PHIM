@@ -25,6 +25,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userStatusChange:) name:NotiForReceiveTypeUserStatusChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoChange:) name:NotiForReceiveTypeUserInfoChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatNewMessage:) name:NotiForReceiveTypeChat object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSelfState:) name:NotiForReceiveTypeUpdateSelfState object:nil];
 
     // Do any additional setup after loading the view.
 }
@@ -47,6 +48,11 @@
 }
 
 #pragma mark -- 通知的方法
+-(void)updateSelfState:(NSNotification *)noti{
+    if(_updateSelfStateBlock){
+        _updateSelfStateBlock(noti.object);
+    }
+}
 -(void)userStatusChange:(NSNotification *)noti{
     if (_userStatusChangeBlock) {
         _userStatusChangeBlock(noti.object);

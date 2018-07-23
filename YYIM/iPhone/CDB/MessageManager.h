@@ -39,6 +39,14 @@
  @param response 结果
  */
 -(void)deleteConversationId:(NSString *)conversationId response:(void (^)(BOOL))response;
+/**
+ 获取某个会话
+ 
+ @param conversationId 会话Id
+ @param response 结果
+ */
+-(void)getConversationWithId:(NSString *)conversationId response:(void (^)(ConversationModel *model))response;
+#pragma mark -- 消息
 
 
 -(void)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success;

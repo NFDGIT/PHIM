@@ -9,6 +9,8 @@
 #import "ChatCell.h"
 #import "RishTextAdapter.h"
 #import "NSDictionary+Helper.h"
+#import "PersonManager.h"
+
 
 @interface ChatCell()
 
@@ -37,7 +39,9 @@
     headImg.layer.masksToBounds = YES;
     [self.contentView addSubview:headImg];
     _headImg = headImg;
-    
+    headImg.userInteractionEnabled = YES;
+    UITapGestureRecognizer * headTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(headImgTap:)];
+    [headImg addGestureRecognizer:headTap];
     
     
     UILabel * labelName = [[UILabel alloc]initWithFrame:CGRectMake(headImg.right + 10, headImg.top, self.width - headImg.right - 20, 20)];
@@ -74,14 +78,18 @@
     _msgContent.hidden = YES;
     _imgView.hidden = YES;
     
+    
+    UserInfoModel * infoModel = [[PersonManager share] getModelWithId:_model.sendId];
+    
 
     _headImg.image = [UIImage imageNamed:@"touxiang_default"];
-    UIImage * headImage = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",_model.headIcon]];
+    UIImage * headImage = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",infoModel.HeadName]];
+    
+    
     if (headImage) {
         _headImg.image = headImage;
     }
-    
-    _labelName.text = _model.sendId;
+    _labelName.text = infoModel.RealName;
     
     
 
@@ -182,12 +190,24 @@
     _model = model;
     
 
+
+    
     
     
     [self layoutSubviews];
     
     
 }
+
+#pragma mark -- 点击事件
+-(void)headImgTap:(UITapGestureRecognizer *)tap{
+    if (_headClickBlock) {
+        _headClickBlock(self.indexPath);
+    }
+    
+    
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

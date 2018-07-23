@@ -12,6 +12,7 @@
 #import "MyFriendsViewController.h"
 #import "MyGroupChatViewController.h"
 #import "UserChangeStatus.h"
+#import "PersonDetailViewController.h"
 
 
 #import "AppDelegate.h"
@@ -30,6 +31,10 @@
     [self initUI];
     [self refreshUI];
     
+    __weak typeof(self) weakSelf = self;
+    self.updateSelfStateBlock = ^(NSDictionary *data) {
+        [weakSelf refreshUI];
+    };
     
     
     // Do any additional setup after loading the view.
@@ -50,10 +55,11 @@
     
     CGFloat setY = 0;
     
-    UIView * userBackView = [[UIView alloc]initWithFrame:CGRectMake(0, setY + 20, scrollView.width, 100)];
+    UIButton * userBackView = [[UIButton alloc]initWithFrame:CGRectMake(0, setY + 20, scrollView.width, 100)];
     userBackView.backgroundColor  =[UIColor whiteColor];
     setY = userBackView.bottom + 20;
     [scrollView addSubview:userBackView];
+    [userBackView addTarget:self action:@selector(jumpToDetail) forControlEvents:UIControlEventTouchUpInside];
     
     {
         UIImageView * headImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 60, 60)];
@@ -148,13 +154,21 @@
     [userchange appear];
     userchange.userStatus = CurrentUserStatus;
     
+
     userchange.changeStatusBlock = ^(UserStatus userStatus) {
-        setCurrentUserStatus(userStatus);
-        [weakChange disAppear];
-        [weakSelf refreshUI];
-    
+  
+        [[SocketTool share] sendMsg:[NSString stringWithFormat:@"%lu",(unsigned long)userStatus] receiveId:CurrentUserId msgInfoClass:InformationTypeUpdateSelfState isGroup:NO];
+        
+           [weakChange disAppear];
         
     };
+    
+}
+-(void)jumpToDetail{
+    PersonDetailViewController * detail = [PersonDetailViewController new];
+    detail.Id = CurrentUserId;
+    [self.navigationController pushViewController:detail animated:YES];
+    
     
 }
 -(void)jumpToMyFriend{

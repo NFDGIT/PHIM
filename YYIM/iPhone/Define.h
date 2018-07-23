@@ -15,6 +15,7 @@
 
 
 #pragma mark -- 颜色
+#define ColorWhite  [UIColor colorWithRed:1 green:1 blue:1 alpha:0.8]
 #define ColorBlack  [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8]
 #define ColorRed    [UIColor colorWithRed:235/255.0 green:51/255.0 blue:51/255.0 alpha:1]
 
@@ -89,10 +90,15 @@ typedef NS_ENUM(NSUInteger,InformationType) {
     InformationTypeLeaveOut = 24,              // 强制下线
 
     
-    
-    
-
-    
+    InformationTypeGetContactsRTData = 40,           // 获取我的所有联系人的在线状态、版本号，以及我的所有组的版本号
+    InformationTypeGetFriendIDList = 41,             // 获取我的所有好友ID（C->S）
+    InformationTypeGetAllContacts = 42,              // 获取我的所有联系人资料（C->S）
+    InformationTypeAddFriend = 43,                   // 添加好友（C->S）
+    InformationTypeRemoveFriend = 44,                // 删除好友（C->S）
+    InformationTypeFriendRemovedNotify = 45,         // 通知客户端其被对方从好友中删除（S->C）
+    InformationTypeFriendAddedNotif = 46,            // 通知客户端其被对方添加为好友（S->C）
+    InformationTypeFileOffLineDataArrival = 47,      // 离线传输请求
+    InformationTypeGetOfflineFile = 48,              // 请求离线文件
     
 
     InformationTypeSystemNotify4AllOnline = 80,     // 发送给所有在线用户的系统消息
@@ -102,7 +108,7 @@ typedef NS_ENUM(NSUInteger,InformationType) {
 };
 #pragma mark -- 通知的
 #define NotiForReceiveTypeUserStatusChange @"NotiForReceiveTypeUserStatusChange"   // 接收到 用户状态改变
-
+#define NotiForReceiveTypeUpdateSelfState  @"NotiForReceiveTypeUpdateSelfState"    // 更新当前用户在线状态 成功
 
 #define NotiForReceiveTypeSingOut @"NotiForReceiveTypeSingOut"   // 接收到 用户离线
 #define NotiForReceiveTypeNewUserLogin @"NotiForReceiveTypeNewUserLogin"   // 接收到 服务器告诉用户有新的联系人登录

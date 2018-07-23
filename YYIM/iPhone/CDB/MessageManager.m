@@ -31,6 +31,8 @@ static MessageManager *shared = nil;
 -(void)initData{
     _messageTargets = [NSMutableArray array];
     _messageDic = [NSMutableDictionary dictionary];
+    
+    
 }
 
 
@@ -62,6 +64,7 @@ static MessageManager *shared = nil;
     }];
     
 }
+
 /**
  删除某个会话
  
@@ -74,6 +77,20 @@ static MessageManager *shared = nil;
             response(success);
         }
     }];
+}
+/**
+ 获取某个会话
+ 
+ @param conversationId 会话Id
+ @param response 结果
+ */
+-(void)getConversationWithId:(NSString *)conversationId response:(void (^)(ConversationModel *model))response{
+    [[DBTool share]getConversationWithId:conversationId response:^(ConversationModel *model) {
+        if (response) {
+            response(model);
+        }
+    }];
+    
 }
 //-(void)getMsgTargetsSuccess:(void (^)(NSArray *))success{
 ////    NSArray * msgTargets = [NSArray array];
@@ -95,21 +112,28 @@ static MessageManager *shared = nil;
 //    }];
 //
 //}
+
+
+
+
+#pragma mark -- 消息
 -(void)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success{
-    NSArray * messages = [NSArray array];
-    
-    if ([_messageDic.allKeys containsObject:targetId]) {
-        NSArray * msgs = _messageDic[targetId];
-        if ([msgs isKindOfClass:[NSArray class]]) {
-            messages = msgs;
-        }
-    }
-    
+//    NSArray * messages = [NSArray array];
+//
+//    if ([_messageDic.allKeys containsObject:targetId]) {
+//        NSArray * msgs = _messageDic[targetId];
+//        if ([msgs isKindOfClass:[NSArray class]]) {
+//            messages = msgs;
+//        }
+//    }
+//
     [[DBTool share]getMessagesWithTarget:targetId success:^(NSArray *result) {
         if (success) {
             success(result);
         }
     }];
+  
+    
     
 //    return messages;
 }

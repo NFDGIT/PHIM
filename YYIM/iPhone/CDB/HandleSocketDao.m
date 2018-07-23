@@ -15,7 +15,7 @@
 #import "NSData+GZip.h"
 #import "PersonManager.h"
 #import "AppDelegate.h"
-
+#import "PHPush.h"
 
 
 
@@ -25,36 +25,50 @@
     
     InformationType  MsgInfoClass = [[NSString stringWithFormat:@"%@",receiveDic[@"MsgInfoClass"]] integerValue];
     switch (MsgInfoClass) {
-        case InformationTypeChat: /// 个人发送的消息
+        case InformationTypeSingOut: // 0  有新的用户离线
+            [self handlePersonStatus:receiveDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeSingOut object:receiveDic userInfo:nil];
+            break;
+        case InformationTypeUpdateSelfState: // 2   更新当前用户在线状态
+          
+             [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUpdateSelfState object:receiveDic userInfo:nil];
+            [PHAlert showWithTitle:@"提示" message:@"状态修改成功" block:^{
+            }];
+            break;
+        case InformationTypeNewUserLogin: // 3 有新的用户登陆
+            [self handlePersonStatus:receiveDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeNewUserLogin object:receiveDic userInfo:nil];
+            
+            
+            break;
+        case InformationTypeReturnChatArrival: //6 联系人不在线
+            [HandleSocketDao contactNotOnline:receiveDic];
+//            [self handleLeaveOut:receiveDic];
+            //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
+            //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeNewUserLogin object:receiveDic userInfo:nil];
+            break;
+        case InformationTypeChat: /// 12 个人发送的消息
             [HandleSocketDao handleChatMsgDic:receiveDic];
             [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeChat object:receiveDic userInfo:nil];
+            
+            
+            break;
+        case InformationTypeVibration: //13     窗口抖动
+            [HandleSocketDao handleVibration:receiveDic];
             break;
         case InformationTypeUsersDataArrival: /// 收到用户部分联系人的资料 返回在线用户的数据
             [HandleSocketDao handleUsersDataArrival:receiveDic];
             break;
             
-        case InformationTypeSingOut: /// 有新的用户离线
-            [self handlePersonStatus:receiveDic];
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeSingOut object:receiveDic userInfo:nil];
-            break;
-        case InformationTypeNewUserLogin: /// 有新的用户登陆
-            [self handlePersonStatus:receiveDic];
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeNewUserLogin object:receiveDic userInfo:nil];
-     
-            
-            break;
-        case InformationTypeLeaveOut: /// 强制下线
+
+        case InformationTypeLeaveOut: //24  强制下线
             [self handleLeaveOut:receiveDic];
 //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
 //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeNewUserLogin object:receiveDic userInfo:nil];
             break;
-        case InformationTypeReturnChatArrival: /// 联系人不在线
-            [self handleLeaveOut:receiveDic];
-            //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
-            //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeNewUserLogin object:receiveDic userInfo:nil];
-            break;
+
         default:
             break;
     }
@@ -95,6 +109,16 @@
     }
     
 }
+
+/**
+ 处理窗口抖动
+
+ @param msgDic 数据
+ */
++(void)handleVibration:(NSDictionary *)msgDic{
+    [PHAlert showWithTitle:@"消息" message:@"窗口抖动" block:^{
+    }];
+}
 /**
  用户状态发生改变
 
@@ -103,39 +127,31 @@
 +(void)handlePersonStatus:(NSDictionary *)msgDic{
     NSDictionary * dataDic =[NSDictionary dictionaryWithDictionary:msgDic];
     
+    NSString * SendID = [NSString stringWithFormat:@"%@",dataDic[@"SendID"]];
+    
+    
     if ([dataDic.allKeys containsObject:@"MsgContent"]) {
         
         NSDictionary * MsgContent = dataDic[@"MsgContent"];
         UserInfoModel * model = [UserInfoModel new];
         [model setValuesForKeysWithDictionary:MsgContent];
         
-        [[PersonManager share]setStatus:model.UserStatus withId:model.userID]; //  只改变 状态值
-//        if (MsgContent.allKeys.count > 4) { // 判断如果 返回的数据比较多的话 就把这个用户的所有数据都更新
-//              [[PersonManager share]updateModel:model];
-//        }
-        
-//        UserStatusOffLine = 0,            // 离线
-//        UserStatusOnline = 1,             // 在线
-//        UserStatusHide = 2,               // 隐身
-//        UserStatusAway = 3,               // 离开
-//        UserStatusBusy = 4,               // 繁忙
-//        UserStatusDontDisturb = 5,        // 勿扰
-        
+        [[PersonManager share]setStatus:model.UserStatus withId:model.userID]; //  只改变 状态值        
         
         NSString *UserStatus = [NSString stringWithFormat:@"%@",model.UserStatus];
-        
-       if ([UserStatus isEqualToString:@"1"])
-        {
-            [PHAlert showWithTitle:@"上线通知" message:[NSString stringWithFormat:@"用户：%@ 上线,状态码：%@",model.userID,UserStatus] block:^{
-                
-            }];
-        }else
-        {
-            [PHAlert showWithTitle:@"上线通知" message:[NSString stringWithFormat:@"用户：%@ 下线，状态码：%@",model.userID,UserStatus] block:^{
-                
-            }];
+        [[PersonManager share]setStatus:model.UserStatus withId:model.userID];
+        if ([model.userID isEqualToString:CurrentUserId]) {
+            setCurrentUserStatus([model.UserStatus integerValue]);
+
         }
-        
+
+        if([UserStatus isEqualToString:@"0"])
+        {
+            [[PersonManager share]setStatus:@"0" withId:SendID];
+        }
+        [PHPush push:[NSString stringWithFormat:@"用户：%@ ，状态码：%@",model.userID,UserStatus]];
+        [PHAlert showWithTitle:@"状态变化通知" message:[NSString stringWithFormat:@"用户：%@ ，状态码：%@",model.userID,UserStatus] block:^{
+        }];
     }
     
 }
@@ -187,13 +203,15 @@
             target.imgUrl = @"";
             
             [[MessageManager share] addMsg:model toTarget:target];
+            
+            [PHPush push:[NSString stringWithFormat:@"%@",msg]];
         }
         
         
     }
     
 }
--(void)contactNotOnline:(NSDictionary *)msgDic{
++(void)contactNotOnline:(NSDictionary *)msgDic{
 //    {
 //        GroupMsg = 0;
 //        MsgInfoClass = 6;
@@ -250,6 +268,15 @@
     // base64 转为 data
     NSData * gzipdata = [[NSData alloc]initWithBase64EncodedString:base64 options:NSDataBase64Encoding64CharacterLineLength];
     return   [self getDictionaryWithGzip:gzipdata];
+}
+
+
++(NSString *)getBase64WithObjc:(id)objc{
+    NSString * jsonString = [NSString getJsonStringWithObjc:objc];
+    NSData * jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSData * dataGzip = [NSData gzipDeflate:jsonData];
+    NSString * base64 = [dataGzip base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+    return base64;
 }
                        
 

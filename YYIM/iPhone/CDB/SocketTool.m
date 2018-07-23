@@ -113,7 +113,16 @@ static SocketTool *shared = nil;
     if (msgInfoClass == InformationTypeChat) { // 消息
         MsgContent = [self getMsgContentWithMsg:msg];
     };
- 
+    if (msgInfoClass == InformationTypeUpdateSelfState) { // 更新
+//        MsgContent = [HandleSocketDao getBase64WithDictionary:@{@"MsgContent":msg}];
+        
+        NSData * jsonData = [msg dataUsingEncoding:NSUTF8StringEncoding];
+        NSData * dataGzip = [NSData gzipDeflate:jsonData];
+        NSString * base64 = [dataGzip base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+        MsgContent = base64;
+       
+    }
+    
     
     BOOL  GroupMsg = isGroup;
     NSString * Type = @"mobile";
@@ -186,7 +195,7 @@ static SocketTool *shared = nil;
 }
 
 
-#pragma mark  处理接收到的数据
+#pragma mark  处理接收到的数据  把接收到的数据转化为字典
 -(NSDictionary *)analysisReceiveDataWithData:(NSData *)data{
     NSData * inflateData =  [NSData gzipInflate:data];
     NSString * jsonString = [[NSString alloc] initWithData:inflateData encoding:NSUTF8StringEncoding];

@@ -9,7 +9,8 @@
 #import "AppDelegate.h"
 #import "TabBarController.h"
 #import "LoginViewController.h"
-
+#import "NetTool.h"
+#import "PHPush.h"
 
 
 @interface AppDelegate ()
@@ -24,9 +25,14 @@
     [[IQKeyboardManager sharedManager] setEnable:YES];
     [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = YES;;
     [[IQKeyboardManager sharedManager] setEnableAutoToolbar:NO];
-
+    
+    [NetTool detectionNet];
+    [PHPush registLocalPush];
     [self switchRootVC];
 
+    
+    
+    
     return YES;
 }
 -(void)switchRootVC{
@@ -63,6 +69,9 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    
+
 }
 
 

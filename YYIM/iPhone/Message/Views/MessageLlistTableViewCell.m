@@ -17,6 +17,8 @@
 @property (nonatomic,strong)UILabel *     labelName;
 @property (nonatomic,strong)UILabel *     labelSignature;
 
+@property (nonatomic,strong)UILabel *     labelCount;
+
 @end
 @implementation MessageLlistTableViewCell
 
@@ -48,6 +50,51 @@
     _labelSignature.textColor = ColorBlack;
     [self.contentView addSubview:_labelSignature];
 
+    
+    _labelCount = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
+    _labelCount.font = FontNormal;
+    _labelCount.textColor = [UIColor whiteColor];
+    _labelCount.backgroundColor = ColorRed;
+    _labelCount.textAlignment = NSTextAlignmentCenter;
+    [self.contentView addSubview:_labelCount];
+    
+   
+}
+-(void)layoutSubviews{
+    [super layoutSubviews];
+    [self layout];
+}
+-(void)layout{
+    _imgView.left = _imgView.top = 10;
+    
+    _labelName.left = _imgView.right + 10;
+    _labelName.top = _imgView.top;
+    
+    _labelSignature.left = _labelName.left;
+    _labelSignature.top = _labelName.bottom + 10;
+    
+    
+    {
+        [_labelCount sizeToFit];
+        if (_labelCount.width < 25) {
+            _labelCount.width = 25;
+        }
+        if ( _labelCount.height < 25) {
+            _labelCount.height = 25;
+        }
+        
+        _labelCount.layer.cornerRadius = _labelCount.height/2;
+        _labelCount.layer.masksToBounds = YES;
+        
+        _labelCount.right = self.width - 20;
+        _labelCount.centerY =_imgView.centerY;
+        
+        _labelCount.hidden = _model.newCount == 0;
+    }
+
+    
+    
+
 }
 -(void)setModel:(ConversationModel *)model{
     _model = model;
@@ -62,9 +109,8 @@
     
         
         UserInfoModel * userInfoModel =  [[PersonManager share]getModelWithId:_model.Id];
-        _labelName.text = [NSString stringWithFormat:@"%@",userInfoModel.userName];
+        _labelName.text = [NSString stringWithFormat:@"%@",userInfoModel.RealName];
         _labelSignature.text = [NSString stringWithFormat:@"%@",userInfoModel.UnderWrite];
-        
         
         
         _imgView.image = [UIImage imageNamed:@"touxiang_default"];
@@ -78,11 +124,11 @@
         
     }
 
-   
-    
-    
+    _labelCount.text = [NSString stringWithFormat:@"%lu",(unsigned long)_model.newCount];
 
     
+    
+    [self layoutSubviews];
     self.ph_Height = _imgView.bottom + 10;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

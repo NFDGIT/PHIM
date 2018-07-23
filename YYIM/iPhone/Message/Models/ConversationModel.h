@@ -14,5 +14,7 @@
 @property (nonatomic,strong)NSString * imgUrl;
 
 @property (nonatomic,strong)NSString * lastMsg;
+@property (nonatomic,assign)NSUInteger newCount;
+
 @property (nonatomic,assign)BOOL  GroupMsg;     // 是否是群聊
 @end

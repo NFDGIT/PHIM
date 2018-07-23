@@ -12,5 +12,5 @@
 
 @interface ChatCell : UITableViewCell
 @property (nonatomic,strong)MsgModel * model;
-
+@property (nonatomic,strong)void(^headClickBlock)(NSIndexPath * indexPath);
 @end

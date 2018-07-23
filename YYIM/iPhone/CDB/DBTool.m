@@ -48,7 +48,7 @@ static DBTool *shared = nil;
     
     NSString * sql1 = @"create table if not exists conversations ('Id' TEXT, 'name' TEXT,'imgUrl'  TEXT,'GroupMsg'  INTEGER)"; // 会话的表
     
-    NSString * sql2 = @"create table if not exists userList ('userID' TEXT, 'userName' TEXT,'UnderWrite'  TEXT,'HeadName'  TEXT,'UserStatus'  TEXT)"; // 用户详情的表
+    NSString * sql2 = @"create table if not exists userList ('userID' TEXT, 'userName' TEXT,'UnderWrite'  TEXT,'HeadName'  TEXT,'UserStatus'  TEXT,'State' TEXT,'Email' TEXT,'Sex' TEXT,'RealName' TEXT,'Phone' TEXT)"; // 用户详情的表
     
 
     //5.执行更新操作 此处database直接操作，不考虑多线程问题，多线程问题，用FMDatabaseQueue 每次数据库操作之后都会返回bool数值，YES，表示success，NO，表示fail,可以通过 @see lastError @see lastErrorCode @see lastErrorMessage
@@ -198,7 +198,44 @@ static DBTool *shared = nil;
     [_db close];
     
 }
-#pragma mark -- 会话
+/**
+ 获取某个会话
+ 
+ @param conversationId 会话Id
+ @param response 结果
+ */
+-(void)getConversationWithId:(NSString *)conversationId response:(void (^)(ConversationModel * model))response{
+    [_db open];
+    NSMutableArray * arr = [NSMutableArray array];
+    
+    
+    //    NSString *sql = @"select * from 'chatMessages' where";
+    FMResultSet *result = [_db executeQuery:@"select * from 'conversations' where Id = ?" withArgumentsInArray:@[conversationId]];
+    while ([result next]) {
+        ConversationModel *conversationModel = [ConversationModel new];
+        conversationModel.Id = [result stringForColumn:@"Id"];
+        conversationModel.name = [result stringForColumn:@"name"];
+        conversationModel.imgUrl = [result stringForColumn:@"imgUrl"];
+        conversationModel.GroupMsg = [result boolForColumn:@"GroupMsg"];
+        
+        [arr addObject:conversationModel];
+        //        NSLog(@"从数据库查询到的人员 %@",target.Id);
+        
+    }
+    
+    
+    if(response)
+    {
+        if (arr.count <= 0) {
+            response(nil);
+        }else{
+            response(arr.firstObject);
+        }
+    }
+    [_db close];
+    
+}
+#pragma mark -- 用户信息
 
 /**
  添加用户信息
@@ -215,8 +252,15 @@ static DBTool *shared = nil;
     NSString *HeadName = [NSString stringWithFormat:@"%@",model.HeadName];
     NSString *UserStatus = [NSString stringWithFormat:@"%@",model.UserStatus];
     
+    NSString *Phone = [NSString stringWithFormat:@"%@",model.Phone];
+    NSString *State = [NSString stringWithFormat:@"%@",model.State];
+    NSString *Email = [NSString stringWithFormat:@"%@",model.Email];
+    NSString *Sex = [NSString stringWithFormat:@"%@",model.Sex];
+    NSString *RealName = [NSString stringWithFormat:@"%@",model.RealName];
     
-    BOOL result = [_db executeUpdate:@"insert into 'userList' (userID,userName,UnderWrite,HeadName,UserStatus) values(?,?,?,?,?)" withArgumentsInArray:@[userID,userName,UnderWrite,HeadName,UserStatus]];
+    
+//    'State' TEXT,'Email' TEXT,'Sex' TEXT,'RealName' TEXT
+    BOOL result = [_db executeUpdate:@"insert into 'userList' (userID,userName,UnderWrite,HeadName,UserStatus,State,Email,Sex,RealName,Phone) values(?,?,?,?,?,?,?,?,?,?)" withArgumentsInArray:@[userID,userName,UnderWrite,HeadName,UserStatus,State,Email,Sex,RealName,Phone]];
     if (response) {
         response(result);
     }
@@ -241,6 +285,12 @@ static DBTool *shared = nil;
         userInfoModel.UnderWrite = [result stringForColumn:@"UnderWrite"];
         userInfoModel.HeadName = [result stringForColumn:@"HeadName"];
         userInfoModel.UserStatus = [result stringForColumn:@"UserStatus"];
+        
+        userInfoModel.RealName = [result stringForColumn:@"RealName"];
+        userInfoModel.Phone = [result stringForColumn:@"Phone"];
+        userInfoModel.Email = [result stringForColumn:@"Email"];
+        userInfoModel.Sex = [result stringForColumn:@"Sex"];
+        userInfoModel.State = [result stringForColumn:@"State"];
         
         [mdic addEntriesFromDictionary:@{userInfoModel.userID:userInfoModel}];
         //        NSLog(@"从数据库查询到的人员 %@",target.Id);

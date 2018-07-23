@@ -15,6 +15,11 @@
 @property (nonatomic,strong)NSString * HeadName;
 @property (nonatomic,strong)NSString * UserStatus;
 @property (nonatomic,strong)NSString * RealName;
+@property (nonatomic,strong)NSString * State;
+@property (nonatomic,strong)NSString * Email;
+@property (nonatomic,strong)NSString * Sex;
+@property (nonatomic,strong)NSString * Phone;
+
 
 @property (nonatomic,strong)NSArray * FriendDicationary;
 @property (nonatomic,strong)NSArray * Groups;

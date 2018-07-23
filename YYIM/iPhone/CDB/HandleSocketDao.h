@@ -45,4 +45,6 @@
  @return 结果
  */
 +(NSDictionary *)getDictionaryWithBase64:(NSString*)base64;
+
++(NSString *)getBase64WithObjc:(id)objc;
 @end

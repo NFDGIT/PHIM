@@ -17,6 +17,8 @@
 #include <ifaddrs.h>
 #import <dlfcn.h>
 
+#import <AFNetworking.h>
+
 
 #import <SystemConfiguration/SystemConfiguration.h>
 
@@ -134,4 +136,36 @@ int get_free_port()
 #endif
     return port;
 }
+
++(void)detectionNet{
+    AFNetworkReachabilityManager * manager = [AFNetworkReachabilityManager sharedManager];
+    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        /*
+         AFNetworkReachabilityStatusUnknown          = -1,
+         AFNetworkReachabilityStatusNotReachable     = 0,
+         AFNetworkReachabilityStatusReachableViaWWAN = 1,
+         AFNetworkReachabilityStatusReachableViaWiFi = 2,
+         */
+        switch (status) {
+            case AFNetworkReachabilityStatusUnknown:
+                NSLog(@"网络状态未知");
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+                NSLog(@"没有网络");
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NotReachable" object:nil];
+                
+                break;
+            case  AFNetworkReachabilityStatusReachableViaWWAN:
+                NSLog(@"3G|4G蜂窝移动网络");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"WIFI网络");
+                break;
+            default:
+                break;
+        }
+    }];
+    [manager startMonitoring];
+}
+
 @end

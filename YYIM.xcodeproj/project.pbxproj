@@ -37,6 +37,7 @@
 		C55FF60E20F8672C00A86F00 /* NetTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60D20F8672C00A86F00 /* NetTool.m */; };
 		C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61620F898E000A86F00 /* MineTableViewCell.m */; };
 		C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61920F89A2300A86F00 /* DBTool.m */; };
+		C57490482105D8FB00577882 /* PHPush.m in Sources */ = {isa = PBXBuildFile; fileRef = C57490472105D8FB00577882 /* PHPush.m */; };
 		C590210020F44D49001296C4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C59020FF20F44D49001296C4 /* AppDelegate.m */; };
 		C590210320F44D49001296C4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C590210220F44D49001296C4 /* ViewController.m */; };
 		C590210620F44D49001296C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C590210420F44D49001296C4 /* Main.storyboard */; };
@@ -158,6 +159,8 @@
 		C55FF61620F898E000A86F00 /* MineTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineTableViewCell.m; sourceTree = "<group>"; };
 		C55FF61820F89A2300A86F00 /* DBTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBTool.h; sourceTree = "<group>"; };
 		C55FF61920F89A2300A86F00 /* DBTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBTool.m; sourceTree = "<group>"; };
+		C57490462105D8FB00577882 /* PHPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHPush.h; sourceTree = "<group>"; };
+		C57490472105D8FB00577882 /* PHPush.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHPush.m; sourceTree = "<group>"; };
 		C59020FB20F44D49001296C4 /* YYIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YYIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59020FE20F44D49001296C4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C59020FF20F44D49001296C4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -553,6 +556,8 @@
 				C50937FE2100936400A70E41 /* UIImage+Helper.m */,
 				C50938072101BE5000A70E41 /* PHAlert.h */,
 				C50938082101BE5000A70E41 /* PHAlert.m */,
+				C57490462105D8FB00577882 /* PHPush.h */,
+				C57490472105D8FB00577882 /* PHPush.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1036,6 +1041,7 @@
 				C590218120F4AF36001296C4 /* MyFriendsModel.m in Sources */,
 				C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */,
 				C5EFFE5E20FC923A003BDB2E /* RishTextAdapter.m in Sources */,
+				C57490482105D8FB00577882 /* PHPush.m in Sources */,
 				C590214420F44FB3001296C4 /* MessageListViewController.m in Sources */,
 				C5EFFCB720FC3651003BDB2E /* ConversationModel.m in Sources */,
 				C590214A20F44FE1001296C4 /* MineViewController.m in Sources */,

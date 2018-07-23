@@ -16,4 +16,7 @@
 //这是本地host的IP地址
 + (NSString *) localIPAddress;
 +(NSInteger)getNetPort;
+
+// 检测网络
++(void)detectionNet;
 @end

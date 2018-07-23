@@ -10,6 +10,5 @@
 #import "ConversationModel.h"
 
 @interface ChatViewController : BaseViewController
-//@property (nonatomic,strong)NSString * userId;
 @property (nonatomic,strong)ConversationModel * conversationModel;
 @end

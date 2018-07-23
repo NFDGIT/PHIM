@@ -300,6 +300,8 @@
         
         
         ConversationModel * conversationModel = [ConversationModel new];
+        
+        
         conversationModel.Id = model.Tag;
         conversationModel.name = model.Text;
         conversationModel.imgUrl = model.ImageIndex;

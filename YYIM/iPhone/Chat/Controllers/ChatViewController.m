@@ -13,7 +13,7 @@
 #import "MessageManager.h"
 #import "DBTool.h"
 #import "PersonDetailViewController.h"
-
+#import "PersonManager.h"
 
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -52,8 +52,13 @@
 -(void)initNavi{
     self.title = _conversationModel.Id;
     NSString * rightImgName = @"联系人_单人";
+    
+    
     if (_conversationModel.GroupMsg) {
          rightImgName = @"联系人_多人";
+    }else{
+        self.navigationItem.title = [[PersonManager share]getModelWithId:_conversationModel.Id].RealName;
+        
     }
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:rightImgName] style:UIBarButtonItemStyleDone target:self action:@selector(rightClick)];
@@ -61,8 +66,6 @@
     
 }
 -(void)initUI{
-    
-    
     
     
     UIScrollView * scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,0, self.view.width, ContentHeight)];
@@ -102,14 +105,24 @@
 
 
 -(void)refreshUI{
-    [_tableView reloadData];
 
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//////        [self scrollTableToFoot:YES];
-////        [self scrollToBottomisAnimated:YES];
+    
+    [_tableView reloadData];
+    
+    
+//    while (_tableView.mj_contentH - _tableView.height > _tableView.mj_offsetY) {
+//
+//
+//        [_tableView setContentOffset:CGPointMake(0, _tableView.mj_offsetY + 1)];
+//
+//    }
+    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+////////        [self scrollTableToFoot:YES];
+//////        [self scrollToBottomisAnimated:YES];
     [self scrollToBottom:YES];
-   });
+//   });
 //    [self scrollToBottom:YES];
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //
@@ -120,13 +133,12 @@
 -(void)refreshData{
     
     NSString * targetId = _conversationModel.Id;
+    
+    
     [[MessageManager share]getMessagesWithTargetId:targetId success:^(NSArray * result) {
         self->_datas = [NSMutableArray arrayWithArray:result];
         
         [self refreshUI];
-        
-    
-        
     
     }];
 }
@@ -210,29 +222,33 @@
     
     MsgModel * model = _datas[indexPath.section];
     cell.model = model;
+    
+    cell.headClickBlock = ^(NSIndexPath *indexP) {
+        MsgModel * tapModel = self->_datas[indexP.section];
+        [self jumpToDetailWithId:tapModel.sendId];
+    };
     return cell;
 }
 #pragma mark  - 滑到最底部
 -(void)scrollToBottom:(BOOL)animated{
-//    [self scrollTableToFoot:YES];
-//
-//    [self scrollToBottomisAnimated:YES];
     
-    [_tableView setContentOffset:CGPointMake(0, _tableView.contentSize.height - _tableView.height) animated:YES];
-//    _tableView.contentOffset = ;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+
+        [self scrollTableToFoot:animated];
+    });
 }
 
 
 
-//- (void)scrollTableToFoot:(BOOL)animated
-//{
-//    NSInteger s = [self.tableView numberOfSections];  //有多少组
-//    if (s<1) return;  //无数据时不执行 要不会crash
-//    NSInteger r = [self.tableView numberOfRowsInSection:s-1]; //最后一组有多少行
-//    if (r<1) return;
-//    NSIndexPath *ip = [NSIndexPath indexPathForRow:r-1 inSection:s-1];  //取最后一行数据
-//    [_tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:animated]; //滚动到最后一行
-//}
+- (void)scrollTableToFoot:(BOOL)animated
+{
+    NSInteger s = [self.tableView numberOfSections];  //有多少组
+    if (s<1) return;  //无数据时不执行 要不会crash
+    NSInteger r = [self.tableView numberOfRowsInSection:s-1]; //最后一组有多少行
+    if (r<1) return;
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:r-1 inSection:s-1];  //取最后一行数据
+    [_tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:animated]; //滚动到最后一行
+}
 //- (void)scrollToBottomisAnimated:(BOOL)isAnimated {
 //    if (self.datas.count == 0) {
 //        return;
@@ -249,8 +265,14 @@
 #pragma mark -- 点击事件
 -(void)rightClick{
     PersonDetailViewController * detail = [PersonDetailViewController new];
+    detail.Id =  _conversationModel.Id;
     [self.navigationController pushViewController:detail animated:YES];
     
+}
+-(void)jumpToDetailWithId:(NSString *)Id{
+    PersonDetailViewController * detail = [PersonDetailViewController new];
+    detail.Id = Id;
+    [self.navigationController pushViewController:detail animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
