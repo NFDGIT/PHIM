@@ -16,92 +16,79 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/Tools/PersonManager.m"
-            timestampString = "553751591.204645"
+            filePath = "YYIM/iPhone/&#x804a;&#x5929;&#x8bbe;&#x7f6e;/Controllers/ChatSettingViewController.m"
+            timestampString = "554277150.40014"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
-            landmarkName = "-getUserInfoWithId:response:"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "-clearChatHistory"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/HandleSocketDao.m"
+            timestampString = "554277714.540064"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
+            landmarkName = "+handleChatMsgDic:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YYIM/iPhone/&#x804a;&#x5929;&#x9875;&#x9762;/Controllers/ChatViewController.m"
+            timestampString = "554283211.16478"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
+            landmarkName = "-addImage:"
             landmarkType = "7">
             <Locations>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[PersonManager getUserInfoWithId:response:]"
+                  symbolName = "__31-[ChatViewController addImage:]_block_invoke.217"
                   moduleName = "YYIM"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
-                  timestampString = "553751142.701501"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/iPhone/%E8%81%8A%E5%A4%A9%E9%A1%B5%E9%9D%A2/Controllers/ChatViewController.m"
+                  timestampString = "554282894.942657"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "81"
-                  endingLineNumber = "81"
-                  offsetFromSymbolStart = "246">
+                  startingLineNumber = "216"
+                  endingLineNumber = "216"
+                  offsetFromSymbolStart = "81">
                </Location>
                <Location
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__44-[PersonManager getUserInfoWithId:response:]_block_invoke"
+                  symbolName = "__31-[ChatViewController addImage:]_block_invoke_2.223"
                   moduleName = "YYIM"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
-                  timestampString = "553751142.706414"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/iPhone/%E8%81%8A%E5%A4%A9%E9%A1%B5%E9%9D%A2/Controllers/ChatViewController.m"
+                  timestampString = "554282894.946349"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "81"
-                  endingLineNumber = "81"
-                  offsetFromSymbolStart = "269">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__copy_helper_block_"
-                  moduleName = "YYIM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
-                  timestampString = "553751142.709475"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "72"
-                  endingLineNumber = "72"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__44-[PersonManager getUserInfoWithId:response:]_block_invoke.50"
-                  moduleName = "YYIM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
-                  timestampString = "553751142.71254"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "81"
-                  endingLineNumber = "81"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__destroy_helper_block_.52"
-                  moduleName = "YYIM"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/Tools/PersonManager.m"
-                  timestampString = "553751142.715492"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "81"
-                  endingLineNumber = "81"
-                  offsetFromSymbolStart = "16">
+                  startingLineNumber = "218"
+                  endingLineNumber = "218"
+                  offsetFromSymbolStart = "12">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -112,13 +99,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/Tools/PersonManager.m"
-            timestampString = "553751591.205261"
+            filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/Request.m"
+            timestampString = "554282567.073999"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "-getUserInfoWithId:response:"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "+uploadImage:receiveId:success:failure:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -128,13 +115,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/CDB/HandleSocketDao.m"
-            timestampString = "554032777.814715"
+            filePath = "YYIM/iPhone/&#x804a;&#x5929;&#x9875;&#x9762;/Controllers/ChatViewController.m"
+            timestampString = "554283211.164912"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
-            landmarkName = "+handleChatMsgDic:"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
+            landmarkName = "-addImage:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YYIM/iPhone/&#x804a;&#x5929;&#x9875;&#x9762;/Controllers/ChatViewController.m"
+            timestampString = "554283211.164981"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "188"
+            endingLineNumber = "188"
+            landmarkName = "-addImage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

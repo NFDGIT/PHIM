@@ -12,6 +12,7 @@
 
 
 @interface LoginViewController ()<UITextFieldDelegate>
+@property (nonatomic,strong)UIImageView * imgLogo;
 @property (nonatomic,strong)UITextField * userNameTF;
 @property (nonatomic,strong)UITextField * passwordTF;
 @property (nonatomic,strong)UIButton    * loginBtn;
@@ -25,43 +26,74 @@
     // Do any additional setup after loading the view.
 }
 -(void)initUI{
+    UIImageView * imgView = [[UIImageView alloc]initWithFrame:self.view.frame];
+    imgView.image = [UIImage imageNamed:@"login_background"];
+    imgView.userInteractionEnabled = YES;
+    self.view = imgView;
+    
+    _imgLogo = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 40)];
+    _imgLogo.image = [UIImage imageNamed:@"login_logo"];
+    _imgLogo.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:_imgLogo];
+
     
     _userNameTF = [[UITextField alloc]init];
-    _userNameTF.placeholder = @"请输入用户名";
+    _userNameTF.height = 50;
+    _userNameTF.placeholder = @"账号/手机号";
     _userNameTF.font = [UIFont systemFontOfSize:14];
-    _userNameTF.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.8];
     [self.view addSubview:_userNameTF];
     _userNameTF.delegate = self;
-    _userNameTF.textAlignment = NSTextAlignmentCenter;
+    _userNameTF.textColor = ColorWhite;
+    _userNameTF.font = FontBig;
+    _userNameTF.attributedPlaceholder = [[NSMutableAttributedString alloc]initWithString:_userNameTF.placeholder attributes:@{NSForegroundColorAttributeName:ColorWhite}];
     _userNameTF.text = @"15701344579";
+    UIImageView * line1  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width * 0.8, 1)];
+    line1.backgroundColor = ColorWhite;
+    [_userNameTF addSubview:line1];
+    line1.bottom = _userNameTF.height;
+    
     
     _passwordTF = [[UITextField alloc]init];
-    _passwordTF.placeholder = @"请输入密码";
+    _passwordTF.height = 50;
+    _passwordTF.placeholder = @"密码";
     _passwordTF.font = [UIFont systemFontOfSize:14];
-    _passwordTF.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.8];
     [self.view addSubview:_passwordTF];
     _passwordTF.delegate = self;
-    _passwordTF.textAlignment = NSTextAlignmentCenter;
+    _passwordTF.textColor = ColorWhite;
+    _passwordTF.font = FontBig;
+    _passwordTF.attributedPlaceholder = [[NSMutableAttributedString alloc]initWithString:_passwordTF.placeholder attributes:@{NSForegroundColorAttributeName:ColorWhite}];
     _passwordTF.text = @"123456";
+    UIImageView * line2  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width * 0.8, 1)];
+    [_passwordTF addSubview:line2];
+    line2.backgroundColor = ColorWhite;
+    line2.bottom = _passwordTF.height;
+    
     
     _loginBtn = [[UIButton alloc]init];
     [_loginBtn setTitle:@"登录" forState:UIControlStateNormal];
-    [_loginBtn setTitleColor:ColorBlack forState:UIControlStateNormal];
+    _loginBtn.backgroundColor = ColorTheme;
+    [_loginBtn setTitleColor:ColorWhite forState:UIControlStateNormal];
     _loginBtn.titleLabel.font = FontBig;
     [self.view addSubview:_loginBtn];
+    _loginBtn.layer.cornerRadius = 4;
+    _loginBtn.layer.masksToBounds = YES;
     [_loginBtn addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
     
-    _passwordTF.frame = CGRectMake(0, 0, self.view.width * 0.7, 50);
+    _passwordTF.frame = CGRectMake(0, 0, self.view.width * 0.8, 50);
     _passwordTF.center = CGPointMake(self.view.width/2, self.view.height/2);
     
-    _userNameTF.frame =CGRectMake(0, 0, self.view.width * 0.7, 50);
-    _userNameTF.bottom = _passwordTF.top - 30;
+    _userNameTF.frame =CGRectMake(0, 0, self.view.width * 0.8, 50);
+    _userNameTF.bottom = _passwordTF.top - 10;
     
-    _loginBtn.frame =CGRectMake(0, _passwordTF.bottom + 50, 150, 40);
+    _loginBtn.frame =CGRectMake(0, _passwordTF.bottom + 50, self.view.width * 0.8, 40);
     _userNameTF.centerX =  _loginBtn.centerX = _passwordTF.centerX ;
+    
+    _imgLogo.width = ScreenWidth * 0.3;
+    _imgLogo.bottom = _userNameTF.top - 30;
+    _imgLogo.left = _userNameTF.left;
 }
 
 #pragma mark -- login

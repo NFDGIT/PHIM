@@ -4,8 +4,12 @@
 
 
 
-#define NaviHeight 69
-#define ContentHeight [UIScreen mainScreen].bounds.size.height - NaviHeight
+
+#define StatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
+#define NaviHeight   (49 + StatusBarHeight)
+
+
+#define ContentHeight ScreenHeight - NaviHeight
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
@@ -15,9 +19,10 @@
 
 
 #pragma mark -- 颜色
-#define ColorWhite  [UIColor colorWithRed:1 green:1 blue:1 alpha:0.8]
+#define ColorWhite  [UIColor colorWithRed:1 green:1 blue:1 alpha:1]
 #define ColorBlack  [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8]
 #define ColorRed    [UIColor colorWithRed:235/255.0 green:51/255.0 blue:51/255.0 alpha:1]
+#define ColorTheme  [UIColor colorWithRed:25/255.0 green:147/255.0 blue:251/255.0 alpha:1]
 
 
 #define NotiForReceive @"NotiForReceive"
@@ -60,6 +65,12 @@
 
 #define CurrentUserStatus             [[NSUserDefaults standardUserDefaults] integerForKey:@"CurrentUserStatus"]
 #define setCurrentUserStatus(currentUserStatus)  [[NSUserDefaults standardUserDefaults] setInteger:currentUserStatus forKey:@"CurrentUserStatus"];
+
+/**
+ * 服务器是否能联通
+ */
+#define    serverOnLine [[NSUserDefaults standardUserDefaults] boolForKey:@"ServerIsOnline"]
+#define    setServerOnLine(onLine) [[NSUserDefaults standardUserDefaults] setBool:onLine forKey:@"ServerIsOnline"]
 
 
 #pragma mark -- 消息类型 枚举
@@ -107,6 +118,9 @@ typedef NS_ENUM(NSUInteger,InformationType) {
     InformationTypeFileSendBear = 83,               // 记录文件传输结果保存到数据库
 };
 #pragma mark -- 通知的
+
+#define NotiForServerStatusChange @"NotiForServerStatusChange"   // 服务器状态发生改变
+
 #define NotiForReceiveTypeUserStatusChange @"NotiForReceiveTypeUserStatusChange"   // 接收到 用户状态改变
 #define NotiForReceiveTypeUpdateSelfState  @"NotiForReceiveTypeUpdateSelfState"    // 更新当前用户在线状态 成功
 
@@ -115,7 +129,13 @@ typedef NS_ENUM(NSUInteger,InformationType) {
 #define NotiForReceiveTypeChat @"NotiForReceiveTypeChat"   // 接收到 发送的消息
 #define NotiForReceiveTypeUserInfoChange @"NotiForReceiveTypeUserInfoChange"   // 接收到 用户信息改变
 
+typedef NS_ENUM(NSUInteger,MsgType) {
+    MsgTypeText  = 0,
+    MsgTypeImage = 1,
+    MsgTypeAudio = 2,
+    
 
+};
 
 
 typedef NS_ENUM(NSUInteger,UserStatus) {

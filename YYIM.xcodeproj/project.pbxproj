@@ -38,6 +38,11 @@
 		C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61620F898E000A86F00 /* MineTableViewCell.m */; };
 		C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61920F89A2300A86F00 /* DBTool.m */; };
 		C57490482105D8FB00577882 /* PHPush.m in Sources */ = {isa = PBXBuildFile; fileRef = C57490472105D8FB00577882 /* PHPush.m */; };
+		C574904B2107058C00577882 /* PersonCenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C574904A2107058C00577882 /* PersonCenterView.m */; };
+		C57490522107228800577882 /* ChatSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57490512107228800577882 /* ChatSettingViewController.m */; };
+		C57490552107317E00577882 /* PHPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C57490542107317E00577882 /* PHPlayer.m */; };
+		C574905C210815D200577882 /* GroupChatSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C574905B210815D200577882 /* GroupChatSettingViewController.m */; };
+		C574905F21085E4000577882 /* NaviAddAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C574905E21085E4000577882 /* NaviAddAlertView.m */; };
 		C590210020F44D49001296C4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C59020FF20F44D49001296C4 /* AppDelegate.m */; };
 		C590210320F44D49001296C4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C590210220F44D49001296C4 /* ViewController.m */; };
 		C590210620F44D49001296C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C590210420F44D49001296C4 /* Main.storyboard */; };
@@ -161,6 +166,16 @@
 		C55FF61920F89A2300A86F00 /* DBTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBTool.m; sourceTree = "<group>"; };
 		C57490462105D8FB00577882 /* PHPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHPush.h; sourceTree = "<group>"; };
 		C57490472105D8FB00577882 /* PHPush.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHPush.m; sourceTree = "<group>"; };
+		C57490492107058C00577882 /* PersonCenterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonCenterView.h; sourceTree = "<group>"; };
+		C574904A2107058C00577882 /* PersonCenterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PersonCenterView.m; sourceTree = "<group>"; };
+		C57490502107228800577882 /* ChatSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatSettingViewController.h; sourceTree = "<group>"; };
+		C57490512107228800577882 /* ChatSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatSettingViewController.m; sourceTree = "<group>"; };
+		C57490532107317E00577882 /* PHPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHPlayer.h; sourceTree = "<group>"; };
+		C57490542107317E00577882 /* PHPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHPlayer.m; sourceTree = "<group>"; };
+		C574905A210815D200577882 /* GroupChatSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupChatSettingViewController.h; sourceTree = "<group>"; };
+		C574905B210815D200577882 /* GroupChatSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupChatSettingViewController.m; sourceTree = "<group>"; };
+		C574905D21085E4000577882 /* NaviAddAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NaviAddAlertView.h; sourceTree = "<group>"; };
+		C574905E21085E4000577882 /* NaviAddAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NaviAddAlertView.m; sourceTree = "<group>"; };
 		C59020FB20F44D49001296C4 /* YYIM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YYIM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59020FE20F44D49001296C4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C59020FF20F44D49001296C4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -290,14 +305,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C50937CD20FEED0200A70E41 /* MyGroupChat */ = {
+		C50937CD20FEED0200A70E41 /* 群聊 */ = {
 			isa = PBXGroup;
 			children = (
 				C50937D020FEED4500A70E41 /* Models */,
 				C50937CF20FEED3900A70E41 /* Views */,
 				C50937CE20FEED2E00A70E41 /* Controllers */,
 			);
-			path = MyGroupChat;
+			path = "群聊";
 			sourceTree = "<group>";
 		};
 		C50937CE20FEED2E00A70E41 /* Controllers */ = {
@@ -327,14 +342,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C50937DA20FF04DD00A70E41 /* PersonDetail */ = {
+		C50937DA20FF04DD00A70E41 /* 用户详情 */ = {
 			isa = PBXGroup;
 			children = (
 				C50937DD20FF050C00A70E41 /* Models */,
 				C50937DC20FF050000A70E41 /* Views */,
 				C50937DB20FF04F500A70E41 /* Controllers */,
 			);
-			path = PersonDetail;
+			path = "用户详情";
 			sourceTree = "<group>";
 		};
 		C50937DB20FF04F500A70E41 /* Controllers */ = {
@@ -360,13 +375,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C50937E120FF05FE00A70E41 /* ContactsOf */ = {
+		C50937E120FF05FE00A70E41 /* 联系人 */ = {
 			isa = PBXGroup;
 			children = (
 				C50937E220FF063A00A70E41 /* ContactsViewController.h */,
 				C50937E320FF063A00A70E41 /* ContactsViewController.m */,
 			);
-			path = ContactsOf;
+			path = "联系人";
 			sourceTree = "<group>";
 		};
 		C50937E520FF0C7500A70E41 /* PHTabbar */ = {
@@ -387,12 +402,12 @@
 			path = PHSegment;
 			sourceTree = "<group>";
 		};
-		C50937EF21003C4400A70E41 /* GroupDetail */ = {
+		C50937EF21003C4400A70E41 /* 群聊详情 */ = {
 			isa = PBXGroup;
 			children = (
 				C50937F321003C6800A70E41 /* Controllers */,
 			);
-			path = GroupDetail;
+			path = "群聊详情";
 			sourceTree = "<group>";
 		};
 		C50937F321003C6800A70E41 /* Controllers */ = {
@@ -404,7 +419,7 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		C509380321019D8D00A70E41 /* CDB */ = {
+		C509380321019D8D00A70E41 /* 数据处理中心 */ = {
 			isa = PBXGroup;
 			children = (
 				C55FF60920F836D400A86F00 /* SocketTool.h */,
@@ -422,7 +437,7 @@
 				C590215D20F491B2001296C4 /* Request.h */,
 				C590215E20F491B2001296C4 /* Request.m */,
 			);
-			path = CDB;
+			path = "数据处理中心";
 			sourceTree = "<group>";
 		};
 		C55FF60F20F872D300A86F00 /* Models */ = {
@@ -446,6 +461,72 @@
 			sourceTree = "<group>";
 		};
 		C55FF61420F898C200A86F00 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C574904C2107223A00577882 /* 聊天设置 */ = {
+			isa = PBXGroup;
+			children = (
+				C574904F2107226500577882 /* Models */,
+				C574904E2107225C00577882 /* Views */,
+				C574904D2107224600577882 /* Controllers */,
+			);
+			path = "聊天设置";
+			sourceTree = "<group>";
+		};
+		C574904D2107224600577882 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C57490502107228800577882 /* ChatSettingViewController.h */,
+				C57490512107228800577882 /* ChatSettingViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C574904E2107225C00577882 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C574904F2107226500577882 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C57490562108158000577882 /* 群聊设置 */ = {
+			isa = PBXGroup;
+			children = (
+				C5749059210815AF00577882 /* Models */,
+				C5749058210815A300577882 /* Views */,
+				C57490572108159700577882 /* Controllers */,
+			);
+			path = "群聊设置";
+			sourceTree = "<group>";
+		};
+		C57490572108159700577882 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C574905A210815D200577882 /* GroupChatSettingViewController.h */,
+				C574905B210815D200577882 /* GroupChatSettingViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C5749058210815A300577882 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C5749059210815AF00577882 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -509,19 +590,25 @@
 		C590213620F44DED001296C4 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				C509380321019D8D00A70E41 /* CDB */,
-				C50937EF21003C4400A70E41 /* GroupDetail */,
-				C50937E120FF05FE00A70E41 /* ContactsOf */,
-				C50937DA20FF04DD00A70E41 /* PersonDetail */,
-				C50937CD20FEED0200A70E41 /* MyGroupChat */,
-				C590218520F4B36B001296C4 /* Chat */,
-				C590217820F4AE6F001296C4 /* MyFriends */,
+				C509380321019D8D00A70E41 /* 数据处理中心 */,
+				C57490562108158000577882 /* 群聊设置 */,
+				C574904C2107223A00577882 /* 聊天设置 */,
+				C50937EF21003C4400A70E41 /* 群聊详情 */,
+				C50937E120FF05FE00A70E41 /* 联系人 */,
+				C50937DA20FF04DD00A70E41 /* 用户详情 */,
+				C50937CD20FEED0200A70E41 /* 群聊 */,
+				C590218520F4B36B001296C4 /* 聊天页面 */,
+				C590217820F4AE6F001296C4 /* 我的好友 */,
 				C590213E20F44F31001296C4 /* Mine */,
-				C590213D20F44F14001296C4 /* Contacts */,
-				C590213C20F44F09001296C4 /* Message */,
+				C590213D20F44F14001296C4 /* 组织架构 */,
+				C590213C20F44F09001296C4 /* 会话消息 */,
 				C590217520F4A3CF001296C4 /* LoginViewController.h */,
 				C590217620F4A3CF001296C4 /* LoginViewController.m */,
 				C590219420F4BE93001296C4 /* Define.h */,
+				C57490492107058C00577882 /* PersonCenterView.h */,
+				C574904A2107058C00577882 /* PersonCenterView.m */,
+				C574905D21085E4000577882 /* NaviAddAlertView.h */,
+				C574905E21085E4000577882 /* NaviAddAlertView.m */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -558,6 +645,8 @@
 				C50938082101BE5000A70E41 /* PHAlert.m */,
 				C57490462105D8FB00577882 /* PHPush.h */,
 				C57490472105D8FB00577882 /* PHPush.m */,
+				C57490532107317E00577882 /* PHPlayer.h */,
+				C57490542107317E00577882 /* PHPlayer.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -571,24 +660,24 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
-		C590213C20F44F09001296C4 /* Message */ = {
+		C590213C20F44F09001296C4 /* 会话消息 */ = {
 			isa = PBXGroup;
 			children = (
 				C55FF60F20F872D300A86F00 /* Models */,
 				C590215420F45A8A001296C4 /* Views */,
 				C590213F20F44F5D001296C4 /* Controllers */,
 			);
-			path = Message;
+			path = "会话消息";
 			sourceTree = "<group>";
 		};
-		C590213D20F44F14001296C4 /* Contacts */ = {
+		C590213D20F44F14001296C4 /* 组织架构 */ = {
 			isa = PBXGroup;
 			children = (
 				C590215820F45AF6001296C4 /* Models */,
 				C590215020F458C4001296C4 /* Views */,
 				C590214020F44F77001296C4 /* Controllers */,
 			);
-			path = Contacts;
+			path = "组织架构";
 			sourceTree = "<group>";
 		};
 		C590213E20F44F31001296C4 /* Mine */ = {
@@ -675,14 +764,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C590217820F4AE6F001296C4 /* MyFriends */ = {
+		C590217820F4AE6F001296C4 /* 我的好友 */ = {
 			isa = PBXGroup;
 			children = (
 				C590217B20F4AE8E001296C4 /* Models */,
 				C590217A20F4AE85001296C4 /* Views */,
 				C590217920F4AE7A001296C4 /* Controllers */,
 			);
-			path = MyFriends;
+			name = "我的好友";
+			path = "我的hao yu";
 			sourceTree = "<group>";
 		};
 		C590217920F4AE7A001296C4 /* Controllers */ = {
@@ -716,14 +806,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C590218520F4B36B001296C4 /* Chat */ = {
+		C590218520F4B36B001296C4 /* 聊天页面 */ = {
 			isa = PBXGroup;
 			children = (
 				C59021A820F5F544001296C4 /* Models */,
 				C590218A20F4B3A3001296C4 /* Views */,
 				C590218920F4B399001296C4 /* Controllers */,
 			);
-			path = Chat;
+			path = "聊天页面";
 			sourceTree = "<group>";
 		};
 		C590218920F4B399001296C4 /* Controllers */ = {
@@ -1034,6 +1124,7 @@
 				C50937EB20FF0C7600A70E41 /* PHTabbarView.m in Sources */,
 				C50937F221003C6200A70E41 /* GroupDetailViewController.m in Sources */,
 				C50938022101825A00A70E41 /* UserInfoModel.m in Sources */,
+				C57490522107228800577882 /* ChatSettingViewController.m in Sources */,
 				C590215720F45AA2001296C4 /* MessageLlistTableViewCell.m in Sources */,
 				C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */,
 				C55FF60520F7568000A86F00 /* NSAttributedString+SmiliesId.m in Sources */,
@@ -1044,9 +1135,11 @@
 				C57490482105D8FB00577882 /* PHPush.m in Sources */,
 				C590214420F44FB3001296C4 /* MessageListViewController.m in Sources */,
 				C5EFFCB720FC3651003BDB2E /* ConversationModel.m in Sources */,
+				C574905F21085E4000577882 /* NaviAddAlertView.m in Sources */,
 				C590214A20F44FE1001296C4 /* MineViewController.m in Sources */,
 				C59021B720F5FC49001296C4 /* ProgressTool.m in Sources */,
 				C50937FF2100936400A70E41 /* UIImage+Helper.m in Sources */,
+				C57490552107317E00577882 /* PHPlayer.m in Sources */,
 				C5EFFCBD20FC5F34003BDB2E /* NSString+Helper.m in Sources */,
 				C59021A720F5A76A001296C4 /* NSString+Json.m in Sources */,
 				C509380C2101E34D00A70E41 /* UserChangeStatus.m in Sources */,
@@ -1062,12 +1155,14 @@
 				C50938092101BE5000A70E41 /* PHAlert.m in Sources */,
 				C590213B20F44E1D001296C4 /* BaseViewController.m in Sources */,
 				C55FF5F920F72A3B00A86F00 /* ChatAddView.m in Sources */,
+				C574904B2107058C00577882 /* PersonCenterView.m in Sources */,
 				C590215320F458F7001296C4 /* ContactsListTableViewCell.m in Sources */,
 				C50937EC20FF0C7600A70E41 /* PHSegmentViewController.m in Sources */,
 				C590217720F4A3CF001296C4 /* LoginViewController.m in Sources */,
 				C5EFFE6120FDB558003BDB2E /* PHImagePickerController.m in Sources */,
 				C590213420F44D86001296C4 /* NavigationController.m in Sources */,
 				C59021BA20F6088B001296C4 /* NSString+Base64.m in Sources */,
+				C574905C210815D200577882 /* GroupChatSettingViewController.m in Sources */,
 				C55FF5FF20F74B2E00A86F00 /* SmiliesTextAttachment.m in Sources */,
 				C590214E20F455DB001296C4 /* UIViewAdditions.m in Sources */,
 				C55FF60E20F8672C00A86F00 /* NetTool.m in Sources */,
@@ -1258,6 +1353,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VJFFGYMZJ9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = YYIM/Main/PrefixHeader.pch;
 				INFOPLIST_FILE = YYIM/Info.plist;
@@ -1265,7 +1361,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = YY.YYIM;
+				PRODUCT_BUNDLE_IDENTIFIER = GX.GXIM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1277,6 +1373,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VJFFGYMZJ9;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = YYIM/Main/PrefixHeader.pch;
 				INFOPLIST_FILE = YYIM/Info.plist;
@@ -1284,7 +1381,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = YY.YYIM;
+				PRODUCT_BUNDLE_IDENTIFIER = GX.GXIM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -7,6 +7,7 @@
 //
 
 #import "BaseViewController.h"
+#import "NetTool.h"
 
 @interface BaseViewController ()
 
@@ -26,6 +27,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoChange:) name:NotiForReceiveTypeUserInfoChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatNewMessage:) name:NotiForReceiveTypeChat object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSelfState:) name:NotiForReceiveTypeUpdateSelfState object:nil];
+     [[NetTool share] addObserver:self forKeyPath:@"onLine" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(serverStatusChange:) name:NotiForServerStatusChange object:nil];
+    
 
     // Do any additional setup after loading the view.
 }
@@ -67,10 +71,27 @@
     if (_chatNewMessageBlock) {
         _chatNewMessageBlock(noti.object);
     }
+    
 }
+-(void)serverStatusChange:(NSNotification * )noti{
+    BOOL onLine = [noti.object boolValue];
+   
+    if (serverOnLine == onLine) {
+    }else{
+        setServerOnLine(onLine);
+  
+        if (_serverStateChangeBlock) {
+            _serverStateChangeBlock(serverOnLine);
+        }
+    }
+    
+}
+
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
+
+
 
 /*
 #pragma mark - Navigation

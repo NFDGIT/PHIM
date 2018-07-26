@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface NetTool : NSObject
+@property (atomic,assign)BOOL onLine;
++ (instancetype)share;
+
 //获取host的名称
 + (NSString *) hostname;
 //从host获取地址
@@ -18,5 +21,7 @@
 +(NSInteger)getNetPort;
 
 // 检测网络
+-(void)startDetection;
 +(void)detectionNet;
+-(void)detectionServer;
 @end

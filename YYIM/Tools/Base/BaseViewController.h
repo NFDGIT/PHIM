@@ -13,6 +13,8 @@
 @property (nonatomic,strong)void(^userInfoChangeBlock)(NSDictionary * data);// 当有用户的资料发生改变时 的回调
 @property (nonatomic,strong)void(^chatNewMessageBlock)(NSDictionary * data);
 @property (nonatomic,strong)void(^updateSelfStateBlock)(NSDictionary * data); // 自身状态修改成功
+@property (nonatomic,strong)void(^serverStateChangeBlock)(BOOL onLine); // 自身状态修改成功
+
 
 @property (nonatomic,assign)BOOL hiddeNavi;
 -(void)initNavi;

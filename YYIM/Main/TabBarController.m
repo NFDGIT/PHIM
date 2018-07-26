@@ -11,9 +11,14 @@
 
 
 #import "MessageListViewController.h"
+//#import "ContactsListViewController.h"
+//#import "ContactsViewController.h"
+//#import "MineViewController.h"
+#import "MyFriendsViewController.h"
+#import "MyGroupChatViewController.h"
 #import "ContactsListViewController.h"
-#import "ContactsViewController.h"
-#import "MineViewController.h"
+
+
 
 
 
@@ -29,15 +34,20 @@
     [self initData];
     [self initUI];
     
+
+    
+    
+    
     // Do any additional setup after loading the view.
 }
 -(void)initData{
     
     
     _tabbarItems =  [NSMutableArray array];
-    [_tabbarItems addObject:@{@"img":@"icon",@"title":@"消息",@"controller":NSStringFromClass([MessageListViewController class])}];
-    [_tabbarItems addObject:@{@"img":@"icon",@"title":@"联系人",@"controller":NSStringFromClass([ContactsViewController class])}];
-    [_tabbarItems addObject:@{@"img":@"icon",@"title":@"我的",@"controller":NSStringFromClass([MineViewController class])}];
+    [_tabbarItems addObject:@{@"normalImg":@"tabbar_msg_nomal",@"selectedImg":@"tabbar_msg_selected",@"title":@"消息",@"controller":NSStringFromClass([MessageListViewController class])}];
+    [_tabbarItems addObject:@{@"normalImg":@"tabbar_contacts_nomal",@"selectedImg":@"tabbar_contacts_selected",@"title":@"联系人",@"controller":NSStringFromClass([MyFriendsViewController class])}];
+    [_tabbarItems addObject:@{@"normalImg":@"tabbar_groupchat_nomal",@"selectedImg":@"tabbar_groupchat_selected",@"title":@"群聊",@"controller":NSStringFromClass([MyGroupChatViewController class])}];
+    [_tabbarItems addObject:@{@"normalImg":@"tabbar_framework_nomal",@"selectedImg":@"tabbar_framework_selected",@"title":@"组织架构",@"controller":NSStringFromClass([ContactsListViewController class])}];
 
     
 }
@@ -47,28 +57,30 @@
     for (int i =0 ; i < _tabbarItems.count; i ++) {
         NSDictionary * currentDic =_tabbarItems[i];
         
-        NSString * img = [NSString stringWithFormat:@"%@",currentDic[@"img"]];
+        NSString * normalImg = [NSString stringWithFormat:@"%@",currentDic[@"normalImg"]];
+        NSString * selectedImg = [NSString stringWithFormat:@"%@",currentDic[@"selectedImg"]];
+        
         NSString * title = [NSString stringWithFormat:@"%@",currentDic[@"title"]];
         NSString * controllerString = [NSString stringWithFormat:@"%@",currentDic[@"controller"]];
         
         Class Class = NSClassFromString(controllerString);
         BaseViewController * controller = [Class new];
 //        controller.navigationItem.title = [NSString stringWithFormat:@"%d",i];
-        if (i == 1) {
-            controller.hiddeNavi = YES;
-        }
+//        if (i == 1) {
+//            controller.hiddeNavi = YES;
+//        }
         
         
         NavigationController * naviVC = [[NavigationController alloc]initWithRootViewController:controller];
         naviVC.tabBarItem.title = title;
-        naviVC.tabBarItem.image = [UIImage imageNamed:img];
-        
+        naviVC.tabBarItem.image = [UIImage imageNamed:normalImg];
+        naviVC.tabBarItem.selectedImage = [UIImage imageNamed:selectedImg];
      
         
         [vcs addObject:naviVC];
     }
     
-    self.tabBar.tintColor = [UIColor orangeColor];
+    self.tabBar.tintColor = ColorTheme;
     self.viewControllers =  vcs;
     
 }

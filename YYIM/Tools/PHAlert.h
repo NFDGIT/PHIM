@@ -10,4 +10,5 @@
 
 @interface PHAlert : NSObject
 +(void)showWithTitle:(NSString *)title message:(NSString *)message block:(void(^)(void))block;
++(void)showConfirmWithTitle:(NSString *)title message:(NSString *)message block:(void(^)(void))block;
 @end

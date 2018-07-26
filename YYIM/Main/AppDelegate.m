@@ -43,10 +43,13 @@
     if ([CurrentUserId isEmptyString]) {
         self.window.rootViewController = loginVC;
         [[SocketTool share] stopHeartBeat];
+        [[NetTool share] startDetection];
     }else
     {
         self.window.rootViewController = tabbar;
         [[SocketTool share] startHeartBeat];
+        [[NetTool share] startDetection];
+        
         
     };
 }

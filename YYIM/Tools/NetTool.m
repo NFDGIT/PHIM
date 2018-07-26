@@ -22,7 +22,25 @@
 
 #import <SystemConfiguration/SystemConfiguration.h>
 
+
+static SocketTool *shared = nil;
+@interface NetTool()
+@property (nonatomic,strong)NSTimer * detectionTimer;
+
+
+@end
 @implementation NetTool
++ (instancetype)share{
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shared = [[NetTool alloc] init];
+    });
+    
+    return shared;
+}
+
+
 //获取host的名称
 + (NSString *) hostname
 {
@@ -136,7 +154,28 @@ int get_free_port()
 #endif
     return port;
 }
-
+-(void)startDetection{
+    /**
+     *  建立定时器，每隔50s像服务器发送心跳包
+     *
+     *  longConnectToSocket:心跳包调用方法，在longConnectToSocket方法中进行长连接，并向服务器发送的讯息
+     *
+     *  TimeInterval:心跳包执行间隔时间
+     *
+     */
+    [self stopDetection];
+    self.detectionTimer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(detectionServer) userInfo:nil repeats:YES];// 在longConnectToSocket方法中进行长连接需要向服务器发送的讯息
+    /**
+     *  启动定时器
+     */
+    [self.detectionTimer fire];
+    
+}
+-(void)stopDetection{
+    [self.detectionTimer invalidate];
+    self.detectionTimer = nil;
+    
+}
 +(void)detectionNet{
     AFNetworkReachabilityManager * manager = [AFNetworkReachabilityManager sharedManager];
     [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
@@ -166,6 +205,30 @@ int get_free_port()
         }
     }];
     [manager startMonitoring];
+}
+-(void)detectionServer{
+    // 1.获取AFN的请求管理者
+    
+    AFHTTPSessionManager * manger = [AFHTTPSessionManager manager];
+    //    AFHTTPRequestOperationManager *manger = [AFHTTPRequestOperationManager manager];
+    //网络延时设置15秒
+    manger.requestSerializer.timeoutInterval = 5;
+    manger.responseSerializer = [AFJSONResponseSerializer serializer];
+    NSString * urlPath = [NSString stringWithFormat:@"%@%@",UrlPath,@"/FindAllUser"];
+    // 3.发送请求
+
+    [manger GET:urlPath parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForServerStatusChange object:@(YES) userInfo:nil];
+//        self.onLine = YES;
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForServerStatusChange object:@(NO) userInfo:nil];
+    
+//        self.onLine = NO;
+    }];
+    
+ 
 }
 
 @end

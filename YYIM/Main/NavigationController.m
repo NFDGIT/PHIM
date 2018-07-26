@@ -18,8 +18,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationBar.tintColor = ColorBlack;
+    self.navigationBar.tintColor = ColorWhite;
+    self.navigationBar.barTintColor = ColorTheme;
+
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
   
+    
     // Do any additional setup after loading the view.
 }
 
@@ -38,7 +42,7 @@
     
     if (self.childViewControllers.count > 0) {
         //统一设置返回按钮
-        //        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"fanhui"] style:0 target:self action:@selector(back)];
+        viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navi_back"] style:0 target:self action:@selector(back)];
         viewController.hidesBottomBarWhenPushed = YES;
     }
     [super pushViewController:viewController animated:animated];
