@@ -14,9 +14,8 @@
 
 @interface DBTool : NSObject
 +(instancetype)share;
-//-(void)createDB;
-
-
+#pragma mark -- 私人数据库
+-(void)createAccountDb;
 
 #pragma mark -- 消息
 /**
@@ -25,7 +24,7 @@
  @param target 用来标记这是哪个账号的聊天记录
  @param success 查询成功的回调
  */
--(void)getMessagesWithTarget:(NSString *)target success:(void(^)(NSArray*result))success;
+-(NSArray *)getMessagesWithTarget:(NSString *)target success:(void(^)(NSArray*result))success;
 
 /**
  向 数据库中插入数据
@@ -35,6 +34,13 @@
  @param response response description
  */
 -(void)addModel:(MsgModel *)model withTarget:(NSString *)target response:(void(^)(BOOL success))response;
+/**
+ 删除 某个会话的聊天记录
+ 
+ @param conversationId 会话ID
+ @param response response description
+ */
+-(void)deleteMessagesWithConversationId:(NSString *)conversationId response:(void(^)(BOOL success))response;
 
 #pragma mark -- 会话
 /**

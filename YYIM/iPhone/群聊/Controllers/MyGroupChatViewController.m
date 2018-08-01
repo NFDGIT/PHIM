@@ -58,30 +58,30 @@
 
 -(void)refreshData{
     
-    NSDictionary * dataDic = @{
-                               @"FriendDicationary":@[@{@"Dicationary":@"我的好友",@"Friend":@[@{@"userID":@"15904076020",@"userName":@"孙文",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"15"},@{@"userID":@"18516568515",@"userName":@"张志丹",@"UnderWrite":@"测试主管",@"HeadName":@"91"}]},
-                                                      @{@"Dicationary":@"朋友",@"Friend":@[@{@"userID":@"15904076020",@"userName":@"孙文",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"15"},@{@"userID":@"18516568515",@"userName":@"张志丹",@"UnderWrite":@"测试主管",@"HeadName":@"91"}]}],
-                               @"Groups": @[@{@"groupID":@"123",@"groupName":@"HELLO WORLD",@"groupDep":@"欢迎进入我的群！Q ！",@"memberList":@[@{@"userID":@"13522220187",@"userName":@"黄华东",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"66"},@{@"userID":@"15904076020",@"userName":@"孙文",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"15"},@{@"userID":@"18511961198",@"userName":@"江飞洋",@"UnderWrite":@"产品经理",@"HeadName":@"10"},@{@"userID":@"18516568515",@"userName":@"张志丹",@"UnderWrite":@"测试主管",@"HeadName":@"91"}]}],
-                               @"userID":@"13522220187",
-                               @"userName":@"黄华东",
-                               @"UnderWrite":@"阿发斯蒂芬",
-                               @"HeadName":@"66"
-                               };
-    
-    NSArray * data = dataDic[@"Groups"];
-    
-    NSMutableArray * arr = [NSMutableArray array];
-    for (NSDictionary * dic in data) {
-        MyGroupChatModel * model = [MyGroupChatModel new];
-        [model setValuesForKeysWithDictionary:dic];
-        [arr addObject:model];
-    }
-    [_datas removeAllObjects];
-    [_datas addObjectsFromArray:arr];
-    
-    
-    
-    [self refreshUI];
+//    NSDictionary * dataDic = @{
+//                               @"FriendDicationary":@[@{@"Dicationary":@"我的好友",@"Friend":@[@{@"userID":@"15904076020",@"userName":@"孙文",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"15"},@{@"userID":@"18516568515",@"userName":@"张志丹",@"UnderWrite":@"测试主管",@"HeadName":@"91"}]},
+//                                                      @{@"Dicationary":@"朋友",@"Friend":@[@{@"userID":@"15904076020",@"userName":@"孙文",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"15"},@{@"userID":@"18516568515",@"userName":@"张志丹",@"UnderWrite":@"测试主管",@"HeadName":@"91"}]}],
+//                               @"Groups": @[@{@"groupID":@"123",@"groupName":@"HELLO WORLD",@"groupDep":@"欢迎进入我的群！Q ！",@"memberList":@[@{@"userID":@"13522220187",@"userName":@"黄华东",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"66"},@{@"userID":@"15904076020",@"userName":@"孙文",@"UnderWrite":@"阿发斯蒂芬",@"HeadName":@"15"},@{@"userID":@"18511961198",@"userName":@"江飞洋",@"UnderWrite":@"产品经理",@"HeadName":@"10"},@{@"userID":@"18516568515",@"userName":@"张志丹",@"UnderWrite":@"测试主管",@"HeadName":@"91"}]}],
+//                               @"userID":@"13522220187",
+//                               @"userName":@"黄华东",
+//                               @"UnderWrite":@"阿发斯蒂芬",
+//                               @"HeadName":@"66"
+//                               };
+//
+//    NSArray * data = dataDic[@"Groups"];
+//
+//    NSMutableArray * arr = [NSMutableArray array];
+//    for (NSDictionary * dic in data) {
+//        MyGroupChatModel * model = [MyGroupChatModel new];
+//        [model setValuesForKeysWithDictionary:dic];
+//        [arr addObject:model];
+//    }
+//    [_datas removeAllObjects];
+//    [_datas addObjectsFromArray:arr];
+//
+//
+//
+//    [self refreshUI];
     
     
         NSString * userName =  CurrentUserId;

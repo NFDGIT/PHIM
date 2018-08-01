@@ -13,8 +13,8 @@
 @implementation RishTextAdapter
 +(NSAttributedString *)getAttributedStringWithString:(NSString *)string{
     
-    NSMutableAttributedString * mastring = [[NSMutableAttributedString alloc]initWithString:string];
-    NSMutableString * mstring = [[NSMutableString alloc]initWithString:string];
+    NSMutableAttributedString * mastring = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"%@",string]];
+    NSMutableString * mstring = [[NSMutableString alloc]initWithString:[NSString stringWithFormat:@"%@",string]];
     
     NSArray * results = [RishTextAdapter getResultsWithString:mstring];
     

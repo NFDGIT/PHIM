@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 typedef NS_ENUM(NSUInteger,ChatAddType) {
-    ChatAddTypeImage = 1,
+    ChatAddTypeImage = 0,
+    ChatAddTypeFile = 1,
 };
 
 @interface ChatAddView : UIView

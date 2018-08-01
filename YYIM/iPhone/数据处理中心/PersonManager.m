@@ -8,6 +8,8 @@
 
 #import "PersonManager.h"
 #import "DBTool.h"
+#import "MyGroupChatModel.h"
+#import "MyFriendsModel.h"
 
 
 static PersonManager *shared = nil;
@@ -16,6 +18,8 @@ static PersonManager *shared = nil;
 @interface PersonManager()
 
 @property (nonatomic,strong)NSMutableDictionary<NSString *,UserInfoModel *> * dataDic;
+@property (nonatomic,strong)NSMutableDictionary * myGroupChat;
+
 @end
 @implementation PersonManager
 +(instancetype)share{
@@ -95,4 +99,41 @@ static PersonManager *shared = nil;
         response(NO);
     }];
 }
+-(void)getMyGroupChatsWithId:(NSString *)Id response:(void(^)(BOOL success))response{
+    
+    
+    
+//    if (Id) {
+//        <#statements#>
+//    }
+    NSString * userName =  CurrentUserId;
+    
+    [ProgressTool show];
+    [Request getUserInfoWithIdOrName:userName success:^(NSUInteger code, NSString *msg, id data) {
+        [ProgressTool hidden];
+        
+        if (code == 200) {
+            //                NSArray * data = dataDic[@"Groups"];
+            NSString * dataString =[NSString stringWithFormat:@"%@",data[@"Groups"]];
+            NSArray * datas =   [NSJSONSerialization JSONObjectWithData:[dataString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
+            
+            
+            NSMutableArray * arr = [NSMutableArray array];
+            for (NSDictionary * dic in datas) {
+                MyGroupChatModel * model = [MyGroupChatModel new];
+                [model setValuesForKeysWithDictionary:dic];
+                [arr addObject:model];
+            }
+//            [self->_datas removeAllObjects];
+//            [self->_datas addObjectsFromArray:arr];
+            
+        
+        }
+    } failure:^(NSError *error) {
+        [ProgressTool hidden];
+      
+    }];
+}
+
+
 @end

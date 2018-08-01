@@ -9,7 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @interface ProgressTool : NSObject
++ (instancetype)share;
 +(void)show;
++(void)showWithText:(NSString *)text;
++(void)showProgressWithText:(NSString *)text;
++(void)setText:(NSString *)text;
++(void)setProgress:(float )progress;
 +(void)hidden;
 +(void)showNetError;
 @end

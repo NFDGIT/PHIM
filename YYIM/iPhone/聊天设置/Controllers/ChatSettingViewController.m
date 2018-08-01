@@ -18,6 +18,9 @@
 @property (nonatomic,strong)UIScrollView * scrollView;
 
 @property (nonatomic,strong)UIImageView * headImg;
+@property (nonatomic,strong)UILabel * labelName;
+@property (nonatomic,strong)UILabel * labelDesc;
+
 
 @end
 
@@ -56,12 +59,32 @@
         
         
         
-        UIImageView * headImg = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 60, 60)];
+        UIImageView * headImg = [[UIImageView alloc]initWithFrame:CGRectMake(20, 10, 60, 60)];
         headImg.layer.cornerRadius = headImg.height / 2;
         headImg.layer.masksToBounds = YES;
         [userBack addSubview:headImg];
         _headImg = headImg;
     
+        
+        
+        UILabel * labelName = [[UILabel alloc]initWithFrame:CGRectMake(headImg.right+10, 10, 200, 20)];
+        labelName.font = FontBig;
+        labelName.textColor = ColorBlack;
+        [userBack addSubview:labelName];
+        labelName.bottom = headImg.centerY -  5;
+        _labelName = labelName;
+    
+        
+        
+        UILabel * labelDesc = [[UILabel alloc]initWithFrame:CGRectMake(headImg.right + 10, 0, 200, 20)];
+        labelDesc.font = FontBig;
+        labelDesc.textColor = ColorBlack;
+        [userBack addSubview:labelDesc];
+        labelDesc.top = headImg.centerY +5;
+        _labelDesc = labelDesc;
+        
+        
+        
         
         userBack.height = headImg.bottom + 10;
         
@@ -147,24 +170,33 @@
 
 
 -(void)refreshData{
-    UserInfoModel * infoModel = [[PersonManager share]getModelWithId:_Id];
+    UserInfoModel * infoModel = [[PersonManager share]getModelWithId:_conversationModel.Id];
     _infoModel = infoModel;
     [self refreshUI];
     
 }
 -(void)refreshUI{
     _headImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",_infoModel.HeadName]];
-    
+    _labelName.text = [NSString stringWithFormat:@"%@",_infoModel.RealName];
+    _labelDesc.text = [NSString stringWithFormat:@"%@",_infoModel.UnderWrite];
     
 }
 #pragma mark -- 点击事件
 -(void)jumpToDetail{
     PersonDetailViewController * detail = [PersonDetailViewController new];
-    detail.Id = _Id;
+    detail.Id = _conversationModel.Id;
     [self.navigationController pushViewController:detail animated:YES];
 }
 -(void)clearChatHistory{
-    [PHAlert  showConfirmWithTitle:@"提示" message:@"确定要清除聊天记录吗？" block:^{
+    [PHAlert  showConfirmWithTitle:@"提示" message:@"确定要清除聊天记录吗？" block:^(BOOL sure){
+        if (sure) {
+            [[MessageManager share]deleteMessagesWithConversationId:self->_conversationModel.Id response:^(BOOL success) {
+                if (success) {
+                    [self.view makeToast:@"删除成功" duration:2 position:CSToastPositionCenter];
+                }
+            }];
+        };
+        
         
     }];
 //    [MessageManager share]

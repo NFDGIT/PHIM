@@ -11,6 +11,9 @@
 #import "PHCellHeight.h"
 
 @interface ChatCell : UITableViewCell
++ (instancetype)share;
 @property (nonatomic,strong)MsgModel * model;
 @property (nonatomic,strong)void(^headClickBlock)(NSIndexPath * indexPath);
+
+-(CGFloat)getHeightWithModel:(MsgModel *)model;
 @end

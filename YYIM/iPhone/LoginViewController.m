@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 #import "AppDelegate.h"
 #import "UserInfoModel.h"
+#import "NSString+MD5Encrypt.h"
 
 
 @interface LoginViewController ()<UITextFieldDelegate>
@@ -46,8 +47,9 @@
     _userNameTF.textColor = ColorWhite;
     _userNameTF.font = FontBig;
     _userNameTF.attributedPlaceholder = [[NSMutableAttributedString alloc]initWithString:_userNameTF.placeholder attributes:@{NSForegroundColorAttributeName:ColorWhite}];
-    _userNameTF.text = @"15701344579";
-    UIImageView * line1  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width * 0.8, 1)];
+//    _userNameTF.text = @"15701344579";
+    _userNameTF.keyboardType = UIKeyboardTypeAlphabet;
+    UIImageView * line1  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width * 0.8, 0.5)];
     line1.backgroundColor = ColorWhite;
     [_userNameTF addSubview:line1];
     line1.bottom = _userNameTF.height;
@@ -62,8 +64,8 @@
     _passwordTF.textColor = ColorWhite;
     _passwordTF.font = FontBig;
     _passwordTF.attributedPlaceholder = [[NSMutableAttributedString alloc]initWithString:_passwordTF.placeholder attributes:@{NSForegroundColorAttributeName:ColorWhite}];
-    _passwordTF.text = @"123456";
-    UIImageView * line2  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width * 0.8, 1)];
+    _passwordTF.keyboardType = UIKeyboardTypeAlphabet;
+    UIImageView * line2  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.width * 0.8, 0.5)];
     [_passwordTF addSubview:line2];
     line2.backgroundColor = ColorWhite;
     line2.bottom = _passwordTF.height;
@@ -94,6 +96,7 @@
     _imgLogo.width = ScreenWidth * 0.3;
     _imgLogo.bottom = _userNameTF.top - 30;
     _imgLogo.left = _userNameTF.left;
+
 }
 
 #pragma mark -- login
@@ -108,30 +111,17 @@
     }
     
     
-//    setCurrentUserId(_userNameTF.text);
-//    setCurrentUserIcon(@"1");
-//    [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
-//    
-//
-//    return;
-    
-    
+
     [ProgressTool show];
-    [Request loginWithUserName:_userNameTF.text passWord:_passwordTF.text success:^(NSUInteger code, NSString *msg, id data) {
-           [ProgressTool hidden];
+    [Request loginWithUserName:_userNameTF.text passWord:[NSString MD5ForLower32Bate:_passwordTF.text] success:^(NSUInteger code, NSString *msg, id data) {
         
         if (code == 200) {
-//            setCurrentUserId(self->_userNameTF.text);
-//            [[NSUserDefaults standardUserDefaults] setValue:self->_userNameTF.text forKey:@"UserName"];
-
-//          Request get
             
             [Request getUserInfo1WithIdOrName:self->_userNameTF.text success:^(NSUInteger code, NSString *msg, id data) {
+                [ProgressTool hidden];
                 if (code == 200) {
                     UserInfoModel * model = [UserInfoModel new];
                     [model setValuesForKeysWithDictionary:data];
-                    
-                    
                     
                     
                     NSString *  HeadName = model.HeadName;
@@ -146,17 +136,24 @@
                     setCurrentUserUnderWrite(UnderWrite);
                     setCurrentUserStatus([UserStatus integerValue]);
                     [((AppDelegate *)([UIApplication sharedApplication].delegate))  switchRootVC];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NotiForLoginSuccess object:nil];
+                    
                 }else{
                     [self.view makeToast:msg duration:2 position:CSToastPositionCenter];
                 }
             } failure:^(NSError *error) {
-                    [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];
+                [ProgressTool hidden];
+                [self.view makeToast:@"个人信息获取失败" duration:2 position:CSToastPositionCenter];
             }];
-       
-     }
-    } failure:^(NSError *error) {
+            
+        }else{
             [ProgressTool hidden];
-        [self.view makeToast:@"网络请求失败" duration:2 position:CSToastPositionCenter];
+            [self.view makeToast:[NSString stringWithFormat:@"%@:%@",msg,data] duration:2 position:CSToastPositionCenter];
+            
+        }
+    } failure:^(NSError *error) {
+        [ProgressTool hidden];
+        [self.view makeToast:@"密码验证失败" duration:2 position:CSToastPositionCenter];
     }];
     
 }

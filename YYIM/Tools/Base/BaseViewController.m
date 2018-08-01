@@ -23,6 +23,7 @@
     [super viewDidLoad];
     self.view.backgroundColor  = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1];
     self.navigationController.navigationBar.translucent = NO;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loginSuccess:) name:NotiForLoginSuccess object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userStatusChange:) name:NotiForReceiveTypeUserStatusChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoChange:) name:NotiForReceiveTypeUserInfoChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatNewMessage:) name:NotiForReceiveTypeChat object:nil];
@@ -52,6 +53,11 @@
 }
 
 #pragma mark -- 通知的方法
+-(void)loginSuccess:(NSNotification *)noti{
+    if (_loginSuccessBlock) {
+        _loginSuccessBlock();
+    }
+}
 -(void)updateSelfState:(NSNotification *)noti{
     if(_updateSelfStateBlock){
         _updateSelfStateBlock(noti.object);

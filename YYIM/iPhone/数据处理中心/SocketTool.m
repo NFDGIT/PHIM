@@ -53,9 +53,11 @@ static SocketTool *shared = nil;
 - (void)setupSocket
 
 {
-    _networkIP = @"10.120.35.64";
-    _udpPort = 5540;
-    
+//    _networkIP = @"172.16.133.24";
+//    _udpPort = 5540;
+//
+    _networkIP = serverHost;
+    _udpPort = serverSocketPort;
     //    创建Socket
     _udpSocket = [[GCDAsyncUdpSocket alloc]initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
     //  监听接口&接收数据
@@ -142,7 +144,37 @@ static SocketTool *shared = nil;
     
     [_udpSocket sendData:dataGzip toHost:_networkIP port:_udpPort withTimeout:-1 tag:msgInfoClass];
 }
+/**
+ 发送socket
+ 
+ @param MsgContent 发送的内容
+ @param receiveId 发送给谁
+ @param msgInfoClass 消息的类型
+ @param isGroup 是不是群聊
+ */
+-(void)sendMsgContent:(NSString *)MsgContent receiveId:(NSString *)receiveId  msgInfoClass:(InformationType)msgInfoClass isGroup:(BOOL)isGroup{
+    NSString * SendID = CurrentUserId;
+    NSString * ReceiveId = receiveId;
+    InformationType MsgInfoClass = msgInfoClass;
+    
+    
+    BOOL  GroupMsg = isGroup;
+    NSString * Type = @"mobile";
+    
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    [param setValue:SendID forKey:@"SendID"];
+    [param setValue:ReceiveId forKey:@"ReceiveId"];
+    [param setValue:@(MsgInfoClass) forKey:@"MsgInfoClass"];
+    [param setValue:MsgContent forKey:@"MsgContent"];
+    [param setValue:@(GroupMsg) forKey:@"GroupMsg"];
+    [param setValue:Type forKey:@"Type"];
+    
 
+    
+    NSData * dataGzip = [HandleSocketDao getGzipWithDictionary:param];
+    
+    [_udpSocket sendData:dataGzip toHost:_networkIP port:_udpPort withTimeout:-1 tag:msgInfoClass];
+}
 
 
 

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NavigationController.h"
 
 @interface TabBarController : UITabBarController
-
++ (TabBarController *)share;
 @end

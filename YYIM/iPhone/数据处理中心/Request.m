@@ -9,7 +9,7 @@
 #import "Request.h"
 #import "AFNetworking.h"
 
-#define outTimes 20
+#define outTimes 15
 @implementation Request
 + (void)postWithUrlPath:(NSString *)urlStr AndUrl:(NSString *)url params:(NSMutableDictionary *)params success:(successBlock)success failure:(failureBlock)failure
 {
@@ -86,10 +86,11 @@
 
  @param image 图片对象
  @param receiveId 成功的回调
+ @param progress  进度
  @param success 成功的回调
  @param failure 失败的回调
  */
-+(void)uploadImage:(UIImage *)image receiveId:(NSString *)receiveId  success:(successBlock)success failure:(failureBlock)failure{
++(void)uploadImage:(UIImage *)image receiveId:(NSString *)receiveId progress:(void(^)(float progress))progress success:(successBlock)success failure:(failureBlock)failure{
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //接收类型不一致请替换一致text/html或别的
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",
@@ -110,8 +111,7 @@
     NSString *fileName = [NSString stringWithFormat:@"%@.png", str];
     
     
-    
-    [manager POST:[NSString stringWithFormat:@"%@",@"http://10.120.35.64:8620/api/upload"] parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData> _Nonnull formData) {
+    [manager POST:[NSString stringWithFormat:@"%@api/upload",serverUploadFileAddress] parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData> _Nonnull formData) {
         
         NSData *imageData =UIImageJPEGRepresentation(image,1);
         
@@ -122,7 +122,17 @@
                                 mimeType:@"image/jpeg"];
     
     } progress:^(NSProgress *_Nonnull uploadProgress) {
+        
+//        NSLog(@"%lld::%lld",uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
+//        NSLog(@"%lld",uploadProgress.completedUnitCount/uploadProgress.totalUnitCount);
+        NSLog(@"%.2f",uploadProgress.fractionCompleted);
+        NSLog(@"%f",uploadProgress.fractionCompleted);
+        
         //打印下上传进度
+        if (progress) {
+            progress(uploadProgress.fractionCompleted);
+        }
+        
 
     } success:^(NSURLSessionDataTask *_Nonnull task,id _Nullable responseObject) {
         //上传成功
@@ -131,8 +141,10 @@
             
             NSString * code = [NSString stringWithFormat:@"%@",result[@"code"]];
             NSString * msg = [NSString stringWithFormat:@"%@",result[@"msg"]];
-            NSMutableDictionary * data = [NSMutableDictionary dictionaryWithDictionary:result];
-            [data setValue:[NSString stringWithFormat:@"http://10.120.35.64:5533/%@/%@?width=%f&height=%f",receiveId,fileName,image.size.width,image.size.height] forKey:@"imgUrl"];
+            NSArray * data = [NSArray arrayWithArray:responseObject[@"data"]];
+            
+//            NSMutableDictionary * data = [NSMutableDictionary dictionaryWithDictionary:result];
+//            [data setValue:[NSString stringWithFormat:@"http://10.120.35.64:5533/%@/%@?width=%f&height=%f",receiveId,fileName,image.size.width,image.size.height] forKey:@"imgUrl"];
             
             success(code.integerValue,msg,data);
             
@@ -146,6 +158,80 @@
 
 }
 
+/**
+ 上传文件
+ 
+ @param url 文件
+ @param receiveId 成功的回调
+ @param progress  进度
+ @param success 成功的回调
+ @param failure 失败的回调
+ */
++(void)uploadFile:(NSURL *)url receiveId:(NSString *)receiveId progress:(void(^)(float progress))progress success:(successBlock)success failure:(failureBlock)failure{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //接收类型不一致请替换一致text/html或别的
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:
+                                                         @"application/json",
+                                                         @"text/html",
+                                                         @"image/jpeg",
+                                                         @"image/png",
+                                                         @"application/octet-stream",
+                                                         @"text/json",
+                                                         nil];
+
+    NSDictionary * param = @{@"accepterID":receiveId};
+    NSData * data = [NSData dataWithContentsOfFile:url.absoluteString];
+
+    
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    formatter.dateFormat =@"yyyyMMddHHmmss";
+    NSString *str = [formatter stringFromDate:[NSDate date]];
+    NSString *fileName = [NSString stringWithFormat:@"%@.png", str];
+    fileName = url.absoluteString;
+    
+    [manager POST:[NSString stringWithFormat:@"%@api/upload",serverUploadFileAddress] parameters:param constructingBodyWithBlock:^(id<AFMultipartFormData> _Nonnull formData) {
+    
+        
+        [formData appendPartWithFileData:data
+                                    name:@"file"
+                                fileName:fileName
+                                mimeType:@"application/octet-stream"];
+        
+    } progress:^(NSProgress *_Nonnull uploadProgress) {
+        
+        //        NSLog(@"%lld::%lld",uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
+        //        NSLog(@"%lld",uploadProgress.completedUnitCount/uploadProgress.totalUnitCount);
+        NSLog(@"%.2f",uploadProgress.fractionCompleted);
+        NSLog(@"%f",uploadProgress.fractionCompleted);
+        
+        //打印下上传进度
+        if (progress) {
+            progress(uploadProgress.fractionCompleted);
+        }
+        
+        
+    } success:^(NSURLSessionDataTask *_Nonnull task,id _Nullable responseObject) {
+        //上传成功
+        if (success) {
+            NSDictionary * result = responseObject;
+            
+            NSString * code = [NSString stringWithFormat:@"%@",result[@"code"]];
+            NSString * msg = [NSString stringWithFormat:@"%@",result[@"msg"]];
+            NSArray * data = [NSArray arrayWithArray:responseObject[@"data"]];
+            
+            success(code.integerValue,msg,data);
+            
+        }
+    } failure:^(NSURLSessionDataTask *_Nullable task, NSError *_Nonnull error) {
+        //上传失败
+        if (failure) {
+            failure(error);
+        }
+    }];
+    
+}
+
 
 /**
  查询联系人
@@ -156,9 +242,9 @@
 +(void)getUserListSuccess:(successBlock)success failure:(failureBlock)failure{
     
 
-    NSString * httpHeader = [NSString stringWithFormat:@"%@%@",serverHost,@"RemotingService"];
+//    NSString * httpHeader = [NSString stringWithFormat:@"%@%@",serverHost,@"RemotingService"];
     
-    [Request getWithUrlPath:httpHeader AndUrl:@"/FindAllUser" params:nil success:^(NSUInteger code, NSString *msg, id data) {
+    [Request getWithUrlPath:UrlPath AndUrl:@"/FindAllUser" params:nil success:^(NSUInteger code, NSString *msg, id data) {
         if (success) {
             success(code,msg,data[@"data"][@"Nodes"]);
         }
@@ -201,7 +287,7 @@
     NSMutableDictionary * param = [NSMutableDictionary dictionary];
     [param setValue:idOrName forKey:@"idOrName"];
     
-    [Request postWithUrlPath:UrlPath AndUrl:@"/getmyinfo" params:param success:^(NSUInteger code, NSString *msg, id data) {
+    [Request getWithUrlPath:UrlPath AndUrl:@"/getmyinfo" params:param success:^(NSUInteger code, NSString *msg, id data) {
         if (success) {
             success(code,msg,data[@"data"]);
         }

@@ -19,6 +19,7 @@ PODS:
     - FMDB/standard (= 2.7.2)
   - FMDB/standard (2.7.2)
   - IQKeyboardManager (6.0.5)
+  - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - MJRefresh (3.1.15.3)
   - SDWebImage (4.4.1):
@@ -31,6 +32,7 @@ DEPENDENCIES:
   - CocoaAsyncSocket
   - FMDB
   - IQKeyboardManager
+  - Masonry
   - MBProgressHUD
   - MJRefresh
   - SDWebImage
@@ -42,6 +44,7 @@ SPEC REPOS:
     - CocoaAsyncSocket
     - FMDB
     - IQKeyboardManager
+    - Masonry
     - MBProgressHUD
     - MJRefresh
     - SDWebImage
@@ -52,11 +55,12 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
   FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
   IQKeyboardManager: 64c05e5d127a8a53819f33937dfe468cf051b4be
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
   SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
-PODFILE CHECKSUM: e6e435719e34016dad513b2c5f6e57907efe095e
+PODFILE CHECKSUM: 552efa7005be4bd315b64c3b327dfd18a4253330
 
 COCOAPODS: 1.5.3

@@ -214,7 +214,7 @@
     [self.navigationController pushViewController:detail animated:YES];
 }
 -(void)clearChatHistory{
-    [PHAlert  showConfirmWithTitle:@"提示" message:@"确定要清除聊天记录吗？" block:^{
+    [PHAlert  showConfirmWithTitle:@"提示" message:@"确定要清除聊天记录吗？" block:^(BOOL sure){
         
     }];
     //    [MessageManager share]

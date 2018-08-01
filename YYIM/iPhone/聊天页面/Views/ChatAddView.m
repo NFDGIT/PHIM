@@ -8,6 +8,8 @@
 
 #import "ChatAddView.h"
 #import "PHImagePickerController.h"
+#import "FileManagerViewController.h"
+#import "TabBarController.h"
 
 @interface ChatAddView()
 @property (nonatomic,strong)UIScrollView * scrollView;
@@ -38,34 +40,17 @@
     
     
     
-    
-    NSInteger count = 95;
-    
-    CGFloat baseX = 30;
-    CGFloat baseY = 30;
-    
-    CGFloat spaceX = 30;
-    CGFloat spaceY = 30;
-    
-    
-    CGFloat imgW = (ScreenWidth - spaceX)/4 -spaceX;
+    CGFloat imgW = (ScreenWidth - 20)/4 -20;
     CGFloat imgH = imgW;
     
-    NSInteger column = (_scrollView.width -baseX)/(imgW + spaceX);
-    NSInteger row = (_scrollView.height - baseY)/(imgH + spaceY);
+
     
-    
-    NSInteger totalPage = count / (column * row) + 1;
-    
-    NSInteger tag = 0;
-    for (int i = 0; i < 5; i ++) {
+    for (int i = 0; i < 3; i ++) {
         
+
         
-        baseX =  30  +(_scrollView.width * (i/ (row * column)));
-        baseY = 30;
-        
-        CGFloat imgX = baseX  + (imgW + spaceX)* (i%column) ;
-        CGFloat imgY = baseY + (imgH + spaceY)* ((i/column) % row);
+        CGFloat imgX = 0;
+        CGFloat imgY = 0;
         
         
         UIImageView * imgView = [[UIImageView alloc]initWithFrame:CGRectMake(imgX, imgY, imgW, imgH)];
@@ -79,50 +64,59 @@
         imgView.tag = i + 100;
         UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imgClick:)];
         [imgView addGestureRecognizer:tap];
+        
+        
+        
+        imgView.center = CGPointMake(_scrollView.width/2, _scrollView.height/2);
+
         if (i == 0) {
-            imgView.image = [UIImage imageNamed:@"chat_add_图片"];
+            
+            imgView.image = [UIImage imageNamed:@"chatadd_camera"];
+            imgView.right = imgView.left - 10;
+        }
+        if (i == 1) {
+            imgView.image = [UIImage imageNamed:@"chatadd_finder"];
+        }
+        if (i == 2) {
+            imgView.image = [UIImage imageNamed:@"chatadd_business"];
+            imgView.left = imgView.right + 10;
         }
     }
     
     
-//    for (int i = 0; i < totalPage; i ++) {
-//
-//
-//        baseX =  10  +(_scrollView.width * i);
-//        baseY = 10;
-//
-//        CGFloat imgX = baseX  + (imgW + 10)* ((row * column -1)%column) ;
-//        CGFloat imgY = baseY + (imgH + 10)* (((row * column -1)/column) % row);
-//
-//        UIButton * deleBtn = [[UIButton alloc]initWithFrame:CGRectMake(imgX, imgY, imgW, imgH)];
-//        [deleBtn setImage:[UIImage imageNamed:@"emotion_删除"] forState:UIControlStateNormal];
-//        [_scrollView addSubview:deleBtn];
-//        [deleBtn addTarget:self action:@selector(deleteClick) forControlEvents:UIControlEventTouchUpInside];
-//    }
-//
     
     
-    
-    _scrollView.contentSize = CGSizeMake(_scrollView.width * totalPage, _scrollView.height);
     
 }
 
 #pragma mark -- 点击事件
 -(void)imgClick:(UITapGestureRecognizer *)tap{
+    if (tap.view.tag == 100) {
+        PHImagePickerController * picker = [PHImagePickerController new];
+        picker.block = ^(UIImage *image) {
+            if (self->_clickBlock) {
+                self->_clickBlock(ChatAddTypeImage,image);
+            }
+        };
+        [[TabBarController share] presentViewController:picker animated:YES completion:^{
+        }];
+    }
+    if (tap.view.tag == 101) {
+        FileManagerViewController * fileManager = [FileManagerViewController new];
+        [fileManager show];
+        fileManager.selectBlock = ^(NSURL *url) {
+            if (self->_clickBlock) {
+                self->_clickBlock(ChatAddTypeFile,url);
+            }
+        };
+//
+//        [((UINavigationController *)[TabBarController share].viewControllers.firstObject) pushViewController:fileManager animated:YES];
+    }
+
     
-    PHImagePickerController * picker = [PHImagePickerController new];
-    picker.block = ^(UIImage *image) {
-        if (self->_clickBlock) {
-            self->_clickBlock(ChatAddTypeImage,image);
-        }
-    };
+
     
-    
-    
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:picker animated:YES completion:^{
-    }];
-    
-  
+
 }
 
 

@@ -10,7 +10,8 @@
 #import "PersonManager.h"
 #import "UIImage+Helper.h"
 #import "PersonManager.h"
-
+#import "MsgModel.h"
+#import "MessageManager.h"
 
 @interface MessageLlistTableViewCell()
 @property (nonatomic,strong)UIImageView * imgView;
@@ -111,7 +112,13 @@
         
         UserInfoModel * userInfoModel =  [[PersonManager share]getModelWithId:_model.Id];
         _labelName.text = [NSString stringWithFormat:@"%@",userInfoModel.RealName];
-        _labelSignature.text = [NSString stringWithFormat:@"%@",userInfoModel.UnderWrite];
+        _labelSignature.text = @"";
+        
+        
+        MsgModel * msgModel = [[MessageManager share]getLastMessageWithTargetId:_model.Id response:nil];
+        if (msgModel) {
+            _labelSignature.text = msgModel.content;
+        }
         
         
         _imgView.image = [UIImage imageNamed:@"touxiang_default"];

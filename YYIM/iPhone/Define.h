@@ -1,13 +1,42 @@
 
-#define serverHost  @"http://10.120.35.64:5533/"
-#define UrlPath   [NSString stringWithFormat:@"%@%@",serverHost,@"RemotingService"]
+
+// 测试服务器
+//#define serverHost  @"http://10.120.35.64:5533/"
+//#define serverUploadFileHost @"http://10.120.35.64:8620/"
+
+//#define serverHost   @"10.120.35.64"
+//#define serverPort   5533
+//#define serverSocketPort   5540
+//#define serverUploadFilePort 8620
+//#define serverAddress @"http://10.120.35.64:5533/"
+//#define serverUploadFileAddress @"http://10.120.35.64:8620/"
+//#define UrlPath   [NSString stringWithFormat:@"%@%@",serverAddress,@"RemotingService"]
 
 
+
+#define serverHost   @"172.16.133.24"
+#define serverPort   5533
+#define serverSocketPort   5540
+#define serverUploadFilePort 8620
+#define serverAddress @"http://172.16.133.24:5533/"
+#define serverUploadFileAddress @"http://172.16.133.24:8620/"
+#define UrlPath   [NSString stringWithFormat:@"%@%@",serverAddress,@"RemotingService"]
+
+
+
+
+
+#define KISIphoneX (CGSizeEqualToSize(CGSizeMake(375.f, 812.f), [UIScreen mainScreen].bounds.size) || CGSizeEqualToSize(CGSizeMake(812.f, 375.f), [UIScreen mainScreen].bounds.size))
 
 
 #define StatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
 #define NaviHeight   (49 + StatusBarHeight)
 
+
+
+
+#define SizeScale (SCREEN_WIDTH != 414 ?1 :1.2)
+#define Scale(size)  size * 1
 
 #define ContentHeight ScreenHeight - NaviHeight
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
@@ -19,6 +48,8 @@
 
 
 #pragma mark -- 颜色
+
+#define ColorBack   [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1]
 #define ColorWhite  [UIColor colorWithRed:1 green:1 blue:1 alpha:1]
 #define ColorBlack  [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8]
 #define ColorRed    [UIColor colorWithRed:235/255.0 green:51/255.0 blue:51/255.0 alpha:1]
@@ -26,11 +57,6 @@
 
 
 #define NotiForReceive @"NotiForReceive"
-
-
-
-
-
 
 
 
@@ -116,10 +142,16 @@ typedef NS_ENUM(NSUInteger,InformationType) {
     InformationTypeSystemNotify4Group = 81,         // 发送给某个组的系统消息
     InformationTypeHeartBeat = 82,                  // 用户发送心跳
     InformationTypeFileSendBear = 83,               // 记录文件传输结果保存到数据库
+    
+    InformationTypeChatPhoto = 100,               // 聊天信息 图片
+    InformationTypeChatFile = 101,               // 聊天信息 文件
 };
 #pragma mark -- 通知的
 
 #define NotiForServerStatusChange @"NotiForServerStatusChange"   // 服务器状态发生改变
+
+#define NotiForLoginSuccess @"NotiForLoginSuccess"   // 登录成功
+
 
 #define NotiForReceiveTypeUserStatusChange @"NotiForReceiveTypeUserStatusChange"   // 接收到 用户状态改变
 #define NotiForReceiveTypeUpdateSelfState  @"NotiForReceiveTypeUpdateSelfState"    // 更新当前用户在线状态 成功
@@ -133,6 +165,7 @@ typedef NS_ENUM(NSUInteger,MsgType) {
     MsgTypeText  = 0,
     MsgTypeImage = 1,
     MsgTypeAudio = 2,
+    MsgTypeFile = 3,
     
 
 };

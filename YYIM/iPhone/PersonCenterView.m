@@ -8,6 +8,8 @@
 
 #import "PersonCenterView.h"
 #import "PersonDetailViewController.h"
+#import "UpdatePasswordViewController.h"
+#import "TabBarController.h"
 
 
 static PersonCenterView *shared = nil;
@@ -39,8 +41,12 @@ static PersonCenterView *shared = nil;
     self.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight);
     self.right = 0;
 //    self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
-    [UIApplication sharedApplication].keyWindow.backgroundColor = ColorWhite;
-    [[UIApplication sharedApplication].keyWindow addSubview:self];
+//    [UIApplication sharedApplication].keyWindow.backgroundColor = ColorWhite;
+//    [[UIApplication sharedApplication].keyWindow addSubview:self];
+    
+    
+    
+    [[TabBarController share].view addSubview:self];
     
     
     UISwipeGestureRecognizer * swipe = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipe:)];
@@ -125,6 +131,7 @@ static PersonCenterView *shared = nil;
                 case 1:
                     [btn setImage:[UIImage imageNamed:@"personcenter_changepassword"] forState:UIControlStateNormal];
                     [btn setTitle:@"  修改密码" forState:UIControlStateNormal];
+                    [btn addTarget:self action:@selector(jumpToUpdatePassword) forControlEvents:UIControlEventTouchUpInside];
                     break;
                 case 2:
                     [btn setImage:[UIImage imageNamed:@"personcenter_logout"] forState:UIControlStateNormal];
@@ -171,18 +178,25 @@ static PersonCenterView *shared = nil;
 }
 
 -(void)appear{
+    [self.superview bringSubviewToFront:self];
     [self refreshUI];
+    
+    self.right = 0.2 * ScreenWidth;
     [UIView animateWithDuration:0.5 animations:^{
         self.left = 0;
-        ((UITabBarController *)[[UIApplication sharedApplication].keyWindow rootViewController]).view.left = ScreenWidth * 0.8;
+//        ((UITabBarController *)[[UIApplication sharedApplication].keyWindow rootViewController]).view.left = ScreenWidth * 0.8;
     }completion:^(BOOL finished) {
 
     }];
 }
 -(void)disAppear{
+    
+   
     [UIView animateWithDuration:0.5 animations:^{
+        self.right = 0.2 * ScreenWidth;
+//        ((UITabBarController *)[[UIApplication sharedApplication].keyWindow rootViewController]).view.left = 0;
+    }completion:^(BOOL finished) {
         self.right = 0;
-        ((UITabBarController *)[[UIApplication sharedApplication].keyWindow rootViewController]).view.left = 0;
     }];
     
 }
@@ -194,8 +208,25 @@ static PersonCenterView *shared = nil;
 -(void)tap{
 }
 -(void)logout{
+//
+    [PHAlert showConfirmWithTitle:@"提示" message:@"确定要退出登录？" block:^(BOOL sure){
+        if (sure) {
+             [self disAppear];
+             [((AppDelegate *)[UIApplication sharedApplication].delegate) logout];
+        }else{
+//            [self appear];
+        }
+       
+    }];
+    
+    
+}
+-(void)jumpToUpdatePassword{
     [self disAppear];
-    [((AppDelegate *)[UIApplication sharedApplication].delegate) logout];
+    
+    UpdatePasswordViewController * update = [UpdatePasswordViewController new];
+    [((UINavigationController *)([((UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController) viewControllers].firstObject)) pushViewController:update animated:YES];
+    
 }
 -(void)jumpToDetail{
     [self disAppear];

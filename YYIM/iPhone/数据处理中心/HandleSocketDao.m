@@ -26,15 +26,15 @@
     InformationType  MsgInfoClass = [[NSString stringWithFormat:@"%@",receiveDic[@"MsgInfoClass"]] integerValue];
     switch (MsgInfoClass) {
         case InformationTypeSingOut: // 0  有新的用户离线
-            [self handlePersonStatus:receiveDic];
+            [self handlePersonOffLine:receiveDic];
             [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeSingOut object:receiveDic userInfo:nil];
             break;
         case InformationTypeUpdateSelfState: // 2   更新当前用户在线状态
-          
+    
              [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUpdateSelfState object:receiveDic userInfo:nil];
-            [PHAlert showWithTitle:@"提示" message:@"状态修改成功" block:^{
-            }];
+//            [PHAlert showWithTitle:@"提示" message:@"状态修改成功" block:^{
+//            }];
             break;
         case InformationTypeNewUserLogin: // 3 有新的用户登陆
             [self handlePersonStatus:receiveDic];
@@ -43,30 +43,35 @@
             
             
             break;
+        case InformationTypeUsersDataArrival: //4  收到用户部分联系人的资料 返回在线用户的数据
+            [HandleSocketDao handleUsersDataArrival:receiveDic];
+            break;
         case InformationTypeReturnChatArrival: //6 联系人不在线
             [HandleSocketDao contactNotOnline:receiveDic];
-//            [self handleLeaveOut:receiveDic];
-            //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
-            //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeNewUserLogin object:receiveDic userInfo:nil];
             break;
         case InformationTypeChat: /// 12 个人发送的消息
             [HandleSocketDao handleChatMsgDic:receiveDic];
             [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeChat object:receiveDic userInfo:nil];
             
-            
             break;
         case InformationTypeVibration: //13     窗口抖动
             [HandleSocketDao handleVibration:receiveDic];
             break;
-        case InformationTypeUsersDataArrival: /// 收到用户部分联系人的资料 返回在线用户的数据
-            [HandleSocketDao handleUsersDataArrival:receiveDic];
-            break;
+
             
 
         case InformationTypeLeaveOut: //24  强制下线
             [self handleLeaveOut:receiveDic];
 //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserStatusChange object:receiveDic userInfo:nil];
 //            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeNewUserLogin object:receiveDic userInfo:nil];
+            break;
+        case InformationTypeChatPhoto: //100 图片
+            [self handleChatPhotoMsgDic:receiveDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeChat object:receiveDic userInfo:nil];
+            break;
+        case InformationTypeChatFile: //101 文件
+            [self handleChatFileMsgDic:receiveDic];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeChat object:receiveDic userInfo:nil];
             break;
 
         default:
@@ -88,9 +93,7 @@
     if ([dataDic.allKeys containsObject:@"MsgContent"]) {
         NSString  * base64MsgContent =[NSString stringWithFormat:@"%@",dataDic[@"MsgContent"]];
         
-        
     
-        
         NSArray * baseArr = (NSArray *)[HandleSocketDao getDictionaryWithBase64:base64MsgContent];
         NSArray * List = [NSArray arrayWithArray:baseArr];
         
@@ -100,8 +103,8 @@
             [[PersonManager share] setStatus:model.UserStatus withId:model.userID];
         };
         
-        [PHAlert showWithTitle:@"接收类型为 4 MsgContent" message:List block:^{
-        }];
+//        [PHAlert showWithTitle:@"接收类型为 4 MsgContent" message:List block:^{
+//        }];
         
         
 
@@ -119,6 +122,21 @@
     [PHAlert showWithTitle:@"消息" message:@"窗口抖动" block:^{
     }];
 }
+
+
+/**
+ 用户下线
+
+ @param msgDic 数据
+ */
++(void)handlePersonOffLine:(NSDictionary *)msgDic{
+    NSDictionary * dataDic =[NSDictionary dictionaryWithDictionary:msgDic];
+    
+    NSString * SendID = [NSString stringWithFormat:@"%@",dataDic[@"SendID"]];
+    [[PersonManager share]setStatus:@"0" withId:SendID];
+    UserInfoModel * infoModel = [[PersonManager share]getModelWithId:SendID];
+    [PHPush pushWithTitle:@"下线通知" message:[NSString stringWithFormat:@"用户：%@ 下线",infoModel.RealName]];
+}
 /**
  用户状态发生改变
 
@@ -132,7 +150,12 @@
     
     if ([dataDic.allKeys containsObject:@"MsgContent"]) {
         
+        
+        
         NSDictionary * MsgContent = dataDic[@"MsgContent"];
+        
+        
+        
         UserInfoModel * model = [UserInfoModel new];
         [model setValuesForKeysWithDictionary:MsgContent];
         
@@ -144,14 +167,8 @@
             setCurrentUserStatus([model.UserStatus integerValue]);
 
         }
-
-        if([UserStatus isEqualToString:@"0"])
-        {
-            [[PersonManager share]setStatus:@"0" withId:SendID];
-        }
-        [PHPush push:[NSString stringWithFormat:@"用户：%@ ，状态码：%@",model.userID,UserStatus]];
-        [PHAlert showWithTitle:@"状态变化通知" message:[NSString stringWithFormat:@"用户：%@ ，状态码：%@",model.userID,UserStatus] block:^{
-        }];
+        
+        [PHPush pushWithTitle:@"通知" message:[NSString stringWithFormat:@"用户：%@ ,%@",model.userID,[HandleSocketDao getStatusInfoWithStatusIndex:[UserStatus integerValue]]]];
     }
     
 }
@@ -203,13 +220,196 @@
             target.imgUrl = @"";
             
             [[MessageManager share] addMsg:model toTarget:target];
-            [PHPush push:[NSString stringWithFormat:@"%@",msg]];
+            [PHPush pushWithTitle:SendID message:msg];
+
         }
         
         
     }
     
 }
+/**
+ 把图片聊天消息保存到单例中
+ 
+ @param msgDic 接收的消息
+ */
++(void)handleChatPhotoMsgDic:(NSDictionary *)msgDic{
+    NSDictionary * data =[NSDictionary dictionaryWithDictionary:msgDic];
+    InformationType  MsgInfoClass = [[NSString stringWithFormat:@"%@",data[@"MsgInfoClass"]] integerValue];
+    NSString *  ReceiveId = [NSString stringWithFormat:@"%@",data[@"ReceiveId"]];
+    NSString *  SendID = [NSString stringWithFormat:@"%@",data[@"SendID"]];
+    BOOL        GroupMsg = [NSString stringWithFormat:@"%@",data[@"GroupMsg"]].boolValue;
+    
+    if (MsgInfoClass == InformationTypeChatPhoto && [ReceiveId isEqualToString:CurrentUserId]) {
+        
+        if (data && [data.allKeys containsObject:@"MsgContent"]) {
+            
+            NSDictionary * MsgContent = [NSDictionary dictionaryWithDictionary:data[@"MsgContent"]];
+            
+            BOOL IsFileChat = [[NSString stringWithFormat:@"%@",MsgContent[@"IsFileChat"]] boolValue];
+            if (IsFileChat) {// 文件
+                NSString * fileContentJson = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"]];
+                NSDictionary * fileContent = [NSString dictionaryWithJsonString:fileContentJson];
+                
+                
+                
+                NSString * pSendPos = [NSString stringWithFormat:@"%@",fileContent[@"pSendPos"]];
+                NSString * identification = [NSString stringWithFormat:@"%@",fileContent[@"identification"]];
+                NSString * fileName = [NSString stringWithFormat:@"%@",fileContent[@"fileName"]];
+                NSString * fileSize = [NSString stringWithFormat:@"%@",fileContent[@"fileSize"]];
+                NSString * fileUrl = [NSString stringWithFormat:@"%@%@/%@",serverAddress,CurrentUserId,identification];
+                
+                
+                
+                MsgModel * model = [MsgModel new];
+                model.target = SendID;
+                model.sendId = SendID;
+                model.receivedId =CurrentUserId;
+                model.msgType = MsgTypeFile;
+                model.content = fileName;
+                model.imageUrl = fileUrl;
+                model.MsgInfoClass = InformationTypeChatPhoto;
+                model.GroupMsg = GroupMsg;
+                
+                
+                
+                ConversationModel * target = [ConversationModel new];
+                target.Id = SendID;
+                target.name = @"";
+                target.imgUrl = @"";
+                [[MessageManager share] addMsg:model toTarget:target];
+                [PHPush pushWithTitle:SendID message:@"发来一张图片"];
+            }
+            else
+            { // 图片
+                
+                
+                
+                NSString * msg = [NSString stringWithFormat:@"%@",data[@"MsgContent"][@"MsgContent"]];
+                NSString * ImageInfo = [NSString stringWithFormat:@"%@",data[@"MsgContent"][@"ImageInfo"]];
+                if ([ImageInfo hasSuffix:@"|"]) {
+                    ImageInfo =  [ImageInfo substringToIndex:ImageInfo.length - 1];
+                }
+                
+                
+                
+                NSArray * ImageInfos = [ImageInfo componentsSeparatedByString:@"|"];
+                for (NSString * imageinfostring in ImageInfos) {
+                    NSArray * imageinfocompent = [imageinfostring componentsSeparatedByString:@","];
+                    
+                    NSString * location = [NSString stringWithFormat:@"%@",imageinfocompent[0]];
+                    NSString * fileName = [NSString stringWithFormat:@"%@",imageinfocompent[1]];
+                    NSString * width = [NSString stringWithFormat:@"%@",imageinfocompent[2]];
+                    NSString * height = [NSString stringWithFormat:@"%@",imageinfocompent[3]];
+                    NSString * suffix = [NSString stringWithFormat:@"%@",imageinfocompent[4]];
+                    
+                    
+                    NSString * imgUrl = [NSString stringWithFormat:@"%@%@/%@%@?width=%@&height=%@",serverAddress,CurrentUserId,fileName,suffix,width,height];
+                    
+                    
+                    
+                    
+                    MsgModel * model = [MsgModel new];
+                    //            model.headIcon =
+                    model.target = SendID;
+                    model.sendId = SendID;
+                    model.receivedId = ReceiveId;
+                    model.content = msg;
+                    model.imageUrl = imgUrl;
+                    model.msgType = MsgTypeImage;
+                    model.MsgInfoClass = InformationTypeChatPhoto;
+                    model.GroupMsg = GroupMsg;
+                    
+                    
+                    ConversationModel * target = [ConversationModel new];
+                    target.Id = SendID;
+                    target.name = @"";
+                    target.imgUrl = @"";
+                    
+                    [[MessageManager share] addMsg:model toTarget:target];
+                    [PHPush pushWithTitle:SendID message:@"发来一张图片"];
+                    //                [PHPush push:[NSString stringWithFormat:@"%@",msg]];
+                }
+                
+            }
+            
+            
+            
+            
+            
+
+   
+            
+            
+            
+            
+            
+            
+
+        }
+        
+        
+    }
+    
+}
+/**
+ 把文件聊天消息保存到单例中
+ 
+ @param msgDic 接收的消息
+ */
++(void)handleChatFileMsgDic:(NSDictionary *)msgDic{
+    NSDictionary * data =[NSDictionary dictionaryWithDictionary:msgDic];
+    InformationType  MsgInfoClass = [[NSString stringWithFormat:@"%@",data[@"MsgInfoClass"]] integerValue];
+    NSString *  ReceiveId = [NSString stringWithFormat:@"%@",data[@"ReceiveId"]];
+    NSString *  SendID = [NSString stringWithFormat:@"%@",data[@"SendID"]];
+    BOOL        GroupMsg = [NSString stringWithFormat:@"%@",data[@"GroupMsg"]].boolValue;
+    
+    if ([ReceiveId isEqualToString:CurrentUserId]) {
+        
+        if (data && [data.allKeys containsObject:@"MsgContent"]) {
+            
+            NSDictionary * MsgContent = [NSDictionary dictionaryWithDictionary:data[@"MsgContent"]];
+            
+            BOOL IsFileChat = [[NSString stringWithFormat:@"%@",MsgContent[@"IsFileChat"]] boolValue];
+            if (IsFileChat) {// 文件
+                NSString * fileContentJson = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"]];
+                NSDictionary * fileContent = [NSString dictionaryWithJsonString:fileContentJson];
+                
+                
+                
+                NSString * pSendPos = [NSString stringWithFormat:@"%@",fileContent[@"pSendPos"]];
+                NSString * identification = [NSString stringWithFormat:@"%@",fileContent[@"identification"]];
+                NSString * fileName = [NSString stringWithFormat:@"%@",fileContent[@"fileName"]];
+                NSString * fileSize = [NSString stringWithFormat:@"%@",fileContent[@"fileSize"]];
+                NSString * fileUrl = [NSString stringWithFormat:@"%@%@/%@",serverAddress,CurrentUserId,identification];
+                
+                
+                
+                MsgModel * model = [MsgModel new];
+                model.target = SendID;
+                model.sendId = SendID;
+                model.receivedId =CurrentUserId;
+                model.msgType = MsgTypeFile;
+                model.content = fileName;
+                model.imageUrl = fileUrl;
+                model.MsgInfoClass = InformationTypeChatPhoto;
+                model.GroupMsg = GroupMsg;
+                
+                
+                
+                ConversationModel * target = [ConversationModel new];
+                target.Id = SendID;
+                target.name = @"";
+                target.imgUrl = @"";
+                [[MessageManager share] addMsg:model toTarget:target];
+                [PHPush pushWithTitle:SendID message:@"发来一张图片"];
+            }
+        }
+    }
+    
+}
+
+
 +(void)contactNotOnline:(NSDictionary *)msgDic{
 //    {
 //        GroupMsg = 0;
@@ -278,5 +478,17 @@
     return base64;
 }
                        
-
++(NSString *)getStatusInfoWithStatusIndex:(NSInteger)index{
+    NSArray * statusInfos  = @[@"离线",
+                               @"上线",
+                               @"隐身",
+                               @"离开",
+                               @"繁忙",
+                               @"勿扰"];
+    
+    if (index>=statusInfos.count || index<0) {
+        return @"未知状态";
+    }
+    return statusInfos[index];
+}
 @end

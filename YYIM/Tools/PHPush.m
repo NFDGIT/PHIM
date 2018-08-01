@@ -8,6 +8,9 @@
 
 #import "PHPush.h"
 
+
+
+
 @implementation PHPush
 //创建本地通知
 + (void)registLocalPush
@@ -19,7 +22,7 @@
         [[UIApplication sharedApplication] registerUserNotificationSettings:setting];
     }
 }
-+ (void)push:(NSString *)message{
++ (void)pushWithTitle:(NSString *)title message:(NSString *)message{
     // 1.创建通知
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     // 2.设置通知的必选参数
@@ -29,18 +32,36 @@
     localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:3];
     //解锁滑动时的事件
     localNotification.alertAction = @"查看";
+    localNotification.alertTitle = title;
     //收到通知时App icon的角标
     localNotification.applicationIconBadgeNumber = 1;
     //推送是带的声音提醒，设置默认的字段为UILocalNotificationDefaultSoundName
     localNotification.soundName = UILocalNotificationDefaultSoundName;
     // 3.发送通知(🐽 : 根据项目需要使用)
     // 方式一: 根据通知的发送时间(fireDate)发送通知
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+  //  [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     
     // 方式二: 立即发送通知
-    // [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
+     [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
     
 
     
+}
+
++(void)resetBageNumber{
+    
+    if(IS_IOS11_LATER){
+        /*
+         iOS 11后，直接设置badgeNumber = -1就生效了
+         */
+        
+        [UIApplication sharedApplication].applicationIconBadgeNumber = -1;
+    }else{
+        UILocalNotification *clearEpisodeNotification = [[UILocalNotification alloc] init];
+        clearEpisodeNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:(0.3)];
+        clearEpisodeNotification.timeZone = [NSTimeZone defaultTimeZone];
+        clearEpisodeNotification.applicationIconBadgeNumber = -1;
+        [[UIApplication sharedApplication] scheduleLocalNotification:clearEpisodeNotification];
+    }
 }
 @end

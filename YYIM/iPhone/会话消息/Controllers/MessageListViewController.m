@@ -14,6 +14,7 @@
 #import "NetTool.h"
 #import "PersonCenterView.h"
 #import "NaviAddAlertView.h"
+#import "PHPush.h"
 //
 //#import "DBTool.h"
 
@@ -41,6 +42,7 @@
     [super viewWillAppear:animated];
     [self refreshData];
     [self layout];
+    [PHPush resetBageNumber];
 }
 
 -(void)initNavi{
@@ -69,14 +71,16 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:NotiForReceiveTypeChat object:nil];
     
     __weak typeof(self) weakSelf = self;
+    self.loginSuccessBlock = ^{
+        [weakSelf refreshData];
+    };
+    
     self.userStatusChangeBlock = ^(NSDictionary *data) {
         [weakSelf refreshUI];
     };
     self.userInfoChangeBlock = ^(NSDictionary *data) {
         [weakSelf refreshUI];
     };
-    
-    
     self.serverStateChangeBlock = ^(BOOL onLine) {
         [weakSelf layout];
     };
@@ -110,7 +114,6 @@
 //    }];
     [[MessageManager share]getConversations:^(NSArray * result) {
         self->_datas = [NSMutableArray arrayWithArray:result];
-        
         [self refreshUI];
     }];
     
@@ -128,7 +131,7 @@
 -(void)refreshUI{
     [_tableView.mj_header endRefreshing];
     [_tableView reloadData];
-    
+    [self initNavi];
 }
 -(void)layout{
 
@@ -199,13 +202,6 @@
     
     ChatViewController * chatvc = [ChatViewController new];
     ConversationModel * target = _datas[_datas.count - 1 - indexPath.section];;
-    [[MessageManager share]setNewCount:0 withId:target.Id response:^(BOOL success) {
-        if (success) {
-            [self refreshData];
-        }
-    }];
-    
-    
 
     chatvc.conversationModel = target;
     [self.navigationController pushViewController:chatvc animated:YES];

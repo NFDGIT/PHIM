@@ -21,6 +21,7 @@
 @property (nonatomic,strong)UIButton * addBtn;
 @property (nonatomic,strong)UIButton * emotionBtn;
 @property (nonatomic,strong)UITextView * textTF;
+@property (nonatomic,strong)UIButton * textTFbtn;
 
 @property (nonatomic,assign)NSUInteger index;
 
@@ -50,7 +51,7 @@
     
     UIButton * addBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
     [self addSubview:addBtn];
-    [addBtn setImage:[UIImage imageNamed:@"chat_加号"] forState:UIControlStateNormal];
+    [addBtn setImage:[UIImage imageNamed:@"chat_add"] forState:UIControlStateNormal];
     _addBtn = addBtn;
     [addBtn addTarget:self action:@selector(addClick) forControlEvents:UIControlEventTouchUpInside];
     
@@ -58,17 +59,29 @@
     UIButton * emotionBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
 //    emotionBtn.backgroundColor = [UIColor lightGrayColor];
     [self addSubview:emotionBtn];
-    [emotionBtn setImage:[UIImage imageNamed:@"chat_表情.png"] forState:UIControlStateNormal];
+    [emotionBtn setImage:[UIImage imageNamed:@"chat_emotion"] forState:UIControlStateNormal];
     _emotionBtn = emotionBtn;
     [emotionBtn addTarget:self action:@selector(emotionClick) forControlEvents:UIControlEventTouchUpInside];
     
     
+    
     _textTF = [[UITextView alloc]initWithFrame:CGRectMake(10, 5, self.width - 20, self.height - 20)];
+    _textTF.exclusiveTouch = NO;
+    _textTF.layer.cornerRadius = 3;
+    _textTF.layer.masksToBounds = YES;
     _textTF.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9  alpha:0.8];
     _textTF.font = FontBig;
     _textTF.delegate = self;
     _textTF.returnKeyType = UIReturnKeySend;
     [self addSubview:_textTF];
+    
+    
+//    UIButton * textTFbtn = [[UIButton alloc]initWithFrame:_textTF.frame];
+//    [self addSubview:textTFbtn];
+//    _textTFbtn = textTFbtn;
+//    _textTFbtn.exclusiveTouch = YES;
+//    [_textTFbtn addTarget:self action:@selector(textViewClick) forControlEvents:UIControlEventTouchUpInside];
+
     
 }
 
@@ -94,6 +107,8 @@
         _textTF.width = _emotionBtn.left - _textTF.left - 15;
     }
     _textTF.top = 10;
+//    _textTFbtn.frame = _textTF.frame;
+    
     
     
     self.height = _textTF.bottom + 10;
@@ -116,7 +131,7 @@
         _textTF.inputView = nil;
     }else{
         _index = 1;
-        
+
         
         EmotionView * emotionView = [[EmotionView alloc]initWithFrame:CGRectMake(0, 100, ScreenWidth, 220)];
         emotionView.clickBlock = ^(NSString *imgName) {
@@ -142,7 +157,7 @@
         _textTF.inputView = nil;
     }else{
         _index = 2;
-        ChatAddView * chatAddView = [[ChatAddView alloc]initWithFrame:CGRectMake(0, 100, ScreenWidth, 230)];
+        ChatAddView * chatAddView = [[ChatAddView alloc]init];
         chatAddView.clickBlock = ^(ChatAddType type, id data) {
             if (self->_inputAddDataBlock) {
                 self->_inputAddDataBlock(type,data);
@@ -177,6 +192,20 @@
     }
     return YES;
 }
+
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+    textView.inputView = nil;
+    [textView reloadInputViews];
+
+    
+    return YES;
+}
+-(void)textViewClick{
+    
+    
+    
+}
+
 -(void)textViewDidChange:(UITextView *)textView{
     [self layoutSubviews];
     if(_changeHeightBlock){

@@ -55,11 +55,24 @@
  */
 -(void)setNewCount:(NSUInteger)newCount withId:(NSString *)conversationId response:(void(^)(BOOL success))response;
 #pragma mark -- 消息
+-(NSArray *)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success;
 
-
--(void)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success;
 -(void)addMsg:(MsgModel *)msg toTarget:(ConversationModel *)target;
 
+/**
+ 获取最新的消息
+
+ @param targetId 会话ID
+ @param response 回调
+ */
+-(MsgModel *)getLastMessageWithTargetId:(NSString *)targetId response:(void (^)(MsgModel *))response;
+/**
+ 删除 某个会话的聊天记录
+ 
+ @param conversationId 会话ID
+ @param response response description
+ */
+-(void)deleteMessagesWithConversationId:(NSString *)conversationId response:(void(^)(BOOL success))response;
 #pragma mark -- 处理 socket 收到的数据
 -(void)handleMewMsg;
 @end

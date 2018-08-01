@@ -21,6 +21,10 @@
 
 #import "PersonDetailViewController.h"
 
+#import "UIView+Animation.h"
+
+#import "SocketRequest.h"
+
 
 @interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UIScrollView * scrollView;
@@ -34,7 +38,10 @@
 @end
 
 @implementation ChatViewController
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self refreshData];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initData];
@@ -73,13 +80,18 @@
 }
 -(void)initUI{
     
-    
-    
-    
     _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,0, self.view.width, ContentHeight)];
     [self.view addSubview:_scrollView];
     _scrollView.backgroundColor  =[UIColor lightGrayColor];
-
+//    [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.top.mas_equalTo(0);
+//        make.width.mas_equalTo(self.view.mas_width);
+//        make.height.mas_equalTo(self.view.mas_height);
+//    }];
+    
+    
+    
     
     ChatInputView * inputView = [[ChatInputView alloc]initWithFrame:CGRectMake(0, 0, _scrollView.width, 50)];
     [_scrollView addSubview:inputView];
@@ -93,8 +105,28 @@
         if (type == ChatAddTypeImage) {
             [self addImage:data];
         };
+        
+        if (type == ChatAddTypeFile) {
+            NSURL * url = (NSURL *)data;
+            [self sendFile:url];
+        }
     };
     _inputView = inputView;
+    
+    
+//    [_inputView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.height.mas_equalTo(Scale(50));
+//        make.bottom.equalTo(self->_scrollView.mas_height);
+//
+//        make.width.mas_equalTo(self->_scrollView.mas_width);
+//        make.left.mas_equalTo(0);
+//    }];
+//
+    
+    
+    
+    
+    
     
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, _scrollView.width, _scrollView.height - inputView.height) style:UITableViewStyleGrouped];
     [_tableView registerClass:[ChatCell class] forCellReuseIdentifier:@"cell"];
@@ -103,10 +135,18 @@
     _tableView.estimatedRowHeight = 300;
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    
-    
-    _scrollView.contentSize = CGSizeMake(_scrollView.width, _scrollView.height);
 
+    
+    
+    
+//    [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(0);
+//        make.left.mas_equalTo(0);
+//        make.width.mas_equalTo(self->_scrollView.mas_width);
+//        make.bottom.mas_equalTo(self->_inputView.mas_top);
+//    }];
+    
+    
     
     [self layout];
 }
@@ -115,19 +155,25 @@
 
 -(void)refreshUI{
 
-    
-    
     [_tableView reloadData];
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+           [self scrollToBottom:NO];
+    });
 
-    [self scrollToBottom:YES];
+ 
  
 }
 -(void)refreshData{
     
     NSString * targetId = _conversationModel.Id;
+    [[MessageManager share]setNewCount:0 withId:targetId response:^(BOOL success) {
+        if (success) {
+       
+        }
+    }];
     
-    
+
     [[MessageManager share]getMessagesWithTargetId:targetId success:^(NSArray * result) {
         self->_datas = [NSMutableArray arrayWithArray:result];
         
@@ -136,9 +182,20 @@
     }];
 }
 -(void)layout{
+    _scrollView.left = 0;
+    _scrollView.top = 0;
+    _scrollView.width = self.view.width;
+    _scrollView.height = self.view.height - (KISIphoneX?34:0);
+    
+    
+    _inputView.width = _scrollView.width;
+    _inputView.left = 0;
     _inputView.bottom = _scrollView.height;
     
     _tableView.height = _inputView.top;
+    _tableView.width = _scrollView.width;
+
+    _scrollView.contentSize = CGSizeMake(_scrollView.width, _scrollView.height);
 }
 #pragma mark -- 点击事件
 -(void)sendAction:(NSString *)msg{
@@ -168,6 +225,64 @@
     [self refreshData];
 
 }
+-(void)sendFile:(NSURL *)url
+{
+
+    
+    if (!serverOnLine) {
+        [PHAlert showWithTitle:@"提示" message:@"别发啦！找不到服务器啦！！！" block:^{
+        }];
+        return;
+    }
+  
+   
+    [ProgressTool showProgressWithText:@"发送中..."];
+    [Request uploadFile:url receiveId:_conversationModel.Id progress:^(float progress) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [ProgressTool setProgress:progress];
+            [ProgressTool setText:[NSString stringWithFormat:@"已发送%%%.0f",progress*100]];
+        });
+    } success:^(NSUInteger code, NSString *msg, id data) {
+        [ProgressTool hidden];
+        
+        if (code == 200) {
+            
+
+            NSString * fileName =[NSString stringWithFormat:@"%@",[data firstObject]];
+            NSString * fileUrl =[NSString stringWithFormat:@"%@%@/%@",serverAddress,self->_conversationModel.Id,[NSString stringWithFormat:@"%@",[data firstObject]]];
+            
+            [SocketRequest  sendFileName:fileName fileDesc:fileName receiceId:self->_conversationModel.Id];
+            
+            
+            MsgModel * model = [MsgModel new];
+            model.target = self->_conversationModel.Id;
+            model.sendId = CurrentUserId;
+            model.receivedId = self->_conversationModel.Id;
+            model.msgType = MsgTypeFile;
+            model.headIcon = CurrentUserIcon;
+            model.content = fileName;
+            model.imageUrl = fileUrl;
+            model.MsgInfoClass = InformationTypeChatPhoto;
+            model.GroupMsg = self->_conversationModel.GroupMsg;
+            
+            [[MessageManager share] addMsg:model toTarget:self->_conversationModel];
+            
+            [self refreshData];
+            [self.view makeToast:@"发送成功" duration:2 position:CSToastPositionCenter];
+        }else{
+            [self.view makeToast:@"发送失败" duration:2 position:CSToastPositionCenter];
+        }
+
+        
+    } failure:^(NSError *error) {
+        [ProgressTool hidden];
+        [self.view makeToast:@"发送失败" duration:2 position:CSToastPositionCenter];
+    }];
+    
+}
+
+
 -(void)addImage:(UIImage *)image{
     if (!serverOnLine) {
         [PHAlert showWithTitle:@"提示" message:@"别发啦！找不到服务器啦！！！" block:^{
@@ -176,54 +291,86 @@
     }
     
     
-    
-    [ProgressTool show];
-    [Request uploadImage:image receiveId:_conversationModel.Id success:^(NSUInteger code, NSString *msg, id data) {
+    [ProgressTool showProgressWithText:@"发送中..."];
+   
+    [Request uploadImage:image receiveId:_conversationModel.Id progress:^(float progress) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+         
+            [ProgressTool setProgress:progress];
+            [ProgressTool setText:[NSString stringWithFormat:@"已发送%%%.0f",progress*100]];
+        });
+
+    }  success:^(NSUInteger code, NSString *msg, id data) {
         [ProgressTool hidden];
         //上传成功
-        NSString * success = [NSString stringWithFormat:@"%@",data[@"success"]];
         
-        
-        
-        if ([success isEqualToString:@"true"]) {
-            NSString * imgUrl = [NSString stringWithFormat:@"%@",data[@"imgUrl"]];
-//            [[SocketTool share] sendMsg:@"" receiveId:[NSString stringWithFormat:@"%@",self->_conversationModel.Id] msgInfoClass:12 isGroup:self->_conversationModel.GroupMsg];
+        if (code == 200) {
+            NSString * imgUrl =[NSString stringWithFormat:@"%@%@/%@?width=%f&height=%f",serverAddress,self->_conversationModel.Id,[NSString stringWithFormat:@"%@",[data firstObject]],image.size.width,image.size.height];
             
-            MsgModel * model = [MsgModel new];
-            model.target = self->_conversationModel.Id;
-            model.sendId = CurrentUserId;
-            model.receivedId = self->_conversationModel.Id;
-            model.msgType = MsgTypeImage;
-            model.headIcon = CurrentUserIcon;
-            model.content = @"";
-            model.imageUrl = imgUrl;
-            model.MsgInfoClass = InformationTypeChat;
-            model.GroupMsg = self->_conversationModel.GroupMsg;
             
-            [[MessageManager share] addMsg:model toTarget:self->_conversationModel];
+            
+            for (NSString * imgName in data) {
+                
+                NSString *  imgNam = imgName;
+                if ([imgName hasSuffix:@".png"]) {
+                  imgNam = [imgName substringToIndex:imgName.length - 4];
+                }
+                
+                
+                
+                
+               
+                MsgModel * model = [MsgModel new];
+                model.target = self->_conversationModel.Id;
+                model.sendId = CurrentUserId;
+                model.receivedId = self->_conversationModel.Id;
+                model.msgType = MsgTypeImage;
+                model.headIcon = CurrentUserIcon;
+                model.content = @"";
+                model.imageUrl = imgUrl;
+                model.MsgInfoClass = InformationTypeChat;
+                model.GroupMsg = self->_conversationModel.GroupMsg;
+                
+                [[MessageManager share] addMsg:model toTarget:self->_conversationModel];
+                
+            
+
+                NSString * imgUrl1 = [NSString stringWithFormat:@"0,%@,%f,%f,.png|",imgNam,image.size.width,image.size.height];
+                [SocketRequest sendPhoto:imgUrl1 receiceId:self->_conversationModel.Id];
+                
+                
+                
+            }
+            
+            
+            
+
             
             [self refreshData];
+             [self.view makeToast:@"发送成功" duration:2 position:CSToastPositionCenter];
+        }else{
+             [self.view makeToast:@"发送失败" duration:2 position:CSToastPositionCenter];
             
         }
-        
-        
-        [PHAlert showWithTitle:@"提示" message:[NSString stringWithFormat:@"上传成功:%@",data] block:^{
-            
-        }];
+       
+//        [PHAlert showWithTitle:@"提示" message:[NSString stringWithFormat:@"上传成功:%@",data] block:^{
+//
+//        }];
     } failure:^(NSError *error) {
         [ProgressTool hidden];
         //上传失败
-        [PHAlert showWithTitle:@"提示" message:[NSString stringWithFormat:@"上传失败:%@",error] block:^{
+        [PHAlert showWithTitle:@"提示" message:[NSString stringWithFormat:@"发送失败:%@",error] block:^{
             
         }];
     }];
     
 //    return;
     
-
-    
-
-    
+}
+-(void)viewWillLayoutSubviews{
+    [super viewWillLayoutSubviews];
+    [self layout];
 }
 
 
@@ -249,13 +396,14 @@
     return _datas.count;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [tableView cellHeightWithIndexPath:indexPath];
-    
+    MsgModel * model = _datas[indexPath.section];
+
+
+    return [[ChatCell share] getHeightWithModel:model];
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     ChatCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     cell.indexPath = indexPath;
-    
     
     MsgModel * model = _datas[indexPath.section];
     cell.model = model;
@@ -268,11 +416,9 @@
 }
 #pragma mark  - 滑到最底部
 -(void)scrollToBottom:(BOOL)animated{
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 
-        [self scrollTableToFoot:animated];
-    });
+    [self scrollTableToFoot:animated];
+
 }
 
 
@@ -286,28 +432,21 @@
     NSIndexPath *ip = [NSIndexPath indexPathForRow:r-1 inSection:s-1];  //取最后一行数据
     [_tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:animated]; //滚动到最后一行
 }
-//- (void)scrollToBottomisAnimated:(BOOL)isAnimated {
-//    if (self.datas.count == 0) {
-//        return;
-//    }
-//    double delayInSeconds = 0;
-//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//        NSIndexPath *lastIndex = [NSIndexPath indexPathForRow:0 inSection:self.datas.count-1];
-//        [self.tableView scrollToRowAtIndexPath:lastIndex atScrollPosition:UITableViewScrollPositionBottom animated:isAnimated];
-//    });
-//}
 
 
 #pragma mark -- 点击事件
 -(void)rightClick{
+    
+    
+//    [[UIApplication sharedApplication].keyWindow shake];
+//    return;
     if (_conversationModel.GroupMsg) {
         GroupChatSettingViewController * setting = [GroupChatSettingViewController new];
-        setting.Id =  _conversationModel.Id;
+        setting.conversationModel =  _conversationModel;
         [self.navigationController pushViewController:setting animated:YES];
     }else{
         ChatSettingViewController * setting = [ChatSettingViewController new];
-        setting.Id =  _conversationModel.Id;
+        setting.conversationModel =  _conversationModel;
         [self.navigationController pushViewController:setting animated:YES];
         
     }

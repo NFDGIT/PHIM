@@ -152,7 +152,7 @@ static MessageManager *shared = nil;
 
 
 #pragma mark -- 消息
--(void)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success{
+-(NSArray *)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success{
 //    NSArray * messages = [NSArray array];
 //
 //    if ([_messageDic.allKeys containsObject:targetId]) {
@@ -162,15 +162,32 @@ static MessageManager *shared = nil;
 //        }
 //    }
 //
-    [[DBTool share]getMessagesWithTarget:targetId success:^(NSArray *result) {
+    NSArray * messages =  [[DBTool share]getMessagesWithTarget:targetId success:^(NSArray *result) {
         if (success) {
             success(result);
         }
     }];
-  
+    return messages;
     
     
 //    return messages;
+}
+/**
+ 获取最新的消息
+ 
+ @param targetId 会话ID
+ @param response 回调
+ */
+-(MsgModel *)getLastMessageWithTargetId:(NSString *)targetId response:(void (^)(MsgModel *))response{
+    NSArray * messages = [self getMessagesWithTargetId:targetId success:^(NSArray * result) {
+        
+    }];
+    
+    if (messages.count>0) {
+        return messages.lastObject;
+    }
+    return nil;
+    
 }
 -(void)addMsg:(MsgModel *)msg toTarget:(ConversationModel *)target{
     
@@ -200,6 +217,19 @@ static MessageManager *shared = nil;
 //        }];
 //    }];
 
+}
+/**
+ 删除 某个会话的聊天记录
+ 
+ @param conversationId 会话ID
+ @param response response description
+ */
+-(void)deleteMessagesWithConversationId:(NSString *)conversationId response:(void(^)(BOOL success))response{
+    [[DBTool share]deleteMessagesWithConversationId:conversationId response:^(BOOL success) {
+        if (response) {
+            response(success);
+        }
+    }];
 }
 
 #pragma mark -- 处理 socket 收到的数据

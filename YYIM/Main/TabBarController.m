@@ -7,7 +7,7 @@
 //
 
 #import "TabBarController.h"
-#import "NavigationController.h"
+
 
 
 #import "MessageListViewController.h"
@@ -20,14 +20,22 @@
 
 
 
-
+static SocketTool *shared = nil;
 
 @interface TabBarController ()<UITabBarControllerDelegate>
 @property (nonatomic,strong)NSMutableArray * tabbarItems;
 @end
 
 @implementation TabBarController
++ (TabBarController *)share{
 
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shared = [[TabBarController alloc] init];
+    });
+    
+    return shared;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -46,7 +54,7 @@
     _tabbarItems =  [NSMutableArray array];
     [_tabbarItems addObject:@{@"normalImg":@"tabbar_msg_nomal",@"selectedImg":@"tabbar_msg_selected",@"title":@"消息",@"controller":NSStringFromClass([MessageListViewController class])}];
     [_tabbarItems addObject:@{@"normalImg":@"tabbar_contacts_nomal",@"selectedImg":@"tabbar_contacts_selected",@"title":@"联系人",@"controller":NSStringFromClass([MyFriendsViewController class])}];
-    [_tabbarItems addObject:@{@"normalImg":@"tabbar_groupchat_nomal",@"selectedImg":@"tabbar_groupchat_selected",@"title":@"群聊",@"controller":NSStringFromClass([MyGroupChatViewController class])}];
+    [_tabbarItems addObject:@{@"normalImg":@"tabbar_groupchat_normal",@"selectedImg":@"tabbar_groupchat_selected",@"title":@"群聊",@"controller":NSStringFromClass([MyGroupChatViewController class])}];
     [_tabbarItems addObject:@{@"normalImg":@"tabbar_framework_nomal",@"selectedImg":@"tabbar_framework_selected",@"title":@"组织架构",@"controller":NSStringFromClass([ContactsListViewController class])}];
 
     

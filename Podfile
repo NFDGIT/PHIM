@@ -10,6 +10,7 @@ target 'YYIM' do
   pod 'SDWebImage'
   pod 'MJRefresh'
   pod 'Toast'
+  pod 'Masonry'
     
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!

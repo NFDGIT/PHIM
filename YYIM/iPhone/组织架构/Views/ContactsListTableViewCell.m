@@ -18,6 +18,8 @@
 @property (nonatomic,strong)UIButton  * btnName;
 @property (nonatomic,strong)UIImageView * headImg;
 
+
+@property (nonatomic,strong)UIImageView * bottomLine;
 @end
 @implementation ContactsListTableViewCell
 -(instancetype)initWithFrame:(CGRect)frame{
@@ -34,7 +36,7 @@
     return self;
 }
 -(void)initUI{
-    _headImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+    _headImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 10, 40, 40)];
     _headImg.layer.cornerRadius = _headImg.height/2;
     _headImg.layer.masksToBounds = YES;
     _headImg.hidden = YES;
@@ -43,12 +45,17 @@
     
     
     _btnName = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 200 , 50)];
-    _btnName.titleLabel.font = FontNormal;
+    _btnName.titleLabel.font = FontBig;
     [_btnName setTitleColor:ColorBlack forState:UIControlStateNormal];
     _btnName.userInteractionEnabled = NO;
     _btnName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     
     [self.contentView addSubview:_btnName];
+    
+    
+    _bottomLine = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.width, 0.5)];
+    _bottomLine.backgroundColor = ColorBack;
+    [self.contentView addSubview:_bottomLine];
     
 }
 
@@ -100,7 +107,7 @@
     }
 
     
-    
+    _bottomLine.bottom = self.ph_Height;
 }
 
 - (void)awakeFromNib {

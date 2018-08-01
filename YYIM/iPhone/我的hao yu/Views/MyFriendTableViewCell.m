@@ -14,6 +14,8 @@
 @property (nonatomic,strong)UIImageView * headImg;
 @property (nonatomic,strong)UILabel * labelName;
 @property (nonatomic,strong)UILabel * labelDesc;
+
+@property (nonatomic,strong)UIImageView * bottomLine;
 @end
 @implementation MyFriendTableViewCell
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -42,6 +44,11 @@
     _labelDesc.font = FontNormal;
     _labelDesc.textColor = ColorBlack;
     [self.contentView addSubview:_labelDesc];
+    
+    
+    _bottomLine = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.width, 0.5)];
+    _bottomLine.backgroundColor = ColorBack;
+    [self.contentView addSubview:_bottomLine];
 
 }
 -(void)setModel:(MyFriendsModel *)model{
@@ -75,6 +82,8 @@
     _labelDesc.top = _headImg.centerY + 5;
     
     self.ph_Height = _headImg.bottom + 10;
+    _bottomLine.bottom = self.ph_Height;
+    
 }
 
 @end

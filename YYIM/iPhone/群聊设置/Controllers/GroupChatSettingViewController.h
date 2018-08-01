@@ -7,7 +7,8 @@
 //
 
 #import "BaseViewController.h"
+#import "ConversationModel.h"
 
 @interface GroupChatSettingViewController : BaseViewController
-@property (nonatomic,strong)NSString * Id;
+@property (nonatomic,strong)ConversationModel * conversationModel;
 @end

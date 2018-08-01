@@ -26,10 +26,21 @@ typedef void (^failureBlock)(NSError *error);
  
  @param image 图片对象
  @param receiveId 成功的回调
+ @param progress  进度
  @param success 成功的回调
  @param failure 失败的回调
  */
-+(void)uploadImage:(UIImage *)image receiveId:(NSString *)receiveId  success:(successBlock)success failure:(failureBlock)failure;
++(void)uploadImage:(UIImage *)image receiveId:(NSString *)receiveId  progress:(void(^)(float progress))progress  success:(successBlock)success failure:(failureBlock)failure;
+/**
+ 上传文件
+ 
+ @param url 文件
+ @param receiveId 成功的回调
+ @param progress  进度
+ @param success 成功的回调
+ @param failure 失败的回调
+ */
++(void)uploadFile:(NSURL *)url receiveId:(NSString *)receiveId progress:(void(^)(float progress))progress success:(successBlock)success failure:(failureBlock)failure;
 
 /**
  登陆

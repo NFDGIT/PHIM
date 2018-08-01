@@ -18,4 +18,13 @@
 -(void)startHeartBeat;
 -(void)stopHeartBeat;
 -(void)sendMsg:(NSString *)msg receiveId:(NSString *)receiveId msgInfoClass:(InformationType)msgInfoClass isGroup:(BOOL)isGroup;
+/**
+ 发送socket
+ 
+ @param MsgContent 发送的内容
+ @param receiveId 发送给谁
+ @param msgInfoClass 消息的类型
+ @param isGroup 是不是群聊
+ */
+-(void)sendMsgContent:(NSString *)MsgContent receiveId:(NSString *)receiveId  msgInfoClass:(InformationType)msgInfoClass isGroup:(BOOL)isGroup;
 @end
