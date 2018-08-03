@@ -33,7 +33,9 @@ static PersonManager *shared = nil;
     return shared;
 }
 -(void)initData{
+    
     _dataDic = [NSMutableDictionary dictionary];
+    _groupChatDic = [NSMutableDictionary dictionary];
     [[DBTool share] getUserModels:^(NSDictionary * dataDic) {
         self->_dataDic = [NSMutableDictionary dictionaryWithDictionary:dataDic];
     }];
@@ -212,5 +214,35 @@ static PersonManager *shared = nil;
     
     
 }
+#pragma mark -- 群聊
+-(void)refreshGroupChats{
+    NSString * userName =  CurrentUserId;
+    [Request getUserInfoWithIdOrName:userName success:^(NSUInteger code, NSString *msg, id data) {
+        if (code == 200) {
+            //                NSArray * data = dataDic[@"Groups"];
+            NSString * dataString =[NSString stringWithFormat:@"%@",data[@"Groups"]];
+            NSArray * datas =   [NSJSONSerialization JSONObjectWithData:[dataString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
+            
+            NSMutableArray * arr = [NSMutableArray array];
+            for (NSDictionary * dic in datas) {
+                GroupChatModel * model = [GroupChatModel new];
+                [model setValuesForKeysWithDictionary:dic];
+                [arr addObject:model];
+                
+                [self updateGroupChatModel:model];
+            }
+            
+            
 
+        }
+    } failure:^(NSError *error) {
+    }];
+}
+-(void)updateGroupChatModel:(GroupChatModel *)groupChatModel{
+    [_groupChatDic setObject:groupChatModel forKey:groupChatModel.groupID];
+}
+-(GroupChatModel *)getGroupChatModelWithGroupId:(NSString *)groupId{
+    GroupChatModel * model = _groupChatDic[groupId];
+    return model;
+}
 @end

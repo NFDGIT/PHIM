@@ -60,12 +60,18 @@ static DBTool *shared = nil;
     NSString * sql1 = @"create table if not exists conversations ('Id' TEXT, 'name' TEXT,'imgUrl'  TEXT,'GroupMsg'  INTEGER,'newCount' INTEGER)"; // 会话的表
     
     NSString * sql2 = @"create table if not exists userList ('userID' TEXT, 'userName' TEXT,'UnderWrite'  TEXT,'HeadName'  TEXT,'UserStatus'  TEXT,'State' TEXT,'Email' TEXT,'Sex' TEXT,'RealName' TEXT,'Phone' TEXT)"; // 用户详情的表
+
+    
+    
+
+    
     
     
     //5.执行更新操作 此处database直接操作，不考虑多线程问题，多线程问题，用FMDatabaseQueue 每次数据库操作之后都会返回bool数值，YES，表示success，NO，表示fail,可以通过 @see lastError @see lastErrorCode @see lastErrorMessage
     BOOL result = [db executeUpdate:sql];
     BOOL result1 = [db executeUpdate:sql1];
     BOOL result2 = [db executeUpdate:sql2];
+
     if (result) {
         NSLog(@"create chatMessages success");
     }
@@ -75,7 +81,7 @@ static DBTool *shared = nil;
     if (result2) {
         NSLog(@"create userList success");
     }
-    
+
     
     [db close];
 }
@@ -156,11 +162,13 @@ static DBTool *shared = nil;
     
     NSString * sql2 = @"create table if not exists userList ('userID' TEXT, 'userName' TEXT,'UnderWrite'  TEXT,'HeadName'  TEXT,'UserStatus'  TEXT,'State' TEXT,'Email' TEXT,'Sex' TEXT,'RealName' TEXT,'Phone' TEXT)"; // 用户详情的表
     
+    NSString * sql3 = @"create table if not exists groupList ('groupDep' TEXT, 'groupID' TEXT,'groupName'  TEXT,'memberList'  TEXT)"; // 全部群组的表
 
     //5.执行更新操作 此处database直接操作，不考虑多线程问题，多线程问题，用FMDatabaseQueue 每次数据库操作之后都会返回bool数值，YES，表示success，NO，表示fail,可以通过 @see lastError @see lastErrorCode @see lastErrorMessage
     BOOL result = [db executeUpdate:sql];
     BOOL result1 = [db executeUpdate:sql1];
     BOOL result2 = [db executeUpdate:sql2];
+    BOOL result3 = [db executeUpdate:sql3];
     if (result) {
         NSLog(@"create chatMessages success");
     }
@@ -169,6 +177,9 @@ static DBTool *shared = nil;
     }
     if (result2) {
         NSLog(@"create userList success");
+    }
+    if (result3) {
+        NSLog(@"create groupList success");
     }
     
     
@@ -522,4 +533,50 @@ static DBTool *shared = nil;
     
     
 }
+#pragma mark -- 群组信息
+/**
+ 添加群信息
+ 
+ @param model 群model
+ @param response 添加群组信息的结果
+ */
+-(void)addGroupModel:(GroupChatModel *)model response:(void (^)(BOOL))response{
+    [_db open];
+    
+    NSString *groupDep = [NSString stringWithFormat:@"%@",model.groupDep];
+    NSString *groupID = [NSString stringWithFormat:@"%@",model.groupID];
+    NSString *groupName = [NSString stringWithFormat:@"%@",model.groupName];
+    NSString *memberList = [NSString stringWithFormat:@"%@",model.memberList];
+  
+    
+    //    'State' TEXT,'Email' TEXT,'Sex' TEXT,'RealName' TEXT
+    BOOL result = [_db executeUpdate:@"insert into 'groupList' (groupDep,groupID,groupName,memberList) values(?,?,?,?)" withArgumentsInArray:@[groupDep,groupID,groupName,memberList]];
+    if (response) {
+        response(result);
+    }
+    [_db close];
+}
+/**
+ 更新群信息
+ 
+ @param model 群model
+ @param response 更新群组信息的结果
+ */
+-(void)updateGroupModel:(GroupChatModel *)model response:(void (^)(BOOL))response{
+    
+    
+}
+/**
+ 根据 groupid 获取 model
+ 
+ @param groupid 用户id
+ @param response 结果
+ */
+-(void)getGroupModelWithGroupid:(NSString *)groupid response:(void (^)(GroupChatModel * model))response{
+    
+    
+    
+}
+
+
 @end

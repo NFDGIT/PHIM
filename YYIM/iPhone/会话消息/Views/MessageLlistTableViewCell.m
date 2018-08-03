@@ -41,7 +41,6 @@
     [self.contentView addSubview:_imgView];
     
     
-    
     _labelName = [[UILabel alloc]initWithFrame:CGRectMake(_imgView.right + 10, _imgView.top, self.width - _imgView.right - 20, 20)];
     _labelName.font = FontBig;
     _labelName.textColor = ColorBlack;
@@ -49,8 +48,8 @@
 
     
     _labelSignature = [[UILabel alloc]initWithFrame:CGRectMake(_imgView.right + 10, _labelName.bottom + 10, self.width - _imgView.right - 20, 20)];
-    _labelSignature.font = FontBig;
-    _labelSignature.textColor = ColorBlack;
+    _labelSignature.font = FontNormal;
+    _labelSignature.textColor = ColorGray;
     [self.contentView addSubview:_labelSignature];
 
     
@@ -108,6 +107,29 @@
     
     if (_model.GroupMsg) {
         _imgView.image = [UIImage imageNamed:@"群组_default"];
+        MsgModel * msgModel = [[MessageManager share]getLastMessageWithTargetId:_model.Id response:nil];
+        UserInfoModel * userInfoModel =  [[PersonManager share]getModelWithId:msgModel.sendId];
+        
+        
+        if (msgModel) {
+            switch (msgModel.msgType) {
+                case MsgTypeText:
+                    _labelSignature.attributedText = [RishTextAdapter getAttributedStringWithString:[NSString stringWithFormat:@"%@:%@",userInfoModel.RealName,msgModel.content]];
+                    break;
+                case MsgTypeImage:
+                    _labelSignature.text =[NSString stringWithFormat:@"%@:[图片]",userInfoModel.RealName];
+                    break;
+                case MsgTypeFile:
+                    _labelSignature.text = [NSString stringWithFormat:@"%@:[文件]",userInfoModel.RealName];
+                    break;
+                default:
+                    break;
+            }
+            
+            
+            
+        }
+        
     }else{
     
         

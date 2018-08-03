@@ -197,35 +197,67 @@
     NSString *  SendID = [NSString stringWithFormat:@"%@",MsgContent[@"SendID"]];
     BOOL        GroupMsg = [NSString stringWithFormat:@"%@",MsgContent[@"GroupMsg"]].boolValue;
     
-    if (MsgInfoClass == InformationTypeChat && [ReceiveId isEqualToString:CurrentUserId]&& ![SendID isEqualToString:CurrentUserId]) {
-        
-        if (MsgContent && [MsgContent.allKeys containsObject:@"MsgContent"]) {
-            
-            NSString * msg = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"][@"MsgContent"]];
-            
-            MsgModel * model = [MsgModel new];
-            //            model.headIcon =
-            model.target = SendID;
-            model.sendId = SendID;
-            model.receivedId = ReceiveId;
-            model.content = msg;
-            model.msgType = 0;
-            model.MsgInfoClass = InformationTypeChat;
-            model.GroupMsg = GroupMsg;
-            
-            
-            ConversationModel * target = [ConversationModel new];
-            target.Id = SendID;
-            target.name = @"";
-            target.imgUrl = @"";
-            
-            [[MessageManager share] addMsg:model toTarget:target];
-            
-            UserInfoModel * infoModel = [[PersonManager share] getModelWithId:SendID];
-            [PHPush pushWithTitle:infoModel.RealName message:msg];
+//    if (MsgInfoClass == InformationTypeChat ) {
+        if (GroupMsg) {
+            if (MsgContent && [MsgContent.allKeys containsObject:@"MsgContent"]) {
+                
+                NSString * msg = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"][@"MsgContent"]];
+                
+                MsgModel * model = [MsgModel new];
+                //            model.headIcon =
+                model.target = ReceiveId;
+                model.sendId = SendID;
+                model.receivedId = ReceiveId;
+                model.content = msg;
+                model.msgType = 0;
+                model.MsgInfoClass = InformationTypeChat;
+                model.GroupMsg = GroupMsg;
+                
+                
+                ConversationModel * target = [ConversationModel new];
+                target.GroupMsg = GroupMsg;
+                target.Id = ReceiveId;
+                target.name = @"";
+                target.imgUrl = @"";
+                
+                [[MessageManager share] addMsg:model toTarget:target];
+                
+//                UserInfoModel * infoModel = [[PersonManager share] getModelWithId:SendID];
+                [PHPush pushWithTitle:ReceiveId message:msg];
+                
+            }
+        }else{
+            if ([ReceiveId isEqualToString:CurrentUserId]) {
+                if (MsgContent && [MsgContent.allKeys containsObject:@"MsgContent"]) {
+                    
+                    NSString * msg = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"][@"MsgContent"]];
+                    
+                    MsgModel * model = [MsgModel new];
+                    //            model.headIcon =
+                    model.target = SendID;
+                    model.sendId = SendID;
+                    model.receivedId = ReceiveId;
+                    model.content = msg;
+                    model.msgType = 0;
+                    model.MsgInfoClass = InformationTypeChat;
+                    model.GroupMsg = GroupMsg;
+                    
+                    
+                    ConversationModel * target = [ConversationModel new];
+                    target.Id = SendID;
+                    target.name = @"";
+                    target.imgUrl = @"";
+                    
+                    [[MessageManager share] addMsg:model toTarget:target];
+                    
+                    UserInfoModel * infoModel = [[PersonManager share] getModelWithId:SendID];
+                    [PHPush pushWithTitle:infoModel.RealName message:msg];
+                    
+                }
 
-        }
-        
+            }
+            
+  
         
     }
     

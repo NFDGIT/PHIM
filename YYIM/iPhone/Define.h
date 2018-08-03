@@ -17,7 +17,7 @@
 #define serverHost   @"172.16.133.24"
 #define serverPort   5533
 #define serverSocketPort   5540
-#define serverUploadFilePort 8620
+#define serverUploadFilePort 8620z
 #define serverAddress @"http://172.16.133.24:5533/"
 #define serverUploadFileAddress @"http://172.16.133.24:8620/"
 #define UrlPath   [NSString stringWithFormat:@"%@%@",serverAddress,@"RemotingService"]
@@ -51,6 +51,7 @@
 
 #define ColorBack   [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1]
 #define ColorWhite  [UIColor colorWithRed:1 green:1 blue:1 alpha:1]
+#define ColorGray   [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.7]
 #define ColorBlack  [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8]
 #define ColorRed    [UIColor colorWithRed:235/255.0 green:51/255.0 blue:51/255.0 alpha:1]
 #define ColorTheme  [UIColor colorWithRed:25/255.0 green:147/255.0 blue:251/255.0 alpha:1]

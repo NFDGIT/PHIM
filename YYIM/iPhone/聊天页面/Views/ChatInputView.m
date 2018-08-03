@@ -10,6 +10,7 @@
 
 #import "EmotionView.h"
 #import "ChatAddView.h"
+#import "RishTextAdapter.h"
 
 #import "SmiliesAttributedString.h"
 
@@ -195,6 +196,9 @@
     if ([text isEqualToString:@""]) { // 删除键
         
     }
+//
+    
+    
     return YES;
 }
 
@@ -212,6 +216,8 @@
 }
 
 -(void)textViewDidChange:(UITextView *)textView{
+    
+//    textView.attributedText = [RishTextAdapter getAttributedStringWithString:textView.text];
     [self layout];
 
 }

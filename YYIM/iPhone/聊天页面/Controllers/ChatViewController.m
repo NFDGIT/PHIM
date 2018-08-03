@@ -437,8 +437,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     MsgModel * model = _datas[indexPath.section];
     CGFloat  height = [ChatCell  getHeightWithModel:model];
-    
-    NSLog(@"----- %ld::::: %f",(long)indexPath.section,height);
+  
     return height;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

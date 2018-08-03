@@ -32,6 +32,7 @@
 		C52855C8210EAFE100887345 /* FileManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C52855C7210EAFE100887345 /* FileManagerViewController.m */; };
 		C52855CC210EBB3900887345 /* FileManagerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52855CB210EBB3900887345 /* FileManagerCollectionViewCell.m */; };
 		C52855D0210EC1E400887345 /* FileManagerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C52855CF210EC1E400887345 /* FileManagerModel.m */; };
+		C5467897211449AB00B86886 /* GroupChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5467896211449AB00B86886 /* GroupChatModel.m */; };
 		C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */; };
 		C55FF5F320F6EB3A00A86F00 /* EmotionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5F220F6EB3A00A86F00 /* EmotionView.m */; };
 		C55FF5F920F72A3B00A86F00 /* ChatAddView.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5F820F72A3B00A86F00 /* ChatAddView.m */; };
@@ -164,6 +165,8 @@
 		C52855CB210EBB3900887345 /* FileManagerCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManagerCollectionViewCell.m; sourceTree = "<group>"; };
 		C52855CE210EC1E400887345 /* FileManagerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManagerModel.h; sourceTree = "<group>"; };
 		C52855CF210EC1E400887345 /* FileManagerModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManagerModel.m; sourceTree = "<group>"; };
+		C5467895211449AB00B86886 /* GroupChatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupChatModel.h; sourceTree = "<group>"; };
+		C5467896211449AB00B86886 /* GroupChatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupChatModel.m; sourceTree = "<group>"; };
 		C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHCellHeight.m; sourceTree = "<group>"; };
 		C55FF5EF20F6E57500A86F00 /* PHCellHeight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHCellHeight.h; sourceTree = "<group>"; };
 		C55FF5F120F6EB3A00A86F00 /* EmotionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmotionView.h; sourceTree = "<group>"; };
@@ -335,14 +338,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C50937CD20FEED0200A70E41 /* 群聊 */ = {
+		C50937CD20FEED0200A70E41 /* 群聊页面 */ = {
 			isa = PBXGroup;
 			children = (
 				C50937D020FEED4500A70E41 /* Models */,
 				C50937CF20FEED3900A70E41 /* Views */,
 				C50937CE20FEED2E00A70E41 /* Controllers */,
 			);
-			path = "群聊";
+			path = "群聊页面";
 			sourceTree = "<group>";
 		};
 		C50937CE20FEED2E00A70E41 /* Controllers */ = {
@@ -468,6 +471,8 @@
 				C50938012101825A00A70E41 /* UserInfoModel.m */,
 				C590215D20F491B2001296C4 /* Request.h */,
 				C590215E20F491B2001296C4 /* Request.m */,
+				C5467895211449AB00B86886 /* GroupChatModel.h */,
+				C5467896211449AB00B86886 /* GroupChatModel.m */,
 			);
 			path = "数据处理中心";
 			sourceTree = "<group>";
@@ -668,7 +673,7 @@
 				C50937EF21003C4400A70E41 /* 群聊详情 */,
 				C50937E120FF05FE00A70E41 /* 联系人 */,
 				C50937DA20FF04DD00A70E41 /* 用户详情 */,
-				C50937CD20FEED0200A70E41 /* 群聊 */,
+				C50937CD20FEED0200A70E41 /* 群聊页面 */,
 				C590218520F4B36B001296C4 /* 聊天页面 */,
 				C590217820F4AE6F001296C4 /* 我的好友 */,
 				C590213E20F44F31001296C4 /* Mine */,
@@ -1295,6 +1300,7 @@
 				C590213B20F44E1D001296C4 /* BaseViewController.m in Sources */,
 				C55FF5F920F72A3B00A86F00 /* ChatAddView.m in Sources */,
 				C574904B2107058C00577882 /* PersonCenterView.m in Sources */,
+				C5467897211449AB00B86886 /* GroupChatModel.m in Sources */,
 				C590215320F458F7001296C4 /* ContactsListTableViewCell.m in Sources */,
 				C50937EC20FF0C7600A70E41 /* PHSegmentViewController.m in Sources */,
 				C590217720F4A3CF001296C4 /* LoginViewController.m in Sources */,

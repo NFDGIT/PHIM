@@ -220,7 +220,7 @@ static SocketTool *shared = nil;
 }
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext
 {
-    NSLog(@"接收到%@的消息:%@",address,data);//自行转换格式吧
+//    NSLog(@"接收到%@的消息:%@",address,data);//自行转换格式吧
     NSDictionary * receiceDic = [self analysisReceiveDataWithData:data];
     NSLog(@"%@",receiceDic);
     [HandleSocketDao solveWith:receiceDic];
@@ -232,7 +232,7 @@ static SocketTool *shared = nil;
     NSData * inflateData =  [NSData gzipInflate:data];
     NSString * jsonString = [[NSString alloc] initWithData:inflateData encoding:NSUTF8StringEncoding];
     NSDictionary * dataDic = [NSString dictionaryWithJsonString:jsonString];
-    
+    NSLog(@"接收到一层的消息:%@",dataDic);//自行转换格式吧
     
     if ([dataDic.allKeys containsObject:@"MsgContent"]) {
         NSDictionary * MsgContentDic = [HandleSocketDao getDictionaryWithBase64:dataDic[@"MsgContent"]];

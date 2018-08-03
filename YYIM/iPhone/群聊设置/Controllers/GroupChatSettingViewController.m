@@ -9,10 +9,12 @@
 #import "GroupChatSettingViewController.h"
 #import "UserInfoModel.h"
 #import "PersonDetailViewController.h"
+#import "PersonManager.h"
 
 @interface GroupChatSettingViewController ()
-@property (nonatomic,strong)NSArray * infoModels;
+@property (nonatomic,strong)NSMutableArray * infoModels;
 @property (nonatomic,strong)UIScrollView *scrollView;
+@property (nonatomic,strong)UIScrollView *groupMember;
 @end
 
 @implementation GroupChatSettingViewController
@@ -22,12 +24,27 @@
     [self initData];
     [self initNavi];
     [self initUI];
+    
+    [self refreshData];
     // Do any additional setup after loading the view.
 }
 - (void)initData{
+    _infoModels = [NSMutableArray array];
+    
+}
+-(void)refreshData{
+    GroupChatModel * groupModel = [[PersonManager share]getGroupChatModelWithGroupId:_conversationModel.Id];
+    
+    [_infoModels removeAllObjects];
+    for (MyFriendsModel * model in groupModel.memberList) {
+        UserInfoModel * infomodel = [[PersonManager share]getModelWithId:model.userID];
+        [_infoModels addObject:infomodel];
+    }
+    [self refreshGroupMember];
     
     
 }
+
 - (void)initNavi{
     self.title = @"小群";
     
@@ -43,8 +60,9 @@
         UIScrollView * groupMember = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, scrollView.width, 100)];
         groupMember.backgroundColor = ColorWhite;
         [scrollView addSubview:groupMember];
-        [self refreshGroupMember:groupMember];
-        setY = groupMember.bottom + 20;
+        _groupMember = groupMember;
+//        [self refreshGroupMember:groupMember];
+        setY = _groupMember.bottom + 20;
     }
 
     
@@ -125,8 +143,8 @@
     
     
 }
--(void)refreshGroupMember:(UIScrollView *)groupMember{
-    [groupMember.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+-(void)refreshGroupMember{
+    [_groupMember.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     
     UserInfoModel * infoModel = [UserInfoModel new];
@@ -134,8 +152,8 @@
     infoModel.HeadName = @"63";
     infoModel.RealName = @"彭辉";
     
-    NSArray * members = @[infoModel,infoModel,infoModel,infoModel,infoModel,infoModel,infoModel];
-    _infoModels = members;
+//    NSArray * members = @[infoModel,infoModel,infoModel,infoModel,infoModel,infoModel,infoModel];
+//    _infoModels = members;
     
     
     CGFloat setX = 10;
@@ -149,7 +167,7 @@
        
         
         UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(setX, space, btnW, btnH)];
-        [groupMember addSubview:btn];
+        [_groupMember addSubview:btn];
         btn.tag = 100 + i;
         [btn addTarget:self action:@selector(clickUser:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -193,8 +211,8 @@
     }
     
     
-    groupMember.contentSize = CGSizeMake(setX, groupMember.height);
-    groupMember.height = space + btnH + space;
+    _groupMember.contentSize = CGSizeMake(setX, _groupMember.height);
+    _groupMember.height = space + btnH + space;
 }
 
 #pragma mark -- 点击事件

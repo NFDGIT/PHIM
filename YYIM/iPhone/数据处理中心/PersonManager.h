@@ -9,10 +9,13 @@
 #import <Foundation/Foundation.h>
 //#import "PersonStatusModel.h"
 #import "UserInfoModel.h"
+#import "GroupChatModel.h"
 
 
 @interface PersonManager : NSObject
 @property (nonatomic,strong)NSMutableDictionary<NSString *,UserInfoModel *> * dataDic;
+@property (nonatomic,strong)NSMutableDictionary<NSString *,GroupChatModel *> * groupChatDic;
+
 +(instancetype)share;
 
 -(void)updateModel:(UserInfoModel *)model;
@@ -23,4 +26,10 @@
 -(void)setStatus:(NSString *)UserStatus withId:(NSString *)Id;
 -(NSString *)getStatusWithId:(NSString *)Id;
 -(void)refreshLocalPersons;
+
+
+#pragma mark -- 群聊
+-(void)refreshGroupChats;
+-(void)updateGroupChatModel:(GroupChatModel *)groupChatModel;
+-(GroupChatModel *)getGroupChatModelWithGroupId:(NSString *)groupId;
 @end

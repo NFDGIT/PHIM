@@ -170,6 +170,9 @@
 
 
 -(void)refreshData{
+    
+    
+    
     UserInfoModel * infoModel = [[PersonManager share]getModelWithId:_conversationModel.Id];
     _infoModel = infoModel;
     [self refreshUI];

@@ -36,8 +36,13 @@
     [self initUI];
     [self refreshData];
     [self layout];
+    
+    
     if ([PersonManager share].dataDic.allKeys.count < 3) {
        [[PersonManager share]refreshLocalPersons];
+    }
+    if ([PersonManager share].groupChatDic.allKeys.count < 1) {
+        [[PersonManager share]refreshGroupChats];
     }
     
 

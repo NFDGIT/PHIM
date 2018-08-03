@@ -10,6 +10,7 @@
 #import "MsgModel.h"
 #import "ConversationModel.h"
 #import "UserInfoModel.h"
+#import "GroupChatModel.h"
 //#import "PersonStatusModel.h"
 
 @interface DBTool : NSObject
@@ -117,4 +118,28 @@
  @param model 用户的model
  */
 -(void)getUserModelWithUserId:(NSString *)userId response:(UserInfoModel *)model;
+
+#pragma mark -- 群组信息
+/**
+ 添加群信息
+ 
+ @param model 群model
+ @param response 添加群组信息的结果
+ */
+-(void)addGroupModel:(GroupChatModel *)model response:(void (^)(BOOL))response;
+/**
+ 更新群信息
+ 
+ @param model 群model
+ @param response 更新群组信息的结果
+ */
+-(void)updateGroupModel:(GroupChatModel *)model response:(void (^)(BOOL))response;
+/**
+ 根据 groupid 获取 model
+ 
+ @param groupid 用户id
+ @param response 结果
+ */
+-(void)getGroupModelWithGroupid:(NSString *)groupid response:(void (^)(GroupChatModel * model))response;
+
 @end
