@@ -84,18 +84,13 @@
 
     
 }
-
--(void)layoutSubviews{
-    [super layoutSubviews];
-
- 
-    
+-(void)layout{
     _addBtn.right = self.width - 15;
     _emotionBtn.right = _addBtn.left - 15;
     
     _addBtn.centerY = _emotionBtn.centerY = _textTF.centerY = self.height/2;
     
-
+    
     _textTF.width = _emotionBtn.left - _textTF.left - 15;
     
     
@@ -107,7 +102,7 @@
         _textTF.width = _emotionBtn.left - _textTF.left - 15;
     }
     _textTF.top = 10;
-//    _textTFbtn.frame = _textTF.frame;
+    
     
     
     
@@ -116,6 +111,14 @@
     
     _addBtn.bottom = _emotionBtn.bottom = _textTF.bottom;
     
+    if(_changeHeightBlock){
+        _changeHeightBlock();
+    }
+}
+
+-(void)layoutSubviews{
+    [super layoutSubviews];
+    [self layout];
 
 }
 #pragma mark -- 点击事件
@@ -184,7 +187,9 @@
         if (_inputBlock) {
             _inputBlock(textView.text);
         }
-        [[IQKeyboardManager sharedManager] resignFirstResponder];
+//        [[IQKeyboardManager sharedManager] resignFirstResponder];
+        textView.text = @"";
+        [self layout];
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
     }
     if ([text isEqualToString:@""]) { // 删除键
@@ -207,11 +212,12 @@
 }
 
 -(void)textViewDidChange:(UITextView *)textView{
-    [self layoutSubviews];
-    if(_changeHeightBlock){
-        _changeHeightBlock();
-    }
+    [self layout];
+
 }
+
+
+
 -(void)inputImage:(NSString *)imageName{
     _textTF.text = [_textTF.text stringByAppendingString:imageName];
 }

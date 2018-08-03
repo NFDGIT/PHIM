@@ -181,7 +181,14 @@
 
     NSDictionary * param = @{@"accepterID":receiveId};
     NSData * data = [NSData dataWithContentsOfFile:url.absoluteString];
-
+    if (!data) {
+        if (failure) {
+            failure([NSError new]);
+        }
+        
+        [[UIApplication sharedApplication].keyWindow makeToast:@"文件无效" duration:2 position:CSToastPositionCenter];
+        return;
+    }
     
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];

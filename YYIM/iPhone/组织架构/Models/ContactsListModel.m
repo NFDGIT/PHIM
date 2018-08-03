@@ -9,6 +9,9 @@
 #import "ContactsListModel.h"
 
 @implementation ContactsListModel
+-(void)setValue:(id)value forUndefinedKey:(NSString *)key{
+    
+}
 -(void)setValue:(id)value forKey:(NSString *)key{
     if ([key isEqualToString:@"Nodes"]) {
         NSMutableArray * models = [NSMutableArray array];

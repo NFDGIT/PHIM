@@ -15,6 +15,7 @@
 #import "PersonCenterView.h"
 #import "NaviAddAlertView.h"
 #import "PHPush.h"
+#import "PersonManager.h"
 //
 //#import "DBTool.h"
 
@@ -35,14 +36,18 @@
     [self initUI];
     [self refreshData];
     [self layout];
+    if ([PersonManager share].dataDic.allKeys.count < 3) {
+       [[PersonManager share]refreshLocalPersons];
+    }
     
+
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self refreshData];
     [self layout];
-    [PHPush resetBageNumber];
+    [PHPush refreshBage];
 }
 
 -(void)initNavi{
@@ -68,7 +73,7 @@
 }
 -(void)initData{
     _datas = [NSMutableArray array];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:NotiForReceiveTypeChat object:nil];
+
     
     __weak typeof(self) weakSelf = self;
     self.loginSuccessBlock = ^{
@@ -83,6 +88,9 @@
     };
     self.serverStateChangeBlock = ^(BOOL onLine) {
         [weakSelf layout];
+    };
+    self.chatNewMessageBlock = ^(NSDictionary *data) {
+        [weakSelf refreshData];
     };
 }
 -(void)initUI{
@@ -107,26 +115,13 @@
 }
 
 - (void)refreshData{
-//    [[MessageManager share] getMsgTargetsSuccess:^(NSArray * result) {
-//        self->_datas = [NSMutableArray arrayWithArray:result];
-//
-//        [self refreshUI];
-//    }];
+
     [[MessageManager share]getConversations:^(NSArray * result) {
         self->_datas = [NSMutableArray arrayWithArray:result];
         [self refreshUI];
     }];
     
-//
-//    _datas =[NSMutableArray arrayWithArray:[[MessageManager share]getMsgTargets]];
-//
-//    [self refreshUI];
-//    [Request searchUserWithIdOrName:@"15701344579" success:^(NSUInteger code, NSString *msg, id data) {
-//
-//    } failure:^(NSError *error) {
-//
-//    }];
-    
+
 }
 -(void)refreshUI{
     [_tableView.mj_header endRefreshing];
@@ -219,11 +214,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-- (void)dealloc
-{
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 
 #pragma mark -- 点击事件

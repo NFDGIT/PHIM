@@ -10,6 +10,7 @@
 #import "DBTool.h"
 #import "MyGroupChatModel.h"
 #import "MyFriendsModel.h"
+#import "ProgressTool.h"
 
 
 static PersonManager *shared = nil;
@@ -17,7 +18,7 @@ static PersonManager *shared = nil;
 
 @interface PersonManager()
 
-@property (nonatomic,strong)NSMutableDictionary<NSString *,UserInfoModel *> * dataDic;
+
 @property (nonatomic,strong)NSMutableDictionary * myGroupChat;
 
 @end
@@ -46,6 +47,17 @@ static PersonManager *shared = nil;
     lastModel = model;
     [_dataDic setObject:model forKey:Id];
 
+//    [[DBTool share] updateUserModel:model response:^(BOOL success) {
+//        if (success) {
+//
+//        }else{
+//            [[DBTool share] addUserModel:model response:^(BOOL success) {
+//            }];
+//
+//        }
+//    }];
+    
+//
     [[DBTool share] addUserModel:model response:^(BOOL success) {
     }];
 }
@@ -61,7 +73,7 @@ static PersonManager *shared = nil;
         // 当本地 没有数据时 就从网络请求 并且保存在本地
         [self getUserInfoWithId:Id response:^(BOOL success) {
             if (success) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserInfoChange object:nil];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserInfoChange object:nil];
             }
         }];
         
@@ -102,10 +114,7 @@ static PersonManager *shared = nil;
 -(void)getMyGroupChatsWithId:(NSString *)Id response:(void(^)(BOOL success))response{
     
     
-    
-//    if (Id) {
-//        <#statements#>
-//    }
+
     NSString * userName =  CurrentUserId;
     
     [ProgressTool show];
@@ -135,5 +144,73 @@ static PersonManager *shared = nil;
     }];
 }
 
+-(void)refreshLocalPersons{
+
+    [Request getUserListSuccess:^(NSUInteger code, NSString *msg, id data) {
+        if (code == 200) {
+            NSMutableArray * persons = [NSMutableArray array];
+            NSArray  *  nodes1 = [NSArray arrayWithArray:data];
+            
+            
+            for (int x =0 ; x < nodes1.count ; x ++ ) {
+                NSDictionary * node1 = nodes1[x];
+                NSArray  *  nodes2 = [NSArray arrayWithArray:node1[@"Nodes"]];
+                if ([node1.allKeys containsObject:@"UserInfo"] && nodes2.count<=0) {
+                    [persons addObject:node1[@"UserInfo"]];
+                }
+                
+                
+                
+                for (int y =0 ; y < nodes2.count ; y ++ ) {
+                    NSDictionary * node2 = nodes2[y];
+                    NSArray  *  nodes3 = [NSArray arrayWithArray:node2[@"Nodes"]];
+                    if ([node2.allKeys containsObject:@"UserInfo"]&& nodes3.count<=0) {
+                        [persons addObject:node2[@"UserInfo"]];
+                    }
+                    
+                    
+                    for (int z =0 ; z < nodes3.count ; z ++ ) {
+                        NSDictionary * node3 = nodes3[z];
+                        NSArray  *  nodes4 = [NSArray arrayWithArray:node3[@"Nodes"]];
+                        if ([node3.allKeys containsObject:@"UserInfo"]&& nodes4.count<=0) {
+                            [persons addObject:node3[@"UserInfo"]];
+                        }
+                        
+                        
+                        
+                        for (int w =0 ; w < nodes4.count ; w ++ ) {
+                            NSDictionary * node4 = nodes4[w];
+                            NSArray * nodes5 = [NSArray arrayWithArray:node4[@"Nodes"]];
+                            if ([node4.allKeys containsObject:@"UserInfo"]&& nodes5.count<=0) {
+                                [persons addObject:node4[@"UserInfo"]];
+                            }
+                        }
+                        
+                        
+                        
+                        
+                        
+                    }
+                }
+            }
+            
+            for (NSDictionary * infoDic in persons) {
+                UserInfoModel * model = [UserInfoModel new];
+                [model setValuesForKeysWithDictionary:infoDic];
+                
+                [[PersonManager share] updateModel:model];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiForReceiveTypeUserInfoChange object:nil];
+        }else{
+            
+            
+        }
+
+    } failure:^(NSError *error) {
+        
+    }];
+    
+    
+}
 
 @end

@@ -12,5 +12,6 @@
 //创建本地通知
 + (void)registLocalPush;
 + (void)pushWithTitle:(NSString *)title message:(NSString *)message;
-+(void)resetBageNumber;
++(void)setBageNumber:(NSInteger)count;
++(void)refreshBage;
 @end

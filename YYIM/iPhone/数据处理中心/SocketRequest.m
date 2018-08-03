@@ -25,6 +25,13 @@
     
 }
 /**
+ 请求离线消息
+ */
++(void)getOffLineMessage{
+    [[SocketTool share]sendMsgContent:@"" receiveId:@"" msgInfoClass:InformationTypeGetOfflineMessage isGroup:NO];
+    
+}
+/**
  发送文本消息
  
  @param msg 消息文本
@@ -53,14 +60,13 @@
  
  @param fileName 文件的名称
  @param fileDesc 文件的描述
+@param fileSize 文件的大小
  */
-+(void)sendFileName:(NSString *)fileName fileDesc:(NSString *)fileDesc receiceId:(NSString *)receiveId{
-    
-    
++(void)sendFileName:(NSString *)fileName fileDesc:(NSString *)fileDesc fileSize:(NSString *)fileSize receiceId:(NSString *)receiveId{
     
     
     NSDictionary * classinfo = @{
-                                 @"fileSize":@(100),
+                                 @"fileSize":fileSize,
                                  @"pSendPos":@(0),
                                  @"identification":fileName,
                                  @"fileName":fileDesc
@@ -75,6 +81,26 @@
                                                                         }];
     [[SocketTool share]sendMsgContent:MsgContent receiveId:receiveId msgInfoClass:InformationTypeChatFile isGroup:NO];
     
+    
+}
+/**
+ 发送群文本消息
+ 
+ @param msg 消息文本
+ @param receiveId 接收ID
+ */
++(void)sendGroupMsg:(NSString *)msg receiveId:(NSString *)receiveId{
+    NSMutableDictionary * ClassTextMsg = [NSMutableDictionary dictionary];
+    [ClassTextMsg setValue:msg forKey:@"MsgContent"];
+    [ClassTextMsg setValue:@"" forKey:@"ImageInfo"];
+    
+    NSMutableDictionary * param = [NSMutableDictionary dictionary];
+    [param setValue:[HandleSocketDao getBase64WithDictionary:ClassTextMsg] forKey:@"ClassTextMsg"];
+    
+    NSString * msgContent = [HandleSocketDao getBase64WithDictionary:ClassTextMsg];
+    
+
+    [[SocketTool share] sendMsgContent:msgContent receiveId:receiveId msgInfoClass:InformationTypeBroadcastChat isGroup:YES];
     
 }
 @end

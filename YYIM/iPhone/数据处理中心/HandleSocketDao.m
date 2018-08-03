@@ -159,10 +159,10 @@
         UserInfoModel * model = [UserInfoModel new];
         [model setValuesForKeysWithDictionary:MsgContent];
         
-        [[PersonManager share]setStatus:model.UserStatus withId:model.userID]; //  只改变 状态值
+//        [[PersonManager share]setStatus:model.UserStatus withId:model.userID]; //  只改变 状态值
         
         NSString *UserStatus = [NSString stringWithFormat:@"%@",model.UserStatus];
-        [[PersonManager share]setStatus:model.UserStatus withId:model.userID];
+        [[PersonManager share]setStatus:UserStatus withId:model.userID];
         if ([model.userID isEqualToString:CurrentUserId]) {
             setCurrentUserStatus([model.UserStatus integerValue]);
 
@@ -197,7 +197,7 @@
     NSString *  SendID = [NSString stringWithFormat:@"%@",MsgContent[@"SendID"]];
     BOOL        GroupMsg = [NSString stringWithFormat:@"%@",MsgContent[@"GroupMsg"]].boolValue;
     
-    if (MsgInfoClass == InformationTypeChat && [ReceiveId isEqualToString:CurrentUserId]) {
+    if (MsgInfoClass == InformationTypeChat && [ReceiveId isEqualToString:CurrentUserId]&& ![SendID isEqualToString:CurrentUserId]) {
         
         if (MsgContent && [MsgContent.allKeys containsObject:@"MsgContent"]) {
             
@@ -220,7 +220,9 @@
             target.imgUrl = @"";
             
             [[MessageManager share] addMsg:model toTarget:target];
-            [PHPush pushWithTitle:SendID message:msg];
+            
+            UserInfoModel * infoModel = [[PersonManager share] getModelWithId:SendID];
+            [PHPush pushWithTitle:infoModel.RealName message:msg];
 
         }
         
@@ -240,51 +242,15 @@
     NSString *  SendID = [NSString stringWithFormat:@"%@",data[@"SendID"]];
     BOOL        GroupMsg = [NSString stringWithFormat:@"%@",data[@"GroupMsg"]].boolValue;
     
-    if (MsgInfoClass == InformationTypeChatPhoto && [ReceiveId isEqualToString:CurrentUserId]) {
+    if (MsgInfoClass == InformationTypeChatPhoto && [ReceiveId isEqualToString:CurrentUserId] && ![SendID isEqualToString:CurrentUserId]) {
         
         if (data && [data.allKeys containsObject:@"MsgContent"]) {
             
             NSDictionary * MsgContent = [NSDictionary dictionaryWithDictionary:data[@"MsgContent"]];
             
             BOOL IsFileChat = [[NSString stringWithFormat:@"%@",MsgContent[@"IsFileChat"]] boolValue];
-            if (IsFileChat) {// 文件
-                NSString * fileContentJson = [NSString stringWithFormat:@"%@",MsgContent[@"MsgContent"]];
-                NSDictionary * fileContent = [NSString dictionaryWithJsonString:fileContentJson];
-                
-                
-                
-                NSString * pSendPos = [NSString stringWithFormat:@"%@",fileContent[@"pSendPos"]];
-                NSString * identification = [NSString stringWithFormat:@"%@",fileContent[@"identification"]];
-                NSString * fileName = [NSString stringWithFormat:@"%@",fileContent[@"fileName"]];
-                NSString * fileSize = [NSString stringWithFormat:@"%@",fileContent[@"fileSize"]];
-                NSString * fileUrl = [NSString stringWithFormat:@"%@%@/%@",serverAddress,CurrentUserId,identification];
-                
-                
-                
-                MsgModel * model = [MsgModel new];
-                model.target = SendID;
-                model.sendId = SendID;
-                model.receivedId =CurrentUserId;
-                model.msgType = MsgTypeFile;
-                model.content = fileName;
-                model.imageUrl = fileUrl;
-                model.MsgInfoClass = InformationTypeChatPhoto;
-                model.GroupMsg = GroupMsg;
-                
-                
-                
-                ConversationModel * target = [ConversationModel new];
-                target.Id = SendID;
-                target.name = @"";
-                target.imgUrl = @"";
-                [[MessageManager share] addMsg:model toTarget:target];
-                [PHPush pushWithTitle:SendID message:@"发来一张图片"];
-            }
-            else
-            { // 图片
-                
-                
-                
+
+        
                 NSString * msg = [NSString stringWithFormat:@"%@",data[@"MsgContent"][@"MsgContent"]];
                 NSString * ImageInfo = [NSString stringWithFormat:@"%@",data[@"MsgContent"][@"ImageInfo"]];
                 if ([ImageInfo hasSuffix:@"|"]) {
@@ -307,8 +273,6 @@
                     NSString * imgUrl = [NSString stringWithFormat:@"%@%@/%@%@?width=%@&height=%@",serverAddress,CurrentUserId,fileName,suffix,width,height];
                     
                     
-                    
-                    
                     MsgModel * model = [MsgModel new];
                     //            model.headIcon =
                     model.target = SendID;
@@ -327,22 +291,11 @@
                     target.imgUrl = @"";
                     
                     [[MessageManager share] addMsg:model toTarget:target];
-                    [PHPush pushWithTitle:SendID message:@"发来一张图片"];
-                    //                [PHPush push:[NSString stringWithFormat:@"%@",msg]];
-                }
-                
-            }
-            
-            
-            
-            
-            
+                    
+                    UserInfoModel * infoModel = [[PersonManager share] getModelWithId:SendID];
+                    [PHPush pushWithTitle:infoModel.RealName message:@"发来一张图片"];
 
-   
-            
-            
-            
-            
+            }
             
             
 
@@ -364,7 +317,7 @@
     NSString *  SendID = [NSString stringWithFormat:@"%@",data[@"SendID"]];
     BOOL        GroupMsg = [NSString stringWithFormat:@"%@",data[@"GroupMsg"]].boolValue;
     
-    if ([ReceiveId isEqualToString:CurrentUserId]) {
+    if ([ReceiveId isEqualToString:CurrentUserId]&& ![SendID isEqualToString:CurrentUserId]) {
         
         if (data && [data.allKeys containsObject:@"MsgContent"]) {
             
@@ -376,13 +329,14 @@
                 NSDictionary * fileContent = [NSString dictionaryWithJsonString:fileContentJson];
                 
                 
-                
-                NSString * pSendPos = [NSString stringWithFormat:@"%@",fileContent[@"pSendPos"]];
-                NSString * identification = [NSString stringWithFormat:@"%@",fileContent[@"identification"]];
                 NSString * fileName = [NSString stringWithFormat:@"%@",fileContent[@"fileName"]];
                 NSString * fileSize = [NSString stringWithFormat:@"%@",fileContent[@"fileSize"]];
-                NSString * fileUrl = [NSString stringWithFormat:@"%@%@/%@",serverAddress,CurrentUserId,identification];
+                NSString * pSendPos = [NSString stringWithFormat:@"%@",fileContent[@"pSendPos"]];
                 
+                
+                
+                NSString * identification = [NSString stringWithFormat:@"%@",fileContent[@"identification"]];
+                NSString * fileUrl = [NSString stringWithFormat:@"%@%@/%@",serverAddress,CurrentUserId,identification];
                 
                 
                 MsgModel * model = [MsgModel new];
@@ -390,11 +344,16 @@
                 model.sendId = SendID;
                 model.receivedId =CurrentUserId;
                 model.msgType = MsgTypeFile;
-                model.content = fileName;
+                
+                
+                model.content = [NSString getJsonStringWithObjc:@{@"identification":identification,@"fileName":fileName,@"fileSize":fileSize,@"fileUrl":fileUrl,@"pSendPos":pSendPos}];
+               
+                
+                
+                
                 model.imageUrl = fileUrl;
                 model.MsgInfoClass = InformationTypeChatPhoto;
                 model.GroupMsg = GroupMsg;
-                
                 
                 
                 ConversationModel * target = [ConversationModel new];
@@ -402,7 +361,9 @@
                 target.name = @"";
                 target.imgUrl = @"";
                 [[MessageManager share] addMsg:model toTarget:target];
-                [PHPush pushWithTitle:SendID message:@"发来一张图片"];
+                
+                UserInfoModel * infoModel = [[PersonManager share] getModelWithId:SendID];
+                [PHPush pushWithTitle:infoModel.RealName message:@"发来一个文件"];
             }
         }
     }
@@ -424,9 +385,9 @@
         name = model.userName;
     }
     
-    [PHAlert showWithTitle:@"提示" message:[NSString stringWithFormat:@"用户：%@ 不在线",name] block:^{
-        
-    }];
+//    [PHAlert showWithTitle:@"提示" message:[NSString stringWithFormat:@"用户：%@ 不在线",name] block:^{
+//        
+//    }];
     
     
     

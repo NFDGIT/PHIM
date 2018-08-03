@@ -7,7 +7,10 @@
 //
 
 #import "ChatCellFileView.h"
+
 @interface ChatCellFileView()
+
+
 @property (nonatomic,strong)UIImageView * imgView;
 
 @property (nonatomic,strong)UILabel * labelName;
@@ -37,6 +40,7 @@
     _labelName = [[UILabel alloc]initWithFrame:CGRectMake(_imgView.right + 10, _imgView.top, self.width - _imgView.right-20, _imgView.height/2)];
     _labelName.font = FontBig;
     _labelName.textColor = ColorBlack;
+    _labelName.lineBreakMode = NSLineBreakByTruncatingHead;
     [self addSubview:_labelName];
 
     
@@ -52,9 +56,26 @@
 }
 -(void)setModel:(MsgModel *)model{
     _model = model;
+    NSDictionary * fileDic = [MsgModel getFileDicWithFileJson:_model.content];
+
+    
+    
+    
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         self->_labelName.text = self->_model.content;
         self->_labelDesc.text = self->_model.content;
+        if (fileDic && [fileDic isKindOfClass:[NSDictionary class]]) {
+            NSString * fileName = [NSString stringWithFormat:@"%@",fileDic[@"fileName"]];
+            NSString * fileSize = [NSString stringWithFormat:@"%@",fileDic[@"fileSize"]];
+//            NSString * identification =[NSString stringWithFormat:@"%@",fileDic[@"identification"]];
+//            NSString * pSendPos = [NSString stringWithFormat:@"%@",fileDic[@"pSendPos"]];
+            
+            self->_labelName.text = fileName;
+            
+            self->_labelDesc.text =[NSString stringWithFormat:@"%.2fk",[fileSize floatValue]/1000];
+        }
+        
     });
 
 }

@@ -13,6 +13,7 @@
 #import "PhotoBrowserView.h"
 #import "ChatCellFileView.h"
 
+
 static ChatCell *shared = nil;
 @interface ChatCell()
 
@@ -23,6 +24,8 @@ static ChatCell *shared = nil;
 
 
 @property (nonatomic,strong)UIImageView * imgView;
+@property (nonatomic,strong)UIProgressView * progressView;
+
 
 @property (nonatomic,strong)ChatCellFileView * fileView;
 @end
@@ -66,20 +69,18 @@ static ChatCell *shared = nil;
     
     UILabel * msgContent = [[UILabel alloc]initWithFrame:CGRectMake(headImg.right + 10, headImg.top, self.width - headImg.right - 20, 40)];
     msgContent.textColor = ColorBlack;
-    msgContent.font = FontNormal;
+    msgContent.font = FontBig;
     [self.contentView addSubview:msgContent];
     msgContent.backgroundColor  =[UIColor colorWithRed:202/255.0 green:231/255.0 blue:254/255.0 alpha:1];
-    msgContent.layer.cornerRadius = 5;
-    
+    msgContent.layer.cornerRadius = 8;
+    msgContent.layer.masksToBounds = YES;
     _msgContent = msgContent;
     _msgContent.numberOfLines = 0;
     
     
-    
-    
-    
     _imgView = [[UIImageView alloc]init];
     _imgView.userInteractionEnabled = YES;
+    _imgView.contentMode = UIViewContentModeScaleAspectFit;
     _imgView.layer.cornerRadius = 8;
     _imgView.layer.masksToBounds = YES;
     [self.contentView addSubview:_imgView];
@@ -88,6 +89,16 @@ static ChatCell *shared = nil;
     UITapGestureRecognizer * imgTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(imgTap:)];
     [_imgView addGestureRecognizer:imgTap];
     
+    
+    _progressView = [[UIProgressView alloc]initWithFrame:CGRectMake(0, 0, 80, 80)];
+    _progressView.progressViewStyle = UIProgressViewStyleDefault;
+    
+    
+    
+ 
+    _progressView.progressTintColor = ColorTheme;
+    _progressView.trackTintColor = [UIColor lightGrayColor];
+    [_imgView addSubview:_progressView];
     
     
     _fileView = [ChatCellFileView new];
@@ -107,20 +118,7 @@ static ChatCell *shared = nil;
     _fileView.hidden = YES;
     
     
-    UserInfoModel * infoModel = [[PersonManager share] getModelWithId:_model.sendId];
-    
-    
-    _headImg.image = [UIImage imageNamed:@"touxiang_default"];
-    UIImage * headImage = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",infoModel.HeadName]];
-    
-    
-    if (headImage) {
-        _headImg.image = headImage;
-    }
-    _labelName.text = infoModel.RealName;
     _labelName.hidden = YES;
-    
-    
     
     
     if ([_model.sendId isEqualToString:CurrentUserId]) {
@@ -142,7 +140,7 @@ static ChatCell *shared = nil;
         case MsgTypeText:// 文本消息
         {
             _msgContent.hidden = NO;
-            _msgContent.attributedText = [RishTextAdapter getAttributedStringWithString:_model.content];
+   
             _msgContent.width = self.width * 0.5;
             [_msgContent sizeToFit];
             _msgContent.width = _msgContent.width + 10;
@@ -168,42 +166,11 @@ static ChatCell *shared = nil;
         {
             _imgView.hidden = NO;
             NSString * imgUrl = [NSString stringWithFormat:@"%@",_model.imageUrl];
-            NSDictionary * paramDic = [NSDictionary getParamDicWithUrl:imgUrl];
-            
-            
-            _imgView.width = 200;
-            _imgView.height = 200;
-            if ([paramDic.allKeys containsObject:@"width"] && [paramDic.allKeys containsObject:@"height"]) {
-                
-                
-                
-                NSString * width = [NSString stringWithFormat:@"%@",paramDic[@"width"]];
-                NSString * height = [NSString stringWithFormat:@"%@",paramDic[@"height"]];
-                
-                _imgView.width = width.floatValue;
-                _imgView.height = height.floatValue;
-                
-                
-                
-                if (_imgView.width > self.width * 0.5) {
-                    
-                    _imgView.height = _imgView.height * ((self.width * 0.5) / _imgView.width);
-                    _imgView.width = self.width * 0.5;
-                    
-                }else{
-                    if (_imgView.width <= 0 || _imgView.height <= 0) {
-                        _imgView.width = 200;
-                        _imgView.height = 200;
-                    }
-                    
-                    
-                }
-                
-            }
-            
-            [_imgView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_model.imageUrl]] placeholderImage:[UIImage imageNamed:@"chat_默认图"]];
-            //        http://img1.imgtn.bdimg.com/it /?u=3920398476,1501488149&fm=27&gp=0.jpg&width=200&height=300
-            
+
+            _imgView.width = ScreenWidth*0.5;
+            _imgView.height = ScreenWidth*0.5;
+
+
             if ([_model.sendId isEqualToString:CurrentUserId]) {
                 _imgView.right = _labelName.right;
                 _imgView.top = _headImg.top;
@@ -213,6 +180,8 @@ static ChatCell *shared = nil;
                 _imgView.top = _headImg.top;
             }
             
+            
+            _progressView.center = CGPointMake(_imgView.width/2, _imgView.height/2);
             self.ph_Height = _imgView.bottom + 10;
         }
             break;
@@ -249,9 +218,61 @@ static ChatCell *shared = nil;
 -(void)setModel:(MsgModel *)model{
     _model = model;
     
+   
+    UserInfoModel * infoModel = [[PersonManager share] getModelWithId:_model.sendId];
+    _headImg.image = [UIImage imageNamed:@"touxiang_default"];
+    UIImage * headImage = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",infoModel.HeadName]];
+    if (headImage) {
+        _headImg.image = headImage;
+    }
+    _progressView.hidden = YES;
+
+
+    
+    
+    
+    switch (_model.msgType) {
+        case MsgTypeText:
+        {
+            _msgContent.attributedText = [RishTextAdapter getAttributedStringWithString:_model.content];
+        }
+            break;
+        case MsgTypeImage:
+        {
+            _progressView.hidden = NO;
+            [_imgView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_model.imageUrl]] placeholderImage:[UIImage imageNamed:@"chat_默认图"] options:SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
+                float percent = (float)receivedSize/(float)expectedSize;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self->_progressView.progress = percent;
+                });
+                
+            } completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                self->_progressView.hidden = YES;
+            }];
+        }
+            break;
+        case MsgTypeFile:
+        {
+                _fileView.model = _model;
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+
+
+
+    
+
+    
+    
+    
+    
     [self layoutSubviews];
     
-    _fileView.model = _model;
+
 }
 
 #pragma mark -- 点击事件
@@ -276,154 +297,43 @@ static ChatCell *shared = nil;
 }
 
 
--(CGFloat)getHeightWithModel:(MsgModel *)model{
-    _model = model;
-    
-    
-    
-    CGFloat height = _headImg.bottom + 10;
-    
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
-    _msgContent.hidden = YES;
-    _imgView.hidden = YES;
-    
-    
-    UserInfoModel * infoModel = [[PersonManager share] getModelWithId:_model.sendId];
-    
-    
-    _headImg.image = [UIImage imageNamed:@"touxiang_default"];
-    UIImage * headImage = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",infoModel.HeadName]];
-    
-    
-    if (headImage) {
-        _headImg.image = headImage;
-    }
-    _labelName.text = infoModel.RealName;
-    _labelName.hidden = YES;
-    
-    
-    
-    
-    if ([_model.sendId isEqualToString:CurrentUserId]) {
-        _headImg.right = self.width - 10;
-        _labelName.right = _headImg.left - 10;
-        _labelName.textAlignment = NSTextAlignmentRight;
-        
-    }else{
-        _headImg.left = 10;
-        
-        _labelName.left = _headImg.right + 10;
-        _labelName.top = _headImg.top;
-        _labelName.textAlignment = NSTextAlignmentLeft;
-        
-    }
-    
-    
-    switch (_model.msgType) {
-        case MsgTypeText:// 文本消息
-        {
-            _msgContent.hidden = NO;
-            _msgContent.attributedText = [RishTextAdapter getAttributedStringWithString:_model.content];
-            _msgContent.width = self.width * 0.5;
-            [_msgContent sizeToFit];
-            _msgContent.width = _msgContent.width + 10;
-            _msgContent.height = _msgContent.height + 10;
-            _msgContent.textAlignment =NSTextAlignmentCenter;
-            
-            
-            if ([_model.sendId isEqualToString:CurrentUserId]) {
-                _msgContent.right = _headImg.left - 10;
-                
-                _msgContent.top = _headImg.top;
-                //                _msgContent.textAlignment = NSTextAlignmentRight;
-                
-            }else{
-                _msgContent.top = _headImg.top;
-                _msgContent.left = _labelName.left;
-                //                _msgContent.textAlignment = NSTextAlignmentLeft;
-            }
-            height = _msgContent.bottom + 10;
-        }
-            break;
-        case MsgTypeImage: // 图片消息
-        {
-            _imgView.hidden = NO;
-            NSString * imgUrl = [NSString stringWithFormat:@"%@",_model.imageUrl];
-            NSDictionary * paramDic = [NSDictionary getParamDicWithUrl:imgUrl];
-            
-            
-            _imgView.width = 200;
-            _imgView.height = 200;
-            if ([paramDic.allKeys containsObject:@"width"] && [paramDic.allKeys containsObject:@"height"]) {
-                
-                
-                
-                NSString * width = [NSString stringWithFormat:@"%@",paramDic[@"width"]];
-                NSString * height = [NSString stringWithFormat:@"%@",paramDic[@"height"]];
-                
-                _imgView.width = width.floatValue;
-                _imgView.height = height.floatValue;
-                
-                
-                
-                if (_imgView.width > self.width * 0.5) {
-                    
-                    _imgView.height = _imgView.height * ((self.width * 0.5) / _imgView.width);
-                    _imgView.width = self.width * 0.5;
-                    
-                }else{
-                    if (_imgView.width <= 0 || _imgView.height <= 0) {
-                        _imgView.width = 200;
-                        _imgView.height = 200;
-                    }
-        
-                }
-                
-            }
-            
-            [_imgView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",_model.imageUrl]] placeholderImage:[UIImage imageNamed:@"chat_默认图"]];
-            //        http://img1.imgtn.bdimg.com/it /?u=3920398476,1501488149&fm=27&gp=0.jpg&width=200&height=300
-            
-            if ([_model.sendId isEqualToString:CurrentUserId]) {
-                _imgView.right = _labelName.right;
-                _imgView.top = _headImg.top;
-                
-            }else{
-                _imgView.left = _labelName.left;
-                _imgView.top = _headImg.top;
-            }
-            
-            height = _imgView.bottom + 50;
-        }
-            break;
-        case MsgTypeFile: // 文件消息
-        {
-            _fileView.hidden = NO;
++(CGFloat)getHeightWithModel:(MsgModel *)model{
 
-            _fileView.top = _headImg.top;
-            if ([_model.sendId isEqualToString:CurrentUserId]) {
-                _fileView.right = _headImg.left -10;
-            }else{
-                _fileView.left = _headImg.right + 10;
-            }
-            height = _fileView.bottom + 50;
-            
+
+    
+    CGFloat height = 60 + 20;
+    switch (model.msgType) {
+        case MsgTypeText:
+        {
+            UILabel * msgContent = [[UILabel alloc]init];
+            msgContent.numberOfLines = 0;
+            msgContent.font = FontBig;
+            msgContent.width = ScreenWidth * 0.5;
+            msgContent.height = 20;
+            msgContent.attributedText = [RishTextAdapter getAttributedStringWithString:model.content];
+            [msgContent sizeToFit];
+            msgContent.width = msgContent.width + 10;
+            msgContent.height = msgContent.height + 10;
+   
+            height = msgContent.height + 20;
         }
+            break;
+        case MsgTypeFile:
+            height =  60 + 20;
+            break;
+        case MsgTypeImage:
+            height =  ScreenWidth*0.5 + 20;
             break;
         default:
             break;
     }
-    
-    
-    
-    
-    
-
-    if (height < _headImg.bottom + 10) {
-        height = _headImg.bottom + 10;
+    if (height<80) {
+        height = 80;
     }
     
+    
     return height;
+
 }
 
 

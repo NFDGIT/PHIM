@@ -12,6 +12,7 @@
 #import "PersonManager.h"
 #import "MsgModel.h"
 #import "MessageManager.h"
+#import "RishTextAdapter.h"
 
 @interface MessageLlistTableViewCell()
 @property (nonatomic,strong)UIImageView * imgView;
@@ -117,9 +118,24 @@
         
         MsgModel * msgModel = [[MessageManager share]getLastMessageWithTargetId:_model.Id response:nil];
         if (msgModel) {
-            _labelSignature.text = msgModel.content;
+            switch (msgModel.msgType) {
+                case MsgTypeText:
+                    _labelSignature.attributedText = [RishTextAdapter getAttributedStringWithString:msgModel.content];;
+                    break;
+                case MsgTypeImage:
+                    _labelSignature.text = @"[图片]";
+                    break;
+                case MsgTypeFile:
+                    _labelSignature.text = @"[文件]";
+                    break;
+                default:
+                    break;
+            }
+            
+            
+
         }
-        
+    
         
         _imgView.image = [UIImage imageNamed:@"touxiang_default"];
         UIImage * image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",userInfoModel.HeadName]];
@@ -130,12 +146,13 @@
             _imgView.image = [UIImage changeGrayImage:_imgView.image];
         }
         
+        
+        
     }
-
     _labelCount.text = [NSString stringWithFormat:@"%lu",(unsigned long)_model.newCount];
+    
+    
 
-    
-    
     [self layoutSubviews];
     self.ph_Height = _imgView.bottom + 10;
 }

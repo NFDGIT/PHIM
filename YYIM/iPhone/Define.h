@@ -125,7 +125,16 @@ typedef NS_ENUM(NSUInteger,InformationType) {
     InformationTypeUpdateMySelfMsg = 22,              // 更新自己基本信息
     InformationTypeUpdateFriendMsg = 23,              // 更新好友基本信息
     InformationTypeLeaveOut = 24,              // 强制下线
+    
+    InformationTypeGetUserInfo = 32,              // 获取用户资料（C->S）
+    InformationTypeGetSomeUsers = 34,              // 获取指定某些用户的资料（C->S）
+    InformationTypeBroadcastChat = 35,              // 群聊天信息
+    InformationTypeFileOnlineDataArrival = 37,              // 文件传输
+    InformationTypeReturnFileDataArrival  = 39,              // 文件传输
 
+    
+    
+    
     
     InformationTypeGetContactsRTData = 40,           // 获取我的所有联系人的在线状态、版本号，以及我的所有组的版本号
     InformationTypeGetFriendIDList = 41,             // 获取我的所有好友ID（C->S）

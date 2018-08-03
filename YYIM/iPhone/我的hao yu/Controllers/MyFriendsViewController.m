@@ -32,14 +32,15 @@
     [self initData];
     [self initNavi];
     [self initUI];
-    [self refreshData];
-
-    
-    
-    
 
     // Do any additional setup after loading the view.
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self refreshData];
+    
+}
+
 
 -(void)initData{
     _datas = [NSMutableArray array];

@@ -164,7 +164,7 @@ int get_free_port()
      *
      */
     [self stopDetection];
-    self.detectionTimer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(detectionServer) userInfo:nil repeats:YES];// 在longConnectToSocket方法中进行长连接需要向服务器发送的讯息
+    self.detectionTimer = [NSTimer scheduledTimerWithTimeInterval:20 target:self selector:@selector(detectionServer) userInfo:nil repeats:YES];// 在longConnectToSocket方法中进行长连接需要向服务器发送的讯息
     /**
      *  启动定时器
      */

@@ -58,6 +58,10 @@ static MessageManager *shared = nil;
  @param response 添加会话的结果
  */
 -(void)addConversationModel:(ConversationModel *)model response:(void (^)(BOOL))response{
+    
+    
+    
+    
     [[DBTool share] addConversationModel:model response:^(BOOL success) {
         if (response) {
             response(success);
@@ -65,6 +69,7 @@ static MessageManager *shared = nil;
     }];
     
 }
+
 
 /**
  删除某个会话
@@ -102,30 +107,46 @@ static MessageManager *shared = nil;
  */
 -(void)setNewCount:(NSUInteger)newCount withId:(NSString *)conversationId response:(void(^)(BOOL success))response{
     [self getConversationWithId:conversationId response:^(ConversationModel *model) {
-      
+        model.newCount = newCount;
         
-        
-        if (model) {
-//            model.newCount = model.newCount + 1;
-        }else{
-            model = [ConversationModel new];
-            model.Id = conversationId;
-//            model.newCount = 1;
-            model.name = @"";
-            model.imgUrl = @"";
-        }
-        if (newCount) {
-            model.newCount = model.newCount + newCount;
-        }else{
-            model.newCount = 0;
-        }
-        [self addConversationModel:model  response:^(BOOL success) {
+        [self updateConversationWith:model response:^(BOOL succes) {
             if (response) {
-                response(success);
+                response(succes);
             }
         }];
     }];
 }
+/**
+ 更新会话 不改变顺序
+ 
+ @param conversationModel 新消息个数
+ @param response 结果
+ */
+-(void)updateConversationWith:(ConversationModel *)conversationModel response:(void(^)(BOOL success))response{
+    [[DBTool share] updateConversationWith:conversationModel response:^(BOOL success) {
+        if (response) {
+            response(success);
+        }
+    }];
+}
+/**
+ 获取新消息总个数
+ 
+ @param response 结果
+ */
+-(void)getTotalNewCountResponse:(void(^)(NSUInteger totalCount))response{
+    [[DBTool share]getConversations:^(NSArray *result) {
+        NSUInteger totalCout = 0;
+        
+        for (ConversationModel * model in result) {
+             totalCout = totalCout  + model.newCount;
+        }
+        if (response) {
+            response(totalCout);
+        }
+    }];
+}
+
 
 //-(void)getMsgTargetsSuccess:(void (^)(NSArray *))success{
 ////    NSArray * msgTargets = [NSArray array];
@@ -187,7 +208,6 @@ static MessageManager *shared = nil;
         return messages.lastObject;
     }
     return nil;
-    
 }
 -(void)addMsg:(MsgModel *)msg toTarget:(ConversationModel *)target{
     
@@ -195,15 +215,29 @@ static MessageManager *shared = nil;
         
     }];
 
-    ConversationModel * targetModel = target;
-    [self addConversationModel:targetModel response:^(BOOL success) {
+    
+
+    
+    
+    [self getConversationWithId:target.Id response:^(ConversationModel *model) {// 获取本地的 会话
+        ConversationModel * targetModel;
+        
+        if (model) { // 如果本地已经存在这个会话
+            targetModel = model;
+        }else{ // 不存在
+            targetModel = target;
+        }
+        
+        if (![msg.sendId isEqualToString:CurrentUserId]) {  // 如果 是接受的消息 则绘画 增加
+            targetModel.newCount = targetModel.newCount + 1;
+        }
+        [self addConversationModel:targetModel response:^(BOOL success) {
+        }];
+        
         
     }];
     
-    if (![msg.sendId isEqualToString:CurrentUserId]) {  // 如果 是接受的消息 则绘画 增加
-        [self setNewCount:1 withId:target.Id response:^(BOOL success) {
-        }];
-    }
+
 
     
 //    [self getMessagesWithTargetId:targetId success:^(NSArray * result) {
@@ -237,6 +271,20 @@ static MessageManager *shared = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMewMessageWithNoti:) name:NotiForReceive object:nil];
 }
 -(void)handleMewMessageWithNoti:(NSNotification *)noti{
+    
+    
+}
+
+
+-(void)getAllPerson{
+    [Request getUserListSuccess:^(NSUInteger code, NSString *msg, id data) {
+        
+        
+        
+        
+    } failure:^(NSError *error) {
+        
+    }];
     
     
 }

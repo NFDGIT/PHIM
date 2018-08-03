@@ -12,6 +12,7 @@
 #import "SocketTool.h"
 #import "MessageManager.h"
 #import "DBTool.h"
+#import "NSString+Json.h"
 
 
 #import "ChatSettingViewController.h"
@@ -42,12 +43,23 @@
     [super viewWillAppear:animated];
     [self refreshData];
 }
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initData];
     [self initNavi];
     [self initUI];
-    [self refreshData];
+//    [self refreshData];
+    
+
+
+//
+    
 
     // Do any additional setup after loading the view.
 }
@@ -131,7 +143,7 @@
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, _scrollView.width, _scrollView.height - inputView.height) style:UITableViewStyleGrouped];
     [_tableView registerClass:[ChatCell class] forCellReuseIdentifier:@"cell"];
     [_scrollView addSubview:_tableView];
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.estimatedRowHeight = 300;
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -167,19 +179,21 @@
 -(void)refreshData{
     
     NSString * targetId = _conversationModel.Id;
-    [[MessageManager share]setNewCount:0 withId:targetId response:^(BOOL success) {
-        if (success) {
-       
-        }
-    }];
+
     
 
     [[MessageManager share]getMessagesWithTargetId:targetId success:^(NSArray * result) {
         self->_datas = [NSMutableArray arrayWithArray:result];
         
         [self refreshUI];
-    
     }];
+    
+    [[MessageManager share]setNewCount:0 withId:targetId response:^(BOOL success) {
+        if (success) {
+            
+        }
+    }];
+    
 }
 -(void)layout{
     _scrollView.left = 0;
@@ -206,7 +220,13 @@
     }
     
     
-    [[SocketTool share] sendMsg:msg receiveId:[NSString stringWithFormat:@"%@",_conversationModel.Id]  msgInfoClass:InformationTypeChat isGroup:_conversationModel.GroupMsg];
+    
+    if (_conversationModel.GroupMsg) {
+        [SocketRequest sendGroupMsg:msg receiveId:[NSString stringWithFormat:@"%@",_conversationModel.Id]];
+    }else{
+        [SocketRequest sendMsg:msg receiveId:[NSString stringWithFormat:@"%@",_conversationModel.Id]];
+    }
+
     
     MsgModel * model = [MsgModel new];
 
@@ -219,7 +239,7 @@
     model.MsgInfoClass = InformationTypeChat;
     model.GroupMsg = _conversationModel.GroupMsg;
     
-    
+
     [[MessageManager share] addMsg:model toTarget:_conversationModel];
 
     [self refreshData];
@@ -234,6 +254,21 @@
         }];
         return;
     }
+
+    
+    
+    NSFileManager * fileManger = [NSFileManager new];
+    NSDictionary * fileAttri = [fileManger attributesOfItemAtPath:url.absoluteString error:nil];
+    NSString * fileDesc = [NSString stringWithFormat:@"%@",[fileAttri valueForKey:@""]];
+    NSArray * componts = [url.absoluteString componentsSeparatedByString:@"/"];
+    if (componts.count > 0) {
+        fileDesc = [NSString stringWithFormat:@"%@",componts.lastObject];
+    }
+    
+    NSString * fileSize =  [NSString stringWithFormat:@"%@",[fileAttri valueForKey:NSFileSize]];
+
+    
+    
   
    
     [ProgressTool showProgressWithText:@"发送中..."];
@@ -252,7 +287,7 @@
             NSString * fileName =[NSString stringWithFormat:@"%@",[data firstObject]];
             NSString * fileUrl =[NSString stringWithFormat:@"%@%@/%@",serverAddress,self->_conversationModel.Id,[NSString stringWithFormat:@"%@",[data firstObject]]];
             
-            [SocketRequest  sendFileName:fileName fileDesc:fileName receiceId:self->_conversationModel.Id];
+            [SocketRequest  sendFileName:fileName fileDesc:fileDesc fileSize:fileSize receiceId:self->_conversationModel.Id];
             
             
             MsgModel * model = [MsgModel new];
@@ -261,7 +296,12 @@
             model.receivedId = self->_conversationModel.Id;
             model.msgType = MsgTypeFile;
             model.headIcon = CurrentUserIcon;
-            model.content = fileName;
+            
+            NSString * fileJson =  [NSString getJsonStringWithObjc:@{@"identification":fileName,@"fileName":fileDesc,@"fileSize":fileSize,@"fileUrl":fileUrl,@"pSendPos":@"0"}];
+            
+            model.content = fileJson;
+            
+            
             model.imageUrl = fileUrl;
             model.MsgInfoClass = InformationTypeChatPhoto;
             model.GroupMsg = self->_conversationModel.GroupMsg;
@@ -289,7 +329,6 @@
         }];
         return;
     }
-    
     
     [ProgressTool showProgressWithText:@"发送中..."];
    
@@ -334,7 +373,7 @@
                 
                 [[MessageManager share] addMsg:model toTarget:self->_conversationModel];
                 
-            
+
 
                 NSString * imgUrl1 = [NSString stringWithFormat:@"0,%@,%f,%f,.png|",imgNam,image.size.width,image.size.height];
                 [SocketRequest sendPhoto:imgUrl1 receiceId:self->_conversationModel.Id];
@@ -397,9 +436,10 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     MsgModel * model = _datas[indexPath.section];
-
-
-    return [[ChatCell share] getHeightWithModel:model];
+    CGFloat  height = [ChatCell  getHeightWithModel:model];
+    
+    NSLog(@"----- %ld::::: %f",(long)indexPath.section,height);
+    return height;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     ChatCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];

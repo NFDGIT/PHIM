@@ -174,8 +174,6 @@
         [self getRootVC].selectBlock(url);
         [[self getRootVC] dismiss];
         [self.navigationController popToRootViewControllerAnimated:NO];
-
-        
     }
 
 }

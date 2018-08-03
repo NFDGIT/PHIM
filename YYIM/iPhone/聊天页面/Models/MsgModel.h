@@ -27,4 +27,5 @@
 
 @property (nonatomic,assign)BOOL      GroupMsg;     // 是否是群聊
 @property (nonatomic,assign)InformationType  MsgInfoClass; // 消息的种类。
++(NSDictionary *)getFileDicWithFileJson:(NSString *)fileJson;
 @end

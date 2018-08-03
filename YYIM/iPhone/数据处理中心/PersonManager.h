@@ -12,6 +12,7 @@
 
 
 @interface PersonManager : NSObject
+@property (nonatomic,strong)NSMutableDictionary<NSString *,UserInfoModel *> * dataDic;
 +(instancetype)share;
 
 -(void)updateModel:(UserInfoModel *)model;
@@ -21,4 +22,5 @@
 
 -(void)setStatus:(NSString *)UserStatus withId:(NSString *)Id;
 -(NSString *)getStatusWithId:(NSString *)Id;
+-(void)refreshLocalPersons;
 @end

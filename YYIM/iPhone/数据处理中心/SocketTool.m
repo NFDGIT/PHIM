@@ -25,9 +25,9 @@
 
 static SocketTool *shared = nil;
 @interface SocketTool()<GCDAsyncUdpSocketDelegate>
-
-
 @property (nonatomic,strong)GCDAsyncUdpSocket * udpSocket;
+
+
 @property (nonatomic,strong)NSTimer * connectTimer;
 
 

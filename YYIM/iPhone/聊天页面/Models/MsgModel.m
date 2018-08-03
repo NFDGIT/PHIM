@@ -7,7 +7,11 @@
 //
 
 #import "MsgModel.h"
+#import "NSString+Json.h"
 
 @implementation MsgModel
-
++(NSDictionary *)getFileDicWithFileJson:(NSString *)fileJson{
+    NSDictionary * dic = [NSString dictionaryWithJsonString:fileJson];
+    return dic;
+}
 @end

@@ -14,5 +14,8 @@
 
 -(void)switchRootVC;
 -(void)logout;
+
+
+
 @end
 

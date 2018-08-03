@@ -19,16 +19,8 @@
 
 #pragma mark -- 消息
 /**
- 根据 target 获取 数据库中的 所有聊天数据
-
- @param target 用来标记这是哪个账号的聊天记录
- @param success 查询成功的回调
- */
--(NSArray *)getMessagesWithTarget:(NSString *)target success:(void(^)(NSArray*result))success;
-
-/**
  向 数据库中插入数据
-
+ 
  @param model 插入的数据
  @param target target description
  @param response response description
@@ -42,13 +34,20 @@
  */
 -(void)deleteMessagesWithConversationId:(NSString *)conversationId response:(void(^)(BOOL success))response;
 
-#pragma mark -- 会话
 /**
- 获取所有的会话
+ 根据 target 获取 数据库中的 所有聊天数据
 
- @param success 获取成功
+ @param target 用来标记这是哪个账号的聊天记录
+ @param success 查询成功的回调
  */
--(void)getConversations:(void (^)(NSArray *))success;
+-(NSArray *)getMessagesWithTarget:(NSString *)target success:(void(^)(NSArray*result))success;
+
+
+
+
+
+#pragma mark -- 会话
+
 
 /**
  添加会画
@@ -57,14 +56,23 @@
  @param response 添加会话的结果
  */
 -(void)addConversationModel:(ConversationModel *)model response:(void (^)(BOOL))response;
-
 /**
  删除某个会话
-
+ 
  @param conversationId 会话Id
  @param response 结果
  */
 -(void)deleteConversationId:(NSString *)conversationId response:(void (^)(BOOL))response;
+
+
+/**
+ 更新会话 不改变顺序
+ 
+ @param conversationModel 新消息个数
+ @param response 结果
+ */
+-(void)updateConversationWith:(ConversationModel *)conversationModel response:(void(^)(BOOL success))response;
+
 /**
  获取某个会话
  
@@ -72,6 +80,12 @@
  @param response 结果
  */
 -(void)getConversationWithId:(NSString *)conversationId response:(void (^)(ConversationModel * model))response;
+/**
+ 获取所有的会话
+ 
+ @param success 获取成功
+ */
+-(void)getConversations:(void (^)(NSArray *))success;
 
 #pragma mark -- 用户信息
 
@@ -82,6 +96,13 @@
  @param response 添加用户信息的结果
  */
 -(void)addUserModel:(UserInfoModel *)model response:(void (^)(BOOL))response;
+/**
+ 更新用户信息
+ 
+ @param model 用户信息model
+ @param response 添加用户信息的结果
+ */
+-(void)updateUserModel:(UserInfoModel *)model response:(void (^)(BOOL))response;
 /**
  获取所有的用户信息
  

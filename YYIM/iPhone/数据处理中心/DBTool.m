@@ -175,7 +175,60 @@ static DBTool *shared = nil;
     [db close];
 }
 
+#pragma mark -- 聊天记录
+/**
+ 添加聊天记录
+ 
+ @param model 聊天记录的model
+ @param target  会话的ID
+ @param response 添加的结果
+ */
+-(void)addModel:(MsgModel *)model withTarget:(NSString *)target response:(void (^)(BOOL))response{
+    [_accountDb open];
+    
+    NSString * targets = [NSString stringWithFormat:@"%@",model.target];
+    NSString * headIcon = [NSString stringWithFormat:@"%@",model.headIcon];
+    NSString * sendId = [NSString stringWithFormat:@"%@",model.sendId];
+    NSString * receivedId = [NSString stringWithFormat:@"%@",model.receivedId];
+    NSString * content = [NSString stringWithFormat:@"%@",model.content];
+    NSString * imageUrl = [NSString stringWithFormat:@"%@",model.imageUrl];
+    BOOL GroupMsg      = model.GroupMsg;
+    InformationType  MsgInfoClass = model.MsgInfoClass;
+    
+    NSInteger  msgType = model.msgType;
+    
+    
+    BOOL result = [_accountDb executeUpdate:@"insert into 'chatMessages'(target,headIcon,sendId,receivedId,content,imageUrl,msgType,GroupMsg,MsgInfoClass) values(?,?,?,?,?,?,?,?,?)" withArgumentsInArray:@[targets,headIcon,sendId,receivedId,content,imageUrl,@(msgType),@(GroupMsg),@(MsgInfoClass)]];
+    if (response) {
+        response(result);
+    }
+    [_accountDb close];
+    
+    
+}
+/**
+ 删除 某个会话的聊天记录
+ 
+ @param conversationId 会话ID
+ @param response response description
+ */
+-(void)deleteMessagesWithConversationId:(NSString *)conversationId response:(void(^)(BOOL success))response{
+    [_accountDb open];
+    
+    BOOL result = [_accountDb executeUpdate:@"delete from 'chatMessages' where target = ?" withArgumentsInArray:@[conversationId]];
+    if (response) {
+        response(result);
+    }
+    [_accountDb close];
+}
 
+/**
+ 获取聊天记录
+
+ @param target 会话的ID
+ @param success 是否成功
+ @return ‘’‘
+ */
 -(NSArray *)getMessagesWithTarget:(NSString *)target success:(void (^)(NSArray *))success{
     [_accountDb open];
     NSMutableArray * arr = [NSMutableArray array];
@@ -210,45 +263,84 @@ static DBTool *shared = nil;
     [_accountDb close];
     return arr;
 }
--(void)addModel:(MsgModel *)model withTarget:(NSString *)target response:(void (^)(BOOL))response{
+
+
+#pragma mark -- 会话
+/**
+ 添加会画
+ 
+ @param model 会话的模型
+ @param response 添加会话的结果
+ */
+-(void)addConversationModel:(ConversationModel *)model response:(void (^)(BOOL))response{
+    [self deleteConversationId:model.Id response:^(BOOL res) {
+    }]; // 为防止重复先删除
+    
     [_accountDb open];
     
-    NSString * targets = [NSString stringWithFormat:@"%@",model.target];
-    NSString * headIcon = [NSString stringWithFormat:@"%@",model.headIcon];
-    NSString * sendId = [NSString stringWithFormat:@"%@",model.sendId];
-    NSString * receivedId = [NSString stringWithFormat:@"%@",model.receivedId];
-    NSString * content = [NSString stringWithFormat:@"%@",model.content];
-    NSString * imageUrl = [NSString stringWithFormat:@"%@",model.imageUrl];
-    BOOL GroupMsg      = model.GroupMsg;
-    InformationType  MsgInfoClass = model.MsgInfoClass;
-
-    NSInteger  msgType = model.msgType;
+    NSString * Id = [NSString stringWithFormat:@"%@",model.Id];
+    NSString * name = [NSString stringWithFormat:@"%@",model.name];
+    NSString * imgUrl = [NSString stringWithFormat:@"%@",model.imgUrl];
+    NSInteger GroupMsg = model.GroupMsg;
+    NSUInteger newCount = model.newCount;
     
-    
-    BOOL result = [_accountDb executeUpdate:@"insert into 'chatMessages'(target,headIcon,sendId,receivedId,content,imageUrl,msgType,GroupMsg,MsgInfoClass) values(?,?,?,?,?,?,?,?,?)" withArgumentsInArray:@[targets,headIcon,sendId,receivedId,content,imageUrl,@(msgType),@(GroupMsg),@(MsgInfoClass)]];
+    BOOL result = [_accountDb executeUpdate:@"insert into 'conversations' (Id,name,imgUrl,GroupMsg,newCount) values(?,?,?,?,?)" withArgumentsInArray:@[Id,name,imgUrl,@(GroupMsg),@(newCount)]];
     if (response) {
         response(result);
     }
     [_accountDb close];
-    
     
 }
 /**
- 删除 某个会话的聊天记录
+ 删除某个会话
  
- @param conversationId 会话ID
- @param response response description
+ @param conversationId 会话Id
+ @param response 结果
  */
--(void)deleteMessagesWithConversationId:(NSString *)conversationId response:(void(^)(BOOL success))response{
+-(void)deleteConversationId:(NSString *)conversationId response:(void (^)(BOOL))response{
     [_accountDb open];
     
-    BOOL result = [_accountDb executeUpdate:@"delete from 'chatMessages' where target = ?" withArgumentsInArray:@[conversationId]];
+    BOOL result = [_accountDb executeUpdate:@"delete from 'conversations' where Id = ?" withArgumentsInArray:@[conversationId]];
     if (response) {
         response(result);
     }
     [_accountDb close];
 }
-#pragma mark -- 会话的操作
+/**
+ 更新会话 不改变顺序
+ 
+ @param conversationModel 新消息个数
+ @param response 结果
+ */
+-(void)updateConversationWith:(ConversationModel *)conversationModel response:(void(^)(BOOL success))response{
+    
+    [_accountDb open];
+    //0.直接sql语句
+    //    BOOL result = [db executeUpdate:@"update 't_student' set ID = 110 where name = 'x1'"];
+    //1.
+    //    BOOL result = [db executeUpdate:@"update 't_student' set ID = ? where name = ?",@111,@"x2" ];
+    //2.
+    //    BOOL result = [db executeUpdateWithFormat:@"update 't_student' set ID = %d where name = %@",113,@"x3" ];
+    //3.
+    
+    NSString * Id = [NSString stringWithFormat:@"%@",conversationModel.Id];
+    NSString * name = [NSString stringWithFormat:@"%@",conversationModel.name];
+    NSString * imgUrl = [NSString stringWithFormat:@"%@",conversationModel.imgUrl];
+    NSInteger GroupMsg = conversationModel.GroupMsg;
+    NSUInteger newCount = conversationModel.newCount;
+    
+    BOOL result = [_accountDb executeUpdate:@"update 'conversations' set name = ?, imgUrl = ?, GroupMsg = ?, newCount = ? where Id = ?" withArgumentsInArray:@[name,imgUrl,@(GroupMsg),@(newCount),Id]];
+    
+    if (response) {
+        response(result);
+    }
+    if (result) {
+        NSLog(@"update 't_student' success");
+    } else {
+    }
+    [_accountDb close];
+}
+
 /**
  获取所有的会话
  
@@ -279,49 +371,9 @@ static DBTool *shared = nil;
     [_accountDb close];
     
 }
-/**
- 删除某个会话
- 
- @param conversationId 会话Id
- @param response 结果
- */
--(void)deleteConversationId:(NSString *)conversationId response:(void (^)(BOOL))response{
-    [_accountDb open];
-    
-    BOOL result = [_accountDb executeUpdate:@"delete from 'conversations' where Id = ?" withArgumentsInArray:@[conversationId]];
-    if (response) {
-        response(result);
-    }
-    [_accountDb close];
-}
-/**
- 添加会画
- 
- @param model 会话的模型
- @param response 添加会话的结果
- */
--(void)addConversationModel:(ConversationModel *)model response:(void (^)(BOOL))response{
-    [self deleteConversationId:model.Id response:^(BOOL res) {
-    }]; // 为防止重复先删除
-    
-    
-    
-    
-    [_accountDb open];
-    
-    NSString * Id = [NSString stringWithFormat:@"%@",model.Id];
-    NSString * name = [NSString stringWithFormat:@"%@",model.name];
-    NSString * imgUrl = [NSString stringWithFormat:@"%@",model.imgUrl];
-    NSInteger GroupMsg = model.GroupMsg;
-    NSUInteger newCount = model.newCount;
 
-    BOOL result = [_accountDb executeUpdate:@"insert into 'conversations' (Id,name,imgUrl,GroupMsg,newCount) values(?,?,?,?,?)" withArgumentsInArray:@[Id,name,imgUrl,@(GroupMsg),@(newCount)]];
-    if (response) {
-        response(result);
-    }
-    [_accountDb close];
-    
-}
+
+
 /**
  获取某个会话
  
@@ -347,8 +399,7 @@ static DBTool *shared = nil;
         //        NSLog(@"从数据库查询到的人员 %@",target.Id);
         
     }
-    
-    
+
     if(response)
     {
         if (arr.count <= 0) {
@@ -389,6 +440,41 @@ static DBTool *shared = nil;
     if (response) {
         response(result);
     }
+    [_db close];
+    
+}
+/**
+ 更新用户信息
+ 
+ @param model 用户信息model
+ @param response 添加用户信息的结果
+ */
+-(void)updateUserModel:(UserInfoModel *)model response:(void (^)(BOOL))response{
+    [_db open];
+    
+    NSString *userID = [NSString stringWithFormat:@"%@",model.userID];
+    NSString *userName = [NSString stringWithFormat:@"%@",model.userName];
+    NSString *UnderWrite = [NSString stringWithFormat:@"%@",model.UnderWrite];
+    NSString *HeadName = [NSString stringWithFormat:@"%@",model.HeadName];
+    NSString *UserStatus = [NSString stringWithFormat:@"%@",model.UserStatus];
+    
+    NSString *Phone = [NSString stringWithFormat:@"%@",model.Phone];
+    NSString *State = [NSString stringWithFormat:@"%@",model.State];
+    NSString *Email = [NSString stringWithFormat:@"%@",model.Email];
+    NSString *Sex = [NSString stringWithFormat:@"%@",model.Sex];
+    NSString *RealName = [NSString stringWithFormat:@"%@",model.RealName];
+    
+//        BOOL result = [_accountDb executeUpdate:@"update 'conversations' set name = ?, imgUrl = ?, GroupMsg = ?, newCount = ? where Id = ?" withArgumentsInArray:@[name,imgUrl,@(GroupMsg),@(newCount),Id]];
+    
+    
+    //    'State' TEXT,'Email' TEXT,'Sex' TEXT,'RealName' TEXT
+    
+//    userID
+    BOOL result = [_db executeUpdate:@"update  'userList' set userName = ?, UnderWrite = ?,HeadName = ?,UserStatus= ?,State = ? ,Email= ?,Sex = ?,RealName = ?,Phone = ? where userID = ?" withArgumentsInArray:@[userName,UnderWrite,HeadName,UserStatus,State,Email,Sex,RealName,Phone,userID]];
+    if (response) {
+        response(result);
+    }
+    
     [_db close];
     
 }

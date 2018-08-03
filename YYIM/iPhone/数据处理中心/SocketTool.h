@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 
 @interface SocketTool : NSObject
+
 + (SocketTool *)share;
 
 /**

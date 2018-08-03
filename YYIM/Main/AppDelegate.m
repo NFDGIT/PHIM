@@ -15,6 +15,7 @@
 #import "SocketRequest.h"
 
 
+
 @interface AppDelegate ()
 
 @end
@@ -31,8 +32,7 @@
     [NetTool detectionNet];
     [PHPush registLocalPush];
     [self switchRootVC];
-
-
+ 
     
     return YES;
 }
@@ -43,17 +43,18 @@
     
     if ([CurrentUserId isEmptyString]) {
         self.window.rootViewController = loginVC;
-        [[SocketTool share] stopHeartBeat];
-        [[NetTool share] startDetection];
+        [[SocketTool share] stopHeartBeat]; // 停止心跳爆
+        [[NetTool share] startDetection];   // 停止检测服务器
 
         
     }else
     {
         self.window.rootViewController = tabbar;
-        [[SocketTool share] startHeartBeat];
-        [[NetTool share] startDetection];
-        [[DBTool share]createAccountDb];
-        [SocketRequest login];
+        [[SocketTool share] startHeartBeat]; // 开始心跳爆
+        [[NetTool share] startDetection];    // 开始检测服务器
+        [[DBTool share]createAccountDb];     // 初始化数据库
+        [SocketRequest login];               // socket 发送上线通知
+        [SocketRequest getOffLineMessage];   // 请求离线消息
         
         
     };
@@ -110,7 +111,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [self beginBgTask];
-    
+
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 

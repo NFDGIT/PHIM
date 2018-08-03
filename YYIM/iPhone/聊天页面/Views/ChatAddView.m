@@ -93,6 +93,7 @@
 -(void)imgClick:(UITapGestureRecognizer *)tap{
     if (tap.view.tag == 100) {
         PHImagePickerController * picker = [PHImagePickerController new];
+        picker.allowsEditing = NO;
         picker.block = ^(UIImage *image) {
             if (self->_clickBlock) {
                 self->_clickBlock(ChatAddTypeImage,image);
@@ -109,13 +110,8 @@
                 self->_clickBlock(ChatAddTypeFile,url);
             }
         };
-//
-//        [((UINavigationController *)[TabBarController share].viewControllers.firstObject) pushViewController:fileManager animated:YES];
+
     }
-
-    
-
-    
 
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "PHPush.h"
+#import "MessageManager.h"
 
 
 
@@ -44,24 +45,32 @@
     // 方式二: 立即发送通知
      [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
     
-
     
+    [PHPush refreshBage];
 }
 
-+(void)resetBageNumber{
++(void)setBageNumber:(NSInteger)count{
     
     if(IS_IOS11_LATER){
         /*
          iOS 11后，直接设置badgeNumber = -1就生效了
          */
         
-        [UIApplication sharedApplication].applicationIconBadgeNumber = -1;
+        [UIApplication sharedApplication].applicationIconBadgeNumber = count;
     }else{
         UILocalNotification *clearEpisodeNotification = [[UILocalNotification alloc] init];
         clearEpisodeNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:(0.3)];
         clearEpisodeNotification.timeZone = [NSTimeZone defaultTimeZone];
-        clearEpisodeNotification.applicationIconBadgeNumber = -1;
+        clearEpisodeNotification.applicationIconBadgeNumber = count;
         [[UIApplication sharedApplication] scheduleLocalNotification:clearEpisodeNotification];
     }
 }
++(void)refreshBage
+{
+    [[MessageManager share]getTotalNewCountResponse:^(NSUInteger totalCount) {
+        [PHPush setBageNumber:totalCount];
+    }];
+    
+}
+
 @end

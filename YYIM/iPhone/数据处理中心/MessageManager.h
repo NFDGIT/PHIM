@@ -54,6 +54,20 @@
  @param response 结果
  */
 -(void)setNewCount:(NSUInteger)newCount withId:(NSString *)conversationId response:(void(^)(BOOL success))response;
+/**
+ 更新会话 不改变顺序
+ 
+ @param conversationModel 新消息个数
+ @param response 结果
+ */
+-(void)updateConversationWith:(ConversationModel *)conversationModel response:(void(^)(BOOL success))response;
+
+/**
+ 获取新消息总个数
+ 
+ @param response 结果
+ */
+-(void)getTotalNewCountResponse:(void(^)(NSUInteger totalCount))response;
 #pragma mark -- 消息
 -(NSArray *)getMessagesWithTargetId:(NSString *)targetId success:(void (^)(NSArray *))success;
 

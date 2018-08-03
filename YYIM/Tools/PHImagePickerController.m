@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.delegate = self;
-    self.allowsEditing = YES;
+
     // Do any additional setup after loading the view.
 }
 
@@ -28,7 +28,8 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     [self dismissViewControllerAnimated:YES completion:nil];
     if (_block) {
-        _block([info valueForKey:UIImagePickerControllerEditedImage]);
+        NSString * sourceKey =  self.allowsEditing ? UIImagePickerControllerEditedImage : UIImagePickerControllerOriginalImage;
+        _block([info valueForKey:sourceKey]);
     }
 }
 /*
