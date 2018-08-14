@@ -20,7 +20,7 @@
 
 
 
-static SocketTool *shared = nil;
+static TabBarController *shared = nil;
 
 @interface TabBarController ()<UITabBarControllerDelegate>
 @property (nonatomic,strong)NSMutableArray * tabbarItems;

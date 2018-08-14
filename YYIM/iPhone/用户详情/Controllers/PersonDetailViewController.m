@@ -17,12 +17,15 @@
 
 @property (nonatomic,strong)UIScrollView * scrollView;
 @property (nonatomic,strong)UIImageView * headBackImg;
-@property (nonatomic,strong)UILabel      * labelName;
-@property (nonatomic,strong)UILabel      * labelDesc;
+//@property (nonatomic,strong)UILabel      * labelName;
+//@property (nonatomic,strong)UILabel      * labelDesc;
 
 
 
 @property (nonatomic,strong)UIImageView * headImg;
+@property (nonatomic,strong)UILabel * labelName;
+@property (nonatomic,strong)UILabel * labelDesc;
+
 @property (nonatomic,strong)UIButton * btnName;
 @property (nonatomic,strong)UIButton * btnDesc;
 @property (nonatomic,strong)UIButton * btnPhone;
@@ -30,7 +33,7 @@
 @property (nonatomic,strong)UIButton * btnReal;
 @property (nonatomic,strong)UIButton * btnSex;
 
-@property (nonatomic,strong)UIButton * btnChangeFriend;
+//@property (nonatomic,strong)UIButton * btnChangeFriend;
 @property (nonatomic,strong)UIButton * btnMessage;
 
 
@@ -101,7 +104,7 @@
 //    }];
     
 
-    UIImageView * headBackImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _scrollView.width , _scrollView.width * 0.8)];
+    UIImageView * headBackImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _scrollView.width , _scrollView.width * 0.66+StatusBarHeight)];
     headBackImg.backgroundColor = ColorTheme;
     headBackImg.image = [UIImage imageNamed:@"personcenter_headback"];
     [_scrollView addSubview:headBackImg];
@@ -115,22 +118,37 @@
     
     
     {
-        UIImageView * headImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
+        UIImageView * headImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, Scale(100), Scale(100))];
         headImg.layer.cornerRadius = headImg.height / 2;
         headImg.layer.masksToBounds = YES;
-        [headBackImg addSubview:headImg];
+        [_headBackImg addSubview:headImg];
         _headImg = headImg;
         
-        
-        
 
+
+        UILabel * labelName = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, _headBackImg.width, Scale(20))];
+        labelName.textColor = ColorBlack;
+        labelName.font = FontBig;
+        labelName.textAlignment = NSTextAlignmentCenter;
+        [_headBackImg addSubview:labelName];
+        _labelName = labelName;
+        labelName.top = headImg.bottom;
+        
+        
+        UILabel * labelDesc = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, _headBackImg.width, Scale(20))];
+        labelDesc.textColor = ColorBlack;
+        labelDesc.font = FontBig;
+        labelDesc.textAlignment = NSTextAlignmentCenter;
+        [_headBackImg addSubview:labelDesc];
+        _labelDesc = labelDesc;
+        labelDesc.top = labelName.bottom;
     }
     
 
     
     
     CGFloat setY = headBackImg.bottom + 30;
-    for (int i = 0; i < 6; i ++) {
+    for (int i = 0; i < 3; i ++) {
         
         
         UIButton * btn =[[UIButton alloc]initWithFrame:CGRectMake(0, setY+1, _scrollView.width, 50)];
@@ -146,30 +164,18 @@
         
         switch (i) {
             case 0:
-                _btnName = btn;
-
-                break;
-            case 1:
-                _btnDesc = btn;
-                [_btnSex setImage:[UIImage imageNamed:@"detail_signature"] forState:UIControlStateNormal];
-                break;
-            case 2:
                 _btnPhone = btn;
                 [_btnPhone setImage:[UIImage imageNamed:@"detail_phone"] forState:UIControlStateNormal];
+                [_btnPhone addTarget:self action:@selector(ringup) forControlEvents:UIControlEventTouchUpInside];
                 break;
-            case 3:
+            case 1:
                 _btnEmail = btn;
                 [_btnEmail setImage:[UIImage imageNamed:@"detail_email"] forState:UIControlStateNormal];
                 break;
-            case 4:
-                _btnReal = btn;
-                
-                break;
-            case 5:
+            case 2:
                 _btnSex = btn;
                 [_btnSex setImage:[UIImage imageNamed:@"detail_sex"] forState:UIControlStateNormal];
                 break;
-                
             default:
                 break;
         }
@@ -192,14 +198,12 @@
     btnMessage.layer.cornerRadius = 5;
     btnMessage.centerX = self.view.width / 2;
     setY = btnMessage.bottom;
-    
-    
     _btnMessage = btnMessage;
 
     
 }
 -(void)layout{
-    _scrollView.frame = CGRectMake(0, -StatusBarHeight, self.view.width, ScreenHeight + NaviHeight);
+    _scrollView.frame = CGRectMake(0, -StatusBarHeight, self.view.width, ScreenHeight+StatusBarHeight);
     CGFloat setY = 0;
     
 
@@ -207,11 +211,16 @@
     _headBackImg.centerX = _scrollView.width / 2;
     setY = _headBackImg.bottom;
 
+    
+    
 
     _headImg.center = CGPointMake(_headBackImg.width/2, _headBackImg.height/2);
+    _labelName.top = _headImg.bottom+10;
+    _labelDesc.top = _labelName.bottom+10;
     
     
-    _scrollView.contentSize = CGSizeMake(_scrollView.width, _btnMessage.bottom + 200);
+    
+    _scrollView.contentSize = CGSizeMake(_scrollView.width, _btnMessage.bottom + 20);
 }
 
 -(void)viewWillLayoutSubviews{
@@ -230,6 +239,8 @@
 -(void)refreshUI{
 
     _headImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",_infoModel.HeadName]];
+    _labelName.text = [NSString stringWithFormat:@"%@",_infoModel.RealName];
+    _labelDesc.text = [NSString stringWithFormat:@"%@",_infoModel.UnderWrite];
     [_btnName setTitle:[NSString stringWithFormat:@"  %@",_infoModel.userName] forState:UIControlStateNormal];
     [_btnReal setTitle:[NSString stringWithFormat:@"  %@",_infoModel.RealName] forState:UIControlStateNormal];
     [_btnSex setTitle: [NSString stringWithFormat:@"  %@",_infoModel.Sex] forState:UIControlStateNormal];
@@ -237,7 +248,8 @@
     [_btnPhone setTitle: [NSString stringWithFormat:@"  %@",_infoModel.Phone] forState:UIControlStateNormal];
     [_btnDesc setTitle: [NSString stringWithFormat:@"  %@",_infoModel.UnderWrite] forState:UIControlStateNormal];
     
-    
+    NSString * actionTitle =  [[PersonManager share]isMyFriend:_infoModel.userID]?@"聊天":@"添加好友";
+    [_btnMessage setTitle:actionTitle forState:UIControlStateNormal];
 }
 
 #pragma mark --
@@ -261,26 +273,80 @@
         [self.view makeToast:@"Id 不存在" duration:2 position:CSToastPositionCenter];
         return;
     }
+    
+    if ([[PersonManager share] isMyFriend:_infoModel.userID]) {
+        
+        [[MessageManager share] getConversationWithId:_Id response:^(ConversationModel *model) {
+            if (model) {
+                
+            }else{
+                ConversationModel * newconversationModel = [ConversationModel new];
+                newconversationModel.Id = self->_infoModel.userID;
+                model = newconversationModel;
+            }
+            
+            ChatViewController * chat = [ChatViewController new];
+            chat.conversationModel = model;
+            [self.navigationController pushViewController:chat animated:YES];
+            
+            
+        }];
+    }else{
+        
+        [ProgressTool show];
+        [Request addFriendWithIdOrName:_infoModel.userID catalogName:@"我的好友" success:^(NSUInteger code, NSString *msg, id data) {
+            [ProgressTool hidden];
+            if (code == 200) {
+                
+                
+                [[PersonManager share]refreshMyFriends:^(BOOL success) {
+                    [self refreshUI];
+                }];
+                
+            }
+            [self.view makeToast:data duration:2 position:CSToastPositionCenter];
+            
+        } failure:^(NSError *error) {
+            [ProgressTool hidden];
+            [self.view makeToast:@"添加失败" duration:2 position:CSToastPositionCenter];
+        }];
+        
+//        [[MessageManager share] getConversationWithId:_Id response:^(ConversationModel *model) {
+//            if (model) {
+//
+//            }else{
+//                ConversationModel * newconversationModel = [ConversationModel new];
+//                newconversationModel.Id = self->_infoModel.userID;
+//                model = newconversationModel;
+//            }
+//
+//            ChatViewController * chat = [ChatViewController new];
+//            chat.conversationModel = model;
+//            [self.navigationController pushViewController:chat animated:YES];
+//
+//
+//        }];
+        
+    }
 
-    [[MessageManager share] getConversationWithId:_Id response:^(ConversationModel *model) {
-        if (model) {
-   
-        }else{
-            ConversationModel * newconversationModel = [ConversationModel new];
-            newconversationModel.Id = self->_infoModel.userID;
-            model = newconversationModel;
-        }
-        
-        ChatViewController * chat = [ChatViewController new];
-        chat.conversationModel = model;
-        [self.navigationController pushViewController:chat animated:YES];
-        
-        
-    }];
 
 
     
 }
+#pragma mark -- ringup
+-(void)ringup{
+//    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt:%@",_infoModel.Phone];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+    
+    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",_infoModel.Phone];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+    
+//    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",_infoModel.Phone];
+//    UIWebView * callWebview = [[UIWebView alloc] init];
+//    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+//    [self.view addSubview:callWebview];
+}
+
 /*
 #pragma mark - Navigation
 

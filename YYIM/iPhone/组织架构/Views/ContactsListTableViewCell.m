@@ -65,7 +65,7 @@
 
     
     
-    [_btnName setTitle:[NSString stringWithFormat:@"%@",model.Text] forState:UIControlStateNormal];
+    [_btnName setTitle:[NSString stringWithFormat:@" %@",model.Text] forState:UIControlStateNormal];
 
     
     

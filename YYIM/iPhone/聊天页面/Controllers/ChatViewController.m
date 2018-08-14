@@ -27,7 +27,7 @@
 #import "SocketRequest.h"
 
 
-@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface ChatViewController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 @property (nonatomic,strong)UIScrollView * scrollView;
 @property (nonatomic,strong)ChatInputView * inputView;
 
@@ -75,17 +75,25 @@
 
 
 -(void)initNavi{
-    self.title = _conversationModel.Id;
-    NSString * rightImgName = @"联系人_单人";
-    
+ 
+    NSString * rightImgName = @"";
+    NSString * title  = @"";
     
     if (_conversationModel.GroupMsg) {
          rightImgName = @"联系人_多人";
+
+        GroupChatModel * model = [[PersonManager share]getGroupChatModelWithGroupId:_conversationModel.Id];        
+        title =[NSString stringWithFormat:@"%@(%lu人群)",model.groupName,(unsigned long)model.memberList.count];
     }else{
-        self.navigationItem.title = [[PersonManager share]getModelWithId:_conversationModel.Id].RealName;
+        rightImgName = @"联系人_单人";
+        title = [[PersonManager share]getModelWithId:_conversationModel.Id].RealName;
         
+        
+    
     }
     
+    
+    self.title = title;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:rightImgName] style:UIBarButtonItemStyleDone target:self action:@selector(rightClick)];
     
     
@@ -95,6 +103,7 @@
     _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,0, self.view.width, ContentHeight)];
     [self.view addSubview:_scrollView];
     _scrollView.backgroundColor  =[UIColor lightGrayColor];
+    _scrollView.delegate = self;
 //    [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.left.mas_equalTo(0);
 //        make.top.mas_equalTo(0);
@@ -330,6 +339,8 @@
         return;
     }
     
+    
+    
     [ProgressTool showProgressWithText:@"发送中..."];
    
     [Request uploadImage:image receiveId:_conversationModel.Id progress:^(float progress) {
@@ -373,12 +384,9 @@
                 
                 [[MessageManager share] addMsg:model toTarget:self->_conversationModel];
                 
-
-
                 NSString * imgUrl1 = [NSString stringWithFormat:@"0,%@,%f,%f,.png|",imgNam,image.size.width,image.size.height];
+                
                 [SocketRequest sendPhoto:imgUrl1 receiceId:self->_conversationModel.Id];
-                
-                
                 
             }
             
@@ -436,7 +444,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     MsgModel * model = _datas[indexPath.section];
-    CGFloat  height = [ChatCell  getHeightWithModel:model];
+    CGFloat  height = [[ChatCell share] getHeightWithModel:model];
   
     return height;
 }
@@ -472,7 +480,10 @@
     [_tableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionBottom animated:animated]; //滚动到最后一行
 }
 
-
+#pragma mark -- scroll delegate
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [[IQKeyboardManager sharedManager] resignFirstResponder];
+}
 #pragma mark -- 点击事件
 -(void)rightClick{
     
@@ -489,9 +500,6 @@
         [self.navigationController pushViewController:setting animated:YES];
         
     }
-    
-
-    
 }
 -(void)jumpToDetailWithId:(NSString *)Id{
     PersonDetailViewController * detail = [PersonDetailViewController new];

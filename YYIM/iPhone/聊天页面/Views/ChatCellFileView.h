@@ -11,5 +11,6 @@
 
 @interface ChatCellFileView : UIView
 @property (nonatomic,strong)MsgModel  * model;
+@property (nonatomic,strong)void(^clickBlock)();
 
 @end

@@ -10,7 +10,7 @@
 #import "PersonDetailViewController.h"
 #import "UpdatePasswordViewController.h"
 #import "TabBarController.h"
-
+#import "NSDate+Helper.h"
 
 static PersonCenterView *shared = nil;
 @interface PersonCenterView()
@@ -152,7 +152,7 @@ static PersonCenterView *shared = nil;
      _headImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",CurrentUserIcon]];
     _labelName.text = [NSString stringWithFormat:@"%@",CurrentUserName];
     _labelDesc.text = [NSString stringWithFormat:@"%@",CurrentUserUnderWrite];
-    _labelDate.text = [NSString stringWithFormat:@"%@",@"07/15 星期三"];
+    _labelDate.text = [NSString stringWithFormat:@"%ld/%ld %@",(long)[NSDate getMonth],(long)[NSDate getDay],[NSDate getWeekDay]];
     
     
     

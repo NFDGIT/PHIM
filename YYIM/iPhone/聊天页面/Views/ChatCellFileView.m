@@ -27,15 +27,20 @@
     
 }
 -(void)initUI{
-    self.frame = CGRectMake(0, 0, ScreenWidth*0.5, ScreenWidth*0.5*0.3);
+    self.frame = CGRectMake(0, 0, ScreenWidth*0.5, ScreenWidth*0.5*0.4);
     self.backgroundColor =ColorWhite;
+    self.layer.cornerRadius = 10;
+    self.layer.masksToBounds = YES;
+    
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click:)];
+    [self addGestureRecognizer:tap];
     
     
     
     _imgView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, self.height - 20, self.height-20)];
-    _imgView.image = [UIImage imageNamed:@"filemanager_folder"];
+    _imgView.image = [UIImage imageNamed:@"file_default"];
     [self addSubview:_imgView];
-    
+    _imgView.userInteractionEnabled = YES;
     
     _labelName = [[UILabel alloc]initWithFrame:CGRectMake(_imgView.right + 10, _imgView.top, self.width - _imgView.right-20, _imgView.height/2)];
     _labelName.font = FontBig;
@@ -47,8 +52,8 @@
     
     
     _labelDesc = [[UILabel alloc]initWithFrame:CGRectMake(_imgView.right + 10, _imgView.top, self.width - _imgView.right -20, _imgView.height/2)];
-    _labelDesc.font = FontBig;
-    _labelDesc.textColor = ColorBlack;
+    _labelDesc.font = FontNormal;
+    _labelDesc.textColor = ColorGray;
     [self addSubview:_labelDesc];
     _labelDesc.bottom = _imgView.bottom;
     
@@ -79,6 +84,14 @@
     });
 
 }
+#pragma mark -- click
+-(void)click:(UITapGestureRecognizer *)tap{
+    if (_clickBlock) {
+        _clickBlock();
+    }
+    
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

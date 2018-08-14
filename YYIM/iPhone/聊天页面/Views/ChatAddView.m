@@ -8,8 +8,10 @@
 
 #import "ChatAddView.h"
 #import "PHImagePickerController.h"
-#import "FileManagerViewController.h"
+#import "FileManager.h"
 #import "TabBarController.h"
+#import "PHDocumentPickerViewController.h"
+
 
 @interface ChatAddView()
 @property (nonatomic,strong)UIScrollView * scrollView;
@@ -38,7 +40,7 @@
     scrollView.pagingEnabled = YES;
     _scrollView = scrollView;
     
-    
+
     
     CGFloat imgW = (ScreenWidth - 20)/4 -20;
     CGFloat imgH = imgW;
@@ -103,7 +105,29 @@
         }];
     }
     if (tap.view.tag == 101) {
-        FileManagerViewController * fileManager = [FileManagerViewController new];
+//        NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code ", @"public.image", @"public.audiovisual-content", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
+//
+//
+//
+//        PHDocumentPickerViewController * documentPicker = [[PHDocumentPickerViewController alloc]initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeImport];
+//        documentPicker = [[PHDocumentPickerViewController alloc]initWithURL:[NSURL URLWithString:NSHomeDirectory()] inMode:UIDocumentPickerModeExportToService];
+//
+//        __weak typeof(documentPicker) weakDocument = documentPicker;
+//
+//        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:documentPicker animated:YES completion:^{
+//
+//        }];
+//        documentPicker.selectBlock = ^(NSArray *urls) {
+//            if (urls.count>0 && [urls.firstObject isKindOfClass:[NSURL class]]) {
+//                [weakDocument dismissViewControllerAnimated:YES completion:nil];
+//
+//                if (self->_clickBlock) {
+//                    self->_clickBlock(ChatAddTypeFile,urls.firstObject);
+//                };
+//            };
+//        };
+        
+        FileManager * fileManager = [FileManager new];
         [fileManager show];
         fileManager.selectBlock = ^(NSURL *url) {
             if (self->_clickBlock) {

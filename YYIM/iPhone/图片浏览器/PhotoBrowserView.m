@@ -7,9 +7,13 @@
 //
 
 #import "PhotoBrowserView.h"
+#import "ProgressTool.h"
+#import "FileManager.h"
+
 @interface PhotoBrowserView()
 @property (nonatomic,assign)CGRect originRect;
 @property (nonatomic,strong)UIImageView * imgView;
+@property (nonatomic,strong)NSArray * imgs;
 
 @end
 @implementation PhotoBrowserView
@@ -34,8 +38,19 @@
     [self addSubview:_imgView];
     _imgView.userInteractionEnabled = YES;
     _imgView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    
+    UIButton * btnDownload = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 50, 30)];
+    [self addSubview:btnDownload];
+    [btnDownload setTitleColor:ColorWhite forState:UIControlStateNormal];
+    btnDownload.titleLabel.font = FontBig;
+    [btnDownload setTitle:@"下载" forState:UIControlStateNormal];
+    btnDownload.bottom = self.height - 30;
+    btnDownload.right = self.width - 30;
+    [btnDownload addTarget:self action:@selector(downLoad) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)appearFromView:(UIView*)view imgs:(NSArray *)imgs{
+    _imgs = imgs;
     CGRect rect = [view.superview convertRect:view.frame toView:[UIApplication sharedApplication].keyWindow];
     _originRect = rect;
     
@@ -67,6 +82,23 @@
         [self removeFromSuperview];
 
     }];
+}
+#pragma mark -- 点击事件
+-(void)downLoad{
+
+    [ProgressTool showProgressWithText:@"下载中"];
+    [Request downloadImage:[NSURL URLWithString:_imgs.firstObject] progress:^(float progress) {
+        [ProgressTool setProgress:progress];
+    } success:^(NSUInteger code, NSString *msg, id data) {
+        [ProgressTool hidden];
+        UIImage * image = (UIImage *)data;
+        [FileManager saveImageToResourceFolder:image];
+        [[UIApplication sharedApplication].keyWindow makeToast:@"保存成功" duration:2 position:CSToastPositionCenter];
+    } failure:^(NSError *error) {
+        [ProgressTool hidden];
+        [[UIApplication sharedApplication].keyWindow makeToast:@"保存失败" duration:2 position:CSToastPositionCenter];
+    }];
+    
 }
 /*
 // Only override drawRect: if you perform custom drawing.

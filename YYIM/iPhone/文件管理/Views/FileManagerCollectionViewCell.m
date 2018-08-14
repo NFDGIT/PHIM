@@ -46,10 +46,18 @@
     
     _labelName.text = _model.fileName;
     NSString *  fileType = _model.fileAttributes[NSFileType];
+    NSString * filePath = _model.filePath;
     if ([fileType isEqualToString:NSFileTypeDirectory]) {
         _imgView.image = [UIImage imageNamed:@"filemanager_folder"];
+        
     }else{
+  
         _imgView.image = [UIImage imageNamed:@"filemanager_file"];
+        if ([filePath hasSuffix:@".png"]) {
+            
+    
+            [_imgView sd_setImageWithURL: [NSURL fileURLWithPath:filePath] placeholderImage:[UIImage imageNamed:@"filemanager_file"]];
+        }
     }
     
     

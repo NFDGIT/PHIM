@@ -6,18 +6,18 @@
 //  Copyright © 2018年 Jobs. All rights reserved.
 //
 
-#import "FileManagerViewController.h"
+#import "FileManager.h"
 #import "FileManagerCollectionViewCell.h"
 #import "TabBarController.h"
 
 
-@interface FileManagerViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface FileManager ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic,strong)UICollectionView  * collectionView;
 @property (nonatomic,strong)NSMutableArray * datas;
 
 @end
 
-@implementation FileManagerViewController
+@implementation FileManager
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -79,8 +79,8 @@
 -(void)refreshData{
 
     if (!_filePath) {
-        NSString *homePath = NSHomeDirectory();
-        _filePath = homePath;
+        NSString *filePath = [FileManager getResourceFolder];
+        _filePath = filePath;
 
     }
 
@@ -104,13 +104,6 @@
         [_datas addObject:model];
         
     }
-    
-    
-    
-
-
-    
-    
     
     
     [self refreshUI];
@@ -148,7 +141,7 @@
 
     NSString *  fileType = model.fileAttributes[NSFileType];
     if ([fileType isEqualToString:NSFileTypeDirectory]) {
-        FileManagerViewController * fileManger = [FileManagerViewController new];
+        FileManager * fileManger = [FileManager new];
         fileManger.filePath = model.filePath;
         [self.navigationController pushViewController:fileManger animated:YES];
     }else{
@@ -178,7 +171,7 @@
 
 }
 -(instancetype)getRootVC{
-    return  (FileManagerViewController *)(self.navigationController.viewControllers.firstObject);
+    return  (FileManager *)(self.navigationController.viewControllers.firstObject);
 }
 /*
 #pragma mark - Navigation
@@ -189,5 +182,89 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
+/**
+ 获取私人资源文件夹
+
+ @return 文件夹路径
+ */
++(NSString *)getResourceFolder{
+    //获取Document文件
+    NSString * docsdir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    
+    
+    
+    NSString * accountsFilePath = [docsdir stringByAppendingPathComponent:@"Accounts"];//将需要创建的串拼接到后面
+    NSString * accountFilePath = [accountsFilePath stringByAppendingPathComponent:CurrentUserId];//
+    NSString * resourceFilePath = [accountFilePath stringByAppendingPathComponent:@"resource"];//
+    
+    BOOL resourceIsDir = NO;
+    BOOL resourceExisted = [fileManager fileExistsAtPath:resourceFilePath isDirectory:&resourceIsDir];
+
+    if (resourceExisted) {
+        return resourceFilePath;
+    }else{
+        [FileManager createResourceFolder];
+        return [FileManager getResourceFolder];
+    }
+}
+/**
+ 创建私人资源文件夹
+
+ */
++(void)createResourceFolder{
+
+        //获取Document文件
+        NSString * docsdir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        
+        NSString * accountsFilePath = [docsdir stringByAppendingPathComponent:@"Accounts"];//将需要创建的串拼接到后面
+        BOOL accountsIsDir = NO;
+        // fileExistsAtPath 判断一个文件或目录是否有效，isDirectory判断是否一个目录
+        BOOL accountsExisted = [fileManager fileExistsAtPath:accountsFilePath isDirectory:&accountsIsDir];
+        if ( !(accountsIsDir == YES && accountsExisted == YES) ) {//如果
+            [fileManager createDirectoryAtPath:accountsFilePath withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        
+        
+    NSString * accountFilePath = [accountsFilePath stringByAppendingPathComponent:CurrentUserId];
+        BOOL accountIsDir = NO;
+        BOOL accountExisted = [fileManager fileExistsAtPath:accountFilePath isDirectory:&accountIsDir];
+        if (!(accountIsDir == YES && accountExisted == YES) ) {
+            [fileManager createDirectoryAtPath:accountFilePath withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+    
+    
+    NSString * resourceFilePath = [accountFilePath stringByAppendingPathComponent:@"resource"];
+    BOOL resourceIsDir = NO;
+    BOOL resourceExisted = [fileManager fileExistsAtPath:resourceFilePath isDirectory:&resourceIsDir];
+    if (!(resourceIsDir == YES && resourceExisted == YES) ) {
+        [fileManager createDirectoryAtPath:resourceFilePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+
+
+    
+}
+/**
+ 存储文件到私人资源文件
+ */
++(void)saveImageToResourceFolder:(UIImage *)image{
+    //拿到图片
+    NSString *path_document = [FileManager getResourceFolder];
+    //设置一个图片的存储路径
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    formatter.dateFormat =@"yyyyMMddHHmmss";
+    NSString *str = [formatter stringFromDate:[NSDate date]];
+    
+    NSString *imagePath = [path_document stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",str]];
+    //把图片直接保存到指定的路径（同时应该把图片的路径imagePath存起来，下次就可以直接用来取）
+    [UIImagePNGRepresentation(image) writeToFile:imagePath atomically:YES];
+    
+}
 
 @end

@@ -20,6 +20,7 @@ static PersonManager *shared = nil;
 
 
 @property (nonatomic,strong)NSMutableDictionary * myGroupChat;
+@property (nonatomic,strong)NSMutableArray * myFriends;
 
 @end
 @implementation PersonManager
@@ -33,13 +34,15 @@ static PersonManager *shared = nil;
     return shared;
 }
 -(void)initData{
-    
+    _myFriends = [NSMutableArray array];
     _dataDic = [NSMutableDictionary dictionary];
     _groupChatDic = [NSMutableDictionary dictionary];
     [[DBTool share] getUserModels:^(NSDictionary * dataDic) {
         self->_dataDic = [NSMutableDictionary dictionaryWithDictionary:dataDic];
     }];
-    
+    if (MyFriends && [MyFriends isKindOfClass:[NSArray class]]) {
+        _myFriends = [NSMutableArray arrayWithArray:MyFriends];
+    }
 }
 
 -(void)updateModel:(UserInfoModel *)model{
@@ -232,7 +235,6 @@ static PersonManager *shared = nil;
                 [self updateGroupChatModel:model];
             }
             
-            
 
         }
     } failure:^(NSError *error) {
@@ -244,5 +246,51 @@ static PersonManager *shared = nil;
 -(GroupChatModel *)getGroupChatModelWithGroupId:(NSString *)groupId{
     GroupChatModel * model = _groupChatDic[groupId];
     return model;
+}
+#pragma mark -- 我的好友
+
+-(void)refreshMyFriends:(void(^)(BOOL success))response{
+    [Request getUserInfoWithIdOrName:CurrentUserId success:^(NSUInteger code, NSString *msg, id data) {
+        if (code == 200) {
+            [self->_myFriends removeAllObjects];
+            NSString * dataString =[NSString stringWithFormat:@"%@",data[@"FriendDicationary"]];
+            NSArray * datas =   [NSJSONSerialization JSONObjectWithData:[dataString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingAllowFragments error:nil];
+            [self->_myFriends addObjectsFromArray:datas];
+            if (response) {
+                response(YES);
+            }
+        }else{
+            if (response) {
+                response(NO);
+            }
+        }
+    } failure:^(NSError *error) {
+        if (response) {
+            response(NO);
+        }
+    }];
+    
+}
+
+-(NSMutableArray*)getMyFriends{
+    return  _myFriends;
+}
+-(void)addFriends:(NSArray *)friends{
+    [_myFriends addObjectsFromArray:friends];
+    [[NSUserDefaults standardUserDefaults] setObject:_myFriends forKey:@"myFriends"];
+}
+-(BOOL)isMyFriend:(NSString *)Id{
+    return YES;
+    for (NSDictionary * dic in [self getMyFriends]) {
+        NSArray * Friend = dic[@"Friend"];
+        for (NSDictionary * friendDic in Friend) {
+            NSString * userID = [NSString stringWithFormat:@"%@",friendDic[@"userID"]];
+            if ([userID isEqualToString:Id]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+    
 }
 @end

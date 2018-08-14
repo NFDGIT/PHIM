@@ -59,7 +59,7 @@
 
 -(void)newView{
    
-    self.contentInsetAdjustmentBehavior =UIScrollViewContentInsetAdjustmentNever;
+//    self.contentInsetAdjustmentBehavior =UIScrollViewContentInsetAdjustmentNever;
     //    self.delegate=self;
     self.scrollEnabled=YES;
     self.showsHorizontalScrollIndicator=NO;

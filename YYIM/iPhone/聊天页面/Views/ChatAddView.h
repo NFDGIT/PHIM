@@ -14,4 +14,6 @@ typedef NS_ENUM(NSUInteger,ChatAddType) {
 
 @interface ChatAddView : UIView
 @property (nonatomic,strong)void(^clickBlock)(ChatAddType type,id data);
+
+
 @end

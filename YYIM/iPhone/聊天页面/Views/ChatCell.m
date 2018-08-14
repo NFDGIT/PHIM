@@ -12,6 +12,7 @@
 #import "PersonManager.h"
 #import "PhotoBrowserView.h"
 #import "ChatCellFileView.h"
+#import <SDWebImageManager.h>
 
 
 static ChatCell *shared = nil;
@@ -74,6 +75,7 @@ static ChatCell *shared = nil;
     msgContent.backgroundColor  =[UIColor colorWithRed:202/255.0 green:231/255.0 blue:254/255.0 alpha:1];
     msgContent.layer.cornerRadius = 8;
     msgContent.layer.masksToBounds = YES;
+    msgContent.textAlignment = NSTextAlignmentLeft;
     _msgContent = msgContent;
     _msgContent.numberOfLines = 0;
     
@@ -102,6 +104,10 @@ static ChatCell *shared = nil;
     
     
     _fileView = [ChatCellFileView new];
+    __weak typeof(self) weakSelf = self;
+    _fileView.clickBlock = ^{
+        [weakSelf downloadFile];
+    };
     _fileView.hidden = YES;
     [self.contentView addSubview:_fileView];
     
@@ -124,14 +130,14 @@ static ChatCell *shared = nil;
     if ([_model.sendId isEqualToString:CurrentUserId]) {
         _headImg.right = self.width - 10;
         _labelName.right = _headImg.left - 10;
-        _labelName.textAlignment = NSTextAlignmentRight;
+      
         
     }else{
         _headImg.left = 10;
         
         _labelName.left = _headImg.right + 10;
         _labelName.top = _headImg.top;
-        _labelName.textAlignment = NSTextAlignmentLeft;
+
         
     }
     
@@ -145,7 +151,7 @@ static ChatCell *shared = nil;
             [_msgContent sizeToFit];
             _msgContent.width = _msgContent.width + 10;
             _msgContent.height = _msgContent.height + 10;
-            _msgContent.textAlignment =NSTextAlignmentCenter;
+      
             
             
             if ([_model.sendId isEqualToString:CurrentUserId]) {
@@ -165,7 +171,7 @@ static ChatCell *shared = nil;
         case MsgTypeImage: // 图片消息
         {
             _imgView.hidden = NO;
-            NSString * imgUrl = [NSString stringWithFormat:@"%@",_model.imageUrl];
+//            NSString * imgUrl = [NSString stringWithFormat:@"%@",_model.imageUrl];
 
             _imgView.width = ScreenWidth*0.5;
             _imgView.height = ScreenWidth*0.5;
@@ -297,7 +303,7 @@ static ChatCell *shared = nil;
 }
 
 
-+(CGFloat)getHeightWithModel:(MsgModel *)model{
+-(CGFloat)getHeightWithModel:(MsgModel *)model{
 
 
     
@@ -319,7 +325,7 @@ static ChatCell *shared = nil;
         }
             break;
         case MsgTypeFile:
-            height =  60 + 20;
+            height = self.fileView.height + 20;
             break;
         case MsgTypeImage:
             height =  ScreenWidth*0.5 + 20;
@@ -333,6 +339,34 @@ static ChatCell *shared = nil;
     
     
     return height;
+
+}
+#pragma mark -- 下载
+-(void)downloadFile{
+    [PHAlert showConfirmWithTitle:@"提示" message:@"确定要下载？" block:^(BOOL sure) {
+        if (sure) {
+            NSDictionary * fileDic = [MsgModel getFileDicWithFileJson:self->_model.content];
+            NSString * fileUrl = [NSString stringWithFormat:@"%@",fileDic[@"fileUrl"]];
+//            fileUrl = @"http://sqdd.myapp.com/myapp/qqteam/tim/down/tim.apk";
+            [ProgressTool showProgressWithText:@"下载中"];
+            
+            [Request downloadFile:[NSURL URLWithString:fileUrl] progress:^(float progress) {
+                [ProgressTool setProgress:progress];
+            } success:^(NSUInteger code, NSString *msg, id data) {
+                
+                [ProgressTool hidden];
+                [[UIApplication sharedApplication].keyWindow makeToast:@"下载成功" duration:2 position:CSToastPositionCenter];
+            } failure:^(NSError *error) {
+                
+                [ProgressTool hidden];
+                [[UIApplication sharedApplication].keyWindow makeToast:@"下载失败" duration:2 position:CSToastPositionCenter];
+            }];
+        }else{
+            
+            
+        }
+    }];
+    
 
 }
 

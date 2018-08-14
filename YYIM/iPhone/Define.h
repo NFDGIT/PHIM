@@ -12,17 +12,23 @@
 //#define serverUploadFileAddress @"http://10.120.35.64:8620/"
 //#define UrlPath   [NSString stringWithFormat:@"%@%@",serverAddress,@"RemotingService"]
 
+//
+//#define serverHost   @"172.16.133.24"
+//#define serverPort   5533
+//#define serverSocketPort   5540
+//#define serverUploadFilePort 8620
+//#define serverAddress @"http://172.16.133.24:5533/"
+//#define serverUploadFileAddress @"http://172.16.133.24:8620/"
+//#define UrlPath   [NSString stringWithFormat:@"%@%@",serverAddress,@"RemotingService"]
 
-
-#define serverHost   @"172.16.133.24"
+// 真正的外网
+#define serverHost   @"117.122.219.121"
 #define serverPort   5533
 #define serverSocketPort   5540
-#define serverUploadFilePort 8620z
-#define serverAddress @"http://172.16.133.24:5533/"
-#define serverUploadFileAddress @"http://172.16.133.24:8620/"
+#define serverUploadFilePort 8620
+#define serverAddress @"http://117.122.219.121:5533/"
+#define serverUploadFileAddress @"http://117.122.219.121:8620/"
 #define UrlPath   [NSString stringWithFormat:@"%@%@",serverAddress,@"RemotingService"]
-
-
 
 
 
@@ -51,7 +57,7 @@
 
 #define ColorBack   [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1]
 #define ColorWhite  [UIColor colorWithRed:1 green:1 blue:1 alpha:1]
-#define ColorGray   [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.7]
+#define ColorGray   [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.9]
 #define ColorBlack  [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8]
 #define ColorRed    [UIColor colorWithRed:235/255.0 green:51/255.0 blue:51/255.0 alpha:1]
 #define ColorTheme  [UIColor colorWithRed:25/255.0 green:147/255.0 blue:251/255.0 alpha:1]
@@ -67,7 +73,6 @@
  */
 #define CurrentUserId             [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"CurrentUserId"]]
 #define setCurrentUserId(currentUserId)  [[NSUserDefaults standardUserDefaults] setValue:currentUserId forKey:@"CurrentUserId"]
-
 
 /**
 用户 头像
@@ -85,6 +90,11 @@
  */
 #define CurrentUserUnderWrite             [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] valueForKey:@"CurrentUserUnderWrite"]]
 #define setCurrentUserUnderWrite(currentUserUnderWrite)  [[NSUserDefaults standardUserDefaults] setValue:currentUserUnderWrite forKey:@"CurrentUserUnderWrite"]
+
+#define MyFriends                  [[NSUserDefaults standardUserDefaults] objectForKey:@"myFriends"]
+#define setMyFriends(myFriends)    [[NSUserDefaults standardUserDefaults] setObject:myFriends forKey:@"myFriends"]
+
+
 
 /**
  用户 状态
@@ -135,8 +145,6 @@ typedef NS_ENUM(NSUInteger,InformationType) {
 
     
     
-    
-    
     InformationTypeGetContactsRTData = 40,           // 获取我的所有联系人的在线状态、版本号，以及我的所有组的版本号
     InformationTypeGetFriendIDList = 41,             // 获取我的所有好友ID（C->S）
     InformationTypeGetAllContacts = 42,              // 获取我的所有联系人资料（C->S）
@@ -172,12 +180,11 @@ typedef NS_ENUM(NSUInteger,InformationType) {
 #define NotiForReceiveTypeUserInfoChange @"NotiForReceiveTypeUserInfoChange"   // 接收到 用户信息改变
 
 typedef NS_ENUM(NSUInteger,MsgType) {
-    MsgTypeText  = 0,
-    MsgTypeImage = 1,
-    MsgTypeAudio = 2,
-    MsgTypeFile = 3,
+    MsgTypeText  = 0,  // 文字
+    MsgTypeImage = 1,  // 图片
+    MsgTypeAudio = 2,  // 语音
+    MsgTypeFile = 3,   // 文件
     
-
 };
 
 

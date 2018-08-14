@@ -10,11 +10,13 @@
 #import "UserInfoModel.h"
 #import "PersonDetailViewController.h"
 #import "PersonManager.h"
-
+#import "MessageManager.h"
 @interface GroupChatSettingViewController ()
 @property (nonatomic,strong)NSMutableArray * infoModels;
 @property (nonatomic,strong)UIScrollView *scrollView;
 @property (nonatomic,strong)UIScrollView *groupMember;
+@property (nonatomic,strong)GroupChatModel * groupModel;
+
 @end
 
 @implementation GroupChatSettingViewController
@@ -34,6 +36,7 @@
 }
 -(void)refreshData{
     GroupChatModel * groupModel = [[PersonManager share]getGroupChatModelWithGroupId:_conversationModel.Id];
+    _groupModel = groupModel;
     
     [_infoModels removeAllObjects];
     for (MyFriendsModel * model in groupModel.memberList) {
@@ -131,6 +134,7 @@
             item.width = ScreenWidth * 0.9;
             item.centerX = _scrollView.width/2;
             item.layer.cornerRadius = 5;
+            [item addTarget:self action:@selector(quitGroup) forControlEvents:UIControlEventTouchUpInside];
         }
         
         
@@ -147,10 +151,10 @@
     [_groupMember.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     
-    UserInfoModel * infoModel = [UserInfoModel new];
-    infoModel.userID = @"13383824275";
-    infoModel.HeadName = @"63";
-    infoModel.RealName = @"彭辉";
+//    UserInfoModel * infoModel = [UserInfoModel new];
+//    infoModel.userID = @"13383824275";
+//    infoModel.HeadName = @"63";
+//    infoModel.RealName = @"彭辉";
     
 //    NSArray * members = @[infoModel,infoModel,infoModel,infoModel,infoModel,infoModel,infoModel];
 //    _infoModels = members;
@@ -167,24 +171,22 @@
        
         
         UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(setX, space, btnW, btnH)];
+        btn.imageView.layer.cornerRadius = btn.width/ 2;
         [_groupMember addSubview:btn];
         btn.tag = 100 + i;
         [btn addTarget:self action:@selector(clickUser:) forControlEvents:UIControlEventTouchUpInside];
         
         if (i == _infoModels.count) {
             [btn setImage:[UIImage imageNamed:@"groupchatset_add"] forState:UIControlStateNormal];
-            [btn setTitle:@"邀请" forState:UIControlStateNormal];
+            btn.imageView.layer.cornerRadius = 0;
+//            [btn setTitle:@"邀请" forState:UIControlStateNormal];
         }else{
             UserInfoModel * currentInfoModel = _infoModels[i];
             [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"LocalHeadIcon.bundle/%@.jpg",currentInfoModel.HeadName]] forState:UIControlStateNormal];
             [btn setTitle:currentInfoModel.RealName forState:UIControlStateNormal];
         }
         
-        
 
-        
-        
-        
         [btn setTitleColor:ColorBlack forState:UIControlStateNormal];
         btn.titleLabel.height = 20;
         
@@ -197,7 +199,7 @@
 //        [btn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 20, 0)];
 
 
-        btn.imageView.layer.cornerRadius = btn.width/ 2;
+
         
         
         btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;//使图片和文字水平居中显示
@@ -233,9 +235,35 @@
 }
 -(void)clearChatHistory{
     [PHAlert  showConfirmWithTitle:@"提示" message:@"确定要清除聊天记录吗？" block:^(BOOL sure){
-        
+        if (sure) {
+            [[MessageManager share]deleteMessagesWithConversationId:self->_conversationModel.Id response:^(BOOL success) {
+                if (success) {
+                    [self.view makeToast:@"清除成功" duration:2 position:CSToastPositionCenter];
+                    
+                }
+            }];
+        }
     }];
-    //    [MessageManager share]
+
+    
+}
+-(void)quitGroup{
+
+    [PHAlert showConfirmWithTitle:@"提示" message:@"确定要退出群聊?" block:^(BOOL sure) {
+        if (sure) {
+                [ProgressTool show];
+            [Request quitGroupWithIdOrName:CurrentUserId groupId:self->_groupModel.groupID success:^(NSUInteger code, NSString *msg, id data) {
+                    [ProgressTool hidden];
+                if (code == 200) {
+                    
+                }
+                    [self.view makeToast:data duration:2 position:CSToastPositionCenter];
+            } failure:^(NSError *error) {
+                    [ProgressTool hidden];
+                    [self.view makeToast:@"失败" duration:2 position:CSToastPositionCenter];
+            }];
+        }
+    }];
     
 }
 - (void)didReceiveMemoryWarning {

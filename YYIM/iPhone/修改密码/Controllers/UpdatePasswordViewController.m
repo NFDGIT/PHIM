@@ -11,7 +11,8 @@
 
 
 @interface UpdatePasswordViewController ()
-
+@property (nonatomic,strong)UITextField * oldTextF;
+@property (nonatomic,strong)UITextField * nTextF;
 @end
 
 @implementation UpdatePasswordViewController
@@ -72,7 +73,7 @@
         make.height.mas_equalTo(Scale(40));
         
     }];
-    
+    _oldTextF  = oldTF;
     
     
     UIView * newView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
@@ -111,7 +112,7 @@
         make.height.mas_equalTo(Scale(40));
         
     }];
-    
+    _nTextF = newTF;
     
     
     UIButton * btnSure = [[UIButton alloc]init];
@@ -127,7 +128,32 @@
     }];
     
     
+    [btnSure addTarget:self action:@selector(setpassword) forControlEvents:UIControlEventTouchUpInside];
     
+}
+
+#pragma mark -- 点击事件
+-(void)setpassword{
+    if ([_oldTextF.text isEmptyString] || [_nTextF.text isEmptyString]) {
+        [self.view makeToast:@"请输入密码" duration:2 position:CSToastPositionCenter];
+        return;
+    }
+    
+//    if (![_oldTextF.text isEqualToString:_nTextF.text]) {
+//        [self.view makeToast:@"两次密码不一致" duration:2 position:CSToastPositionCenter];
+//        return;
+//    }
+    [ProgressTool show];
+    [Request updatePasswordWithIdOrName:CurrentUserId oldPassword:_oldTextF.text newPassword:_nTextF.text success:^(NSUInteger code, NSString *msg, id data) {
+        [ProgressTool hidden];
+        if (code == 200) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        [[UIApplication sharedApplication].keyWindow makeToast:data duration:2 position:CSToastPositionCenter];
+    } failure:^(NSError *error) {
+        [ProgressTool hidden];
+        [self.view makeToast:@"修改失败" duration:2 position:CSToastPositionCenter];
+    }];
     
 }
 - (void)didReceiveMemoryWarning {

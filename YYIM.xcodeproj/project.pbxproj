@@ -29,16 +29,16 @@
 		C509380C2101E34D00A70E41 /* UserChangeStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C509380B2101E34D00A70E41 /* UserChangeStatus.m */; };
 		C509D908211032F000B50F1F /* NSString+MD5Encrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = C509D907211032EF00B50F1F /* NSString+MD5Encrypt.m */; };
 		C51452D921114FCE0035C83A /* ChatCellFileView.m in Sources */ = {isa = PBXBuildFile; fileRef = C51452D821114FCE0035C83A /* ChatCellFileView.m */; };
-		C52855C8210EAFE100887345 /* FileManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C52855C7210EAFE100887345 /* FileManagerViewController.m */; };
+		C52855C8210EAFE100887345 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C52855C7210EAFE100887345 /* FileManager.m */; };
 		C52855CC210EBB3900887345 /* FileManagerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C52855CB210EBB3900887345 /* FileManagerCollectionViewCell.m */; };
 		C52855D0210EC1E400887345 /* FileManagerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C52855CF210EC1E400887345 /* FileManagerModel.m */; };
+		C52C7F02211AC42E00A4702D /* NSDate+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = C52C7F01211AC42E00A4702D /* NSDate+Helper.m */; };
+		C530D0BF21181922007CE2C4 /* PHDocumentPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C530D0BE21181922007CE2C4 /* PHDocumentPickerViewController.m */; };
+		C530D0C421182281007CE2C4 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C530D0C321182281007CE2C4 /* CloudKit.framework */; };
 		C5467897211449AB00B86886 /* GroupChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5467896211449AB00B86886 /* GroupChatModel.m */; };
 		C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */; };
 		C55FF5F320F6EB3A00A86F00 /* EmotionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5F220F6EB3A00A86F00 /* EmotionView.m */; };
 		C55FF5F920F72A3B00A86F00 /* ChatAddView.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5F820F72A3B00A86F00 /* ChatAddView.m */; };
-		C55FF5FF20F74B2E00A86F00 /* SmiliesTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF5FE20F74B2E00A86F00 /* SmiliesTextAttachment.m */; };
-		C55FF60520F7568000A86F00 /* NSAttributedString+SmiliesId.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60420F7568000A86F00 /* NSAttributedString+SmiliesId.m */; };
-		C55FF60820F75A1300A86F00 /* SmiliesAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60720F75A1300A86F00 /* SmiliesAttributedString.m */; };
 		C55FF60B20F836D400A86F00 /* SocketTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60A20F836D400A86F00 /* SocketTool.m */; };
 		C55FF60E20F8672C00A86F00 /* NetTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60D20F8672C00A86F00 /* NetTool.m */; };
 		C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61620F898E000A86F00 /* MineTableViewCell.m */; };
@@ -159,12 +159,18 @@
 		C509D907211032EF00B50F1F /* NSString+MD5Encrypt.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5Encrypt.m"; sourceTree = "<group>"; };
 		C51452D721114FCE0035C83A /* ChatCellFileView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatCellFileView.h; sourceTree = "<group>"; };
 		C51452D821114FCE0035C83A /* ChatCellFileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatCellFileView.m; sourceTree = "<group>"; };
-		C52855C6210EAFE100887345 /* FileManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManagerViewController.h; sourceTree = "<group>"; };
-		C52855C7210EAFE100887345 /* FileManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManagerViewController.m; sourceTree = "<group>"; };
+		C52855C6210EAFE100887345 /* FileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
+		C52855C7210EAFE100887345 /* FileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		C52855CA210EBB3900887345 /* FileManagerCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManagerCollectionViewCell.h; sourceTree = "<group>"; };
 		C52855CB210EBB3900887345 /* FileManagerCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManagerCollectionViewCell.m; sourceTree = "<group>"; };
 		C52855CE210EC1E400887345 /* FileManagerModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileManagerModel.h; sourceTree = "<group>"; };
 		C52855CF210EC1E400887345 /* FileManagerModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileManagerModel.m; sourceTree = "<group>"; };
+		C52C7F00211AC42E00A4702D /* NSDate+Helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Helper.h"; sourceTree = "<group>"; };
+		C52C7F01211AC42E00A4702D /* NSDate+Helper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Helper.m"; sourceTree = "<group>"; };
+		C530D0BD21181922007CE2C4 /* PHDocumentPickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHDocumentPickerViewController.h; sourceTree = "<group>"; };
+		C530D0BE21181922007CE2C4 /* PHDocumentPickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHDocumentPickerViewController.m; sourceTree = "<group>"; };
+		C530D0C021181CE9007CE2C4 /* YYIM.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YYIM.entitlements; sourceTree = "<group>"; };
+		C530D0C321182281007CE2C4 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C5467895211449AB00B86886 /* GroupChatModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupChatModel.h; sourceTree = "<group>"; };
 		C5467896211449AB00B86886 /* GroupChatModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupChatModel.m; sourceTree = "<group>"; };
 		C55FF5EE20F6E57500A86F00 /* PHCellHeight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHCellHeight.m; sourceTree = "<group>"; };
@@ -173,12 +179,6 @@
 		C55FF5F220F6EB3A00A86F00 /* EmotionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmotionView.m; sourceTree = "<group>"; };
 		C55FF5F720F72A3B00A86F00 /* ChatAddView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatAddView.h; sourceTree = "<group>"; };
 		C55FF5F820F72A3B00A86F00 /* ChatAddView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatAddView.m; sourceTree = "<group>"; };
-		C55FF5FD20F74B2E00A86F00 /* SmiliesTextAttachment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmiliesTextAttachment.h; sourceTree = "<group>"; };
-		C55FF5FE20F74B2E00A86F00 /* SmiliesTextAttachment.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SmiliesTextAttachment.m; sourceTree = "<group>"; };
-		C55FF60320F7568000A86F00 /* NSAttributedString+SmiliesId.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+SmiliesId.h"; sourceTree = "<group>"; };
-		C55FF60420F7568000A86F00 /* NSAttributedString+SmiliesId.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+SmiliesId.m"; sourceTree = "<group>"; };
-		C55FF60620F75A1300A86F00 /* SmiliesAttributedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmiliesAttributedString.h; sourceTree = "<group>"; };
-		C55FF60720F75A1300A86F00 /* SmiliesAttributedString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SmiliesAttributedString.m; sourceTree = "<group>"; };
 		C55FF60920F836D400A86F00 /* SocketTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketTool.h; sourceTree = "<group>"; };
 		C55FF60A20F836D400A86F00 /* SocketTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SocketTool.m; sourceTree = "<group>"; };
 		C55FF60C20F8672C00A86F00 /* NetTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetTool.h; sourceTree = "<group>"; };
@@ -296,6 +296,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C530D0C421182281007CE2C4 /* CloudKit.framework in Frameworks */,
 				C59021A420F5A4DF001296C4 /* libz.1.2.5.tbd in Frameworks */,
 				B2BE3C9C7563C48D286A847B /* libPods-YYIM.a in Frameworks */,
 			);
@@ -330,6 +331,7 @@
 		2401D3DD7FB196D5EF247286 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C530D0C321182281007CE2C4 /* CloudKit.framework */,
 				C59021A320F5A4DF001296C4 /* libz.1.2.5.tbd */,
 				938192F04F8ECFB5D01E5E49 /* libPods-YYIM.a */,
 				9791F00C5904E36EFDD2329B /* libPods-YYIMTests.a */,
@@ -338,14 +340,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C50937CD20FEED0200A70E41 /* 群聊页面 */ = {
+		C50937CD20FEED0200A70E41 /* 群聊列表 */ = {
 			isa = PBXGroup;
 			children = (
 				C50937D020FEED4500A70E41 /* Models */,
 				C50937CF20FEED3900A70E41 /* Views */,
 				C50937CE20FEED2E00A70E41 /* Controllers */,
 			);
-			path = "群聊页面";
+			path = "群聊列表";
 			sourceTree = "<group>";
 		};
 		C50937CE20FEED2E00A70E41 /* Controllers */ = {
@@ -490,8 +492,10 @@
 		C52855C5210EAFBD00887345 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C52855C6210EAFE100887345 /* FileManagerViewController.h */,
-				C52855C7210EAFE100887345 /* FileManagerViewController.m */,
+				C52855C6210EAFE100887345 /* FileManager.h */,
+				C52855C7210EAFE100887345 /* FileManager.m */,
+				C530D0BD21181922007CE2C4 /* PHDocumentPickerViewController.h */,
+				C530D0BE21181922007CE2C4 /* PHDocumentPickerViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -633,6 +637,7 @@
 		C59020FD20F44D49001296C4 /* YYIM */ = {
 			isa = PBXGroup;
 			children = (
+				C530D0C021181CE9007CE2C4 /* YYIM.entitlements */,
 				C50937ED20FF20F500A70E41 /* LocalHeadIcon.bundle */,
 				C5EFFE5A20FC6F42003BDB2E /* Emotion.bundle */,
 				C590210C20F44D4F001296C4 /* Info.plist */,
@@ -673,7 +678,7 @@
 				C50937EF21003C4400A70E41 /* 群聊详情 */,
 				C50937E120FF05FE00A70E41 /* 联系人 */,
 				C50937DA20FF04DD00A70E41 /* 用户详情 */,
-				C50937CD20FEED0200A70E41 /* 群聊页面 */,
+				C50937CD20FEED0200A70E41 /* 群聊列表 */,
 				C590218520F4B36B001296C4 /* 聊天页面 */,
 				C590217820F4AE6F001296C4 /* 我的好友 */,
 				C590213E20F44F31001296C4 /* Mine */,
@@ -730,6 +735,8 @@
 				C5C8643E210B2C5700E6BC7F /* DocumentPicker.m */,
 				C509D906211032EF00B50F1F /* NSString+MD5Encrypt.h */,
 				C509D907211032EF00B50F1F /* NSString+MD5Encrypt.m */,
+				C52C7F00211AC42E00A4702D /* NSDate+Helper.h */,
+				C52C7F01211AC42E00A4702D /* NSDate+Helper.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -919,12 +926,6 @@
 				C55FF5F220F6EB3A00A86F00 /* EmotionView.m */,
 				C55FF5F720F72A3B00A86F00 /* ChatAddView.h */,
 				C55FF5F820F72A3B00A86F00 /* ChatAddView.m */,
-				C55FF5FD20F74B2E00A86F00 /* SmiliesTextAttachment.h */,
-				C55FF5FE20F74B2E00A86F00 /* SmiliesTextAttachment.m */,
-				C55FF60620F75A1300A86F00 /* SmiliesAttributedString.h */,
-				C55FF60720F75A1300A86F00 /* SmiliesAttributedString.m */,
-				C55FF60320F7568000A86F00 /* NSAttributedString+SmiliesId.h */,
-				C55FF60420F7568000A86F00 /* NSAttributedString+SmiliesId.m */,
 				C51452D721114FCE0035C83A /* ChatCellFileView.h */,
 				C51452D821114FCE0035C83A /* ChatCellFileView.m */,
 			);
@@ -1093,6 +1094,14 @@
 				TargetAttributes = {
 					C59020FA20F44D49001296C4 = {
 						CreatedOnToolsVersion = 9.4.1;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					C590211220F44D4F001296C4 = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -1257,6 +1266,7 @@
 				C50937CC20FEE04D00A70E41 /* MyFriendsGroupHeaderView.m in Sources */,
 				C5EFFCB420FC2CE3003BDB2E /* MessageManager.m in Sources */,
 				C50937D920FEEE8000A70E41 /* MyGroupChatModel.m in Sources */,
+				C530D0BF21181922007CE2C4 /* PHDocumentPickerViewController.m in Sources */,
 				C590214720F44FD2001296C4 /* ContactsListViewController.m in Sources */,
 				C50937EB20FF0C7600A70E41 /* PHTabbarView.m in Sources */,
 				C50937F221003C6200A70E41 /* GroupDetailViewController.m in Sources */,
@@ -1264,13 +1274,12 @@
 				C57490522107228800577882 /* ChatSettingViewController.m in Sources */,
 				C590215720F45AA2001296C4 /* MessageLlistTableViewCell.m in Sources */,
 				C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */,
-				C55FF60520F7568000A86F00 /* NSAttributedString+SmiliesId.m in Sources */,
 				C590218420F4B07A001296C4 /* MyFriendTableViewCell.m in Sources */,
 				C590218120F4AF36001296C4 /* MyFriendsModel.m in Sources */,
 				C55FF5F020F6E57500A86F00 /* PHCellHeight.m in Sources */,
 				C5EFFE5E20FC923A003BDB2E /* RishTextAdapter.m in Sources */,
 				C57490482105D8FB00577882 /* PHPush.m in Sources */,
-				C52855C8210EAFE100887345 /* FileManagerViewController.m in Sources */,
+				C52855C8210EAFE100887345 /* FileManager.m in Sources */,
 				C590214420F44FB3001296C4 /* MessageListViewController.m in Sources */,
 				C5EFFCB720FC3651003BDB2E /* ConversationModel.m in Sources */,
 				C5C8642A210AA71300E6BC7F /* UIView+Animation.m in Sources */,
@@ -1281,6 +1290,7 @@
 				C57490552107317E00577882 /* PHPlayer.m in Sources */,
 				C5EFFCBD20FC5F34003BDB2E /* NSString+Helper.m in Sources */,
 				C5C8643F210B2C5700E6BC7F /* DocumentPicker.m in Sources */,
+				C52C7F02211AC42E00A4702D /* NSDate+Helper.m in Sources */,
 				C59021A720F5A76A001296C4 /* NSString+Json.m in Sources */,
 				C509380C2101E34D00A70E41 /* UserChangeStatus.m in Sources */,
 				C5EFFE6420FDBE23003BDB2E /* NSDictionary+Helper.m in Sources */,
@@ -1308,7 +1318,6 @@
 				C590213420F44D86001296C4 /* NavigationController.m in Sources */,
 				C59021BA20F6088B001296C4 /* NSString+Base64.m in Sources */,
 				C574905C210815D200577882 /* GroupChatSettingViewController.m in Sources */,
-				C55FF5FF20F74B2E00A86F00 /* SmiliesTextAttachment.m in Sources */,
 				C590214E20F455DB001296C4 /* UIViewAdditions.m in Sources */,
 				C55FF60E20F8672C00A86F00 /* NetTool.m in Sources */,
 				C55FF60B20F836D400A86F00 /* SocketTool.m in Sources */,
@@ -1316,7 +1325,6 @@
 				C50937D320FEED7800A70E41 /* MyGroupChatViewController.m in Sources */,
 				C590210E20F44D4F001296C4 /* main.m in Sources */,
 				C55FF5F320F6EB3A00A86F00 /* EmotionView.m in Sources */,
-				C55FF60820F75A1300A86F00 /* SmiliesAttributedString.m in Sources */,
 				C590218820F4B394001296C4 /* ChatViewController.m in Sources */,
 				C590210020F44D49001296C4 /* AppDelegate.m in Sources */,
 				C590215F20F491B2001296C4 /* Request.m in Sources */,
@@ -1500,6 +1508,7 @@
 			baseConfigurationReference = 4D6B33E3CEA6CB04BB0FE9E6 /* Pods-YYIM.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = YYIM/YYIM.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 29TC6H8E4S;
@@ -1514,7 +1523,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.trustworld.GXIM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1523,6 +1532,7 @@
 			baseConfigurationReference = BB59103455D6E2DC3664B0B2 /* Pods-YYIM.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = YYIM/YYIM.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 29TC6H8E4S;
@@ -1537,7 +1547,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.trustworld.GXIM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

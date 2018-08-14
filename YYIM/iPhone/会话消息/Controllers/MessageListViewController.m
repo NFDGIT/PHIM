@@ -22,7 +22,6 @@
 @interface MessageListViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong)UITableView * tableView;
 
-
 @property (nonatomic,strong)NSMutableArray * datas;
 
 @end
@@ -44,6 +43,13 @@
     if ([PersonManager share].groupChatDic.allKeys.count < 1) {
         [[PersonManager share]refreshGroupChats];
     }
+    if ([[PersonManager share]getMyFriends].count < 1) {
+        [[PersonManager share]refreshMyFriends:^(BOOL success) {
+        }];
+    }
+    
+
+    
     
 
     // Do any additional setup after loading the view.
@@ -82,6 +88,7 @@
     
     __weak typeof(self) weakSelf = self;
     self.loginSuccessBlock = ^{
+        [weakSelf initNavi];
         [weakSelf refreshData];
     };
     
@@ -100,6 +107,8 @@
 }
 -(void)initUI{
 
+    
+    
     UILabel * notNetLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
     notNetLabel.backgroundColor = ColorRed;
     notNetLabel.textColor = ColorWhite;
@@ -131,7 +140,6 @@
 -(void)refreshUI{
     [_tableView.mj_header endRefreshing];
     [_tableView reloadData];
-    [self initNavi];
 }
 -(void)layout{
 
@@ -149,7 +157,7 @@
     return 0.01;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 10;
+    return 1;
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{

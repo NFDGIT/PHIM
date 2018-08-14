@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SmiliesTextAttachment.h"
+//#import "SmiliesTextAttachment.h"
 
 
 @interface EmotionView : UIView

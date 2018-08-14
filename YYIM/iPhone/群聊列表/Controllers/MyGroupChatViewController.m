@@ -27,6 +27,18 @@
     [self initNavi];
     [self initUI];
     
+    
+    [ProgressTool show];
+    [Request joinGroupWithIdOrName:CurrentUserId groupId:@"123" success:^(NSUInteger code, NSString *msg, id data) {
+        [ProgressTool hidden];
+        if (code == 200) {
+            
+        }
+        [self.view makeToast:data duration:2 position:CSToastPositionCenter];
+    } failure:^(NSError *error) {
+        [ProgressTool hidden];
+        [self.view makeToast:@"失败" duration:2 position:CSToastPositionCenter];
+    }];
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -62,9 +74,7 @@
 
 
 -(void)refreshData{
-    if ([PersonManager share].groupChatDic.allKeys.count < 1) {
-            [[PersonManager share]getGroupChatModelWithGroupId:CurrentUserId];
-    }
+            [[PersonManager share]refreshGroupChats];
     
 
     
@@ -102,7 +112,20 @@
 }
 
 #pragma mark -- delegate
-
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.01;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 1;
+    
+}
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return nil;
+}
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    return nil;
+}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;

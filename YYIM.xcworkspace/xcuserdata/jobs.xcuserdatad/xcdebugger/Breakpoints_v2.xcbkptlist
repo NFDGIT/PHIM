@@ -10,28 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/PersonManager.m"
-            timestampString = "554982827.3073241"
+            timestampString = "555828709.5825599"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "199"
-            endingLineNumber = "199"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
             landmarkName = "-refreshLocalPersons"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/&#x4f1a;&#x8bdd;&#x6d88;&#x606f;/Controllers/MessageListViewController.m"
-            timestampString = "554982827.307471"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "-viewDidLoad"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/SocketTool.m"
-            timestampString = "554982827.307564"
+            timestampString = "555828709.58263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "243"
@@ -57,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/HandleSocketDao.m"
-            timestampString = "554982827.307687"
+            filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/Request.m"
+            timestampString = "555408715.683323"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
-            landmarkName = "+handleChatMsgDic:"
+            startingLineNumber = "271"
+            endingLineNumber = "271"
+            landmarkName = "+downloadFile:progress:success:failure:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,13 +57,124 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/SocketRequest.m"
-            timestampString = "554982827.307832"
+            filePath = "YYIM/iPhone/&#x804a;&#x5929;&#x9875;&#x9762;/Views/ChatCell.m"
+            timestampString = "555403393.686071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
-            landmarkName = "+sendGroupMsg:receiveId:"
+            startingLineNumber = "354"
+            endingLineNumber = "354"
+            landmarkName = "-downloadFile"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YYIM/iPhone/&#x804a;&#x5929;&#x9875;&#x9762;/Views/ChatCell.m"
+            timestampString = "555403393.686483"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
+            landmarkName = "-downloadFile"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/Request.m"
+            timestampString = "555408715.683503"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "443"
+            endingLineNumber = "443"
+            landmarkName = "+addFriendWithIdOrName:catalogName:success:failure:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[Request addFriendWithIdOrName:catalogName:success:failure:]"
+                  moduleName = "YYIM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/iPhone/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B8%AD%E5%BF%83/Request.m"
+                  timestampString = "555408264.195732"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "443"
+                  endingLineNumber = "443"
+                  offsetFromSymbolStart = "513">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__61+[Request addFriendWithIdOrName:catalogName:success:failure:]_block_invoke"
+                  moduleName = "YYIM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/iPhone/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B8%AD%E5%BF%83/Request.m"
+                  timestampString = "555408264.202342"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "443"
+                  endingLineNumber = "443"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_.277"
+                  moduleName = "YYIM"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jobs/Desktop/YYIM/YYIM/iPhone/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B8%AD%E5%BF%83/Request.m"
+                  timestampString = "555408264.207116"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "443"
+                  endingLineNumber = "443"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/Request.m"
+            timestampString = "555408715.683575"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "445"
+            endingLineNumber = "445"
+            landmarkName = "+addFriendWithIdOrName:catalogName:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "YYIM/iPhone/&#x6570;&#x636e;&#x5904;&#x7406;&#x4e2d;&#x5fc3;/Request.m"
+            timestampString = "555408715.683635"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "450"
+            endingLineNumber = "450"
+            landmarkName = "+addFriendWithIdOrName:catalogName:success:failure:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

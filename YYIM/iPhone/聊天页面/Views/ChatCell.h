@@ -15,5 +15,5 @@
 @property (nonatomic,strong)MsgModel * model;
 @property (nonatomic,strong)void(^headClickBlock)(NSIndexPath * indexPath);
 
-+(CGFloat)getHeightWithModel:(MsgModel *)model;
+-(CGFloat)getHeightWithModel:(MsgModel *)model;
 @end

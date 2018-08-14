@@ -55,7 +55,7 @@ static DBTool *shared = nil;
     // 创建两个 表 一个表示消息以用户的ID为键值
     
     //4.数据库中创建表（可创建多张）
-    NSString *sql = @"create table if not exists chatMessages ('target' TEXT,'headIcon' TEXT,'sendId' TEXT, 'receivedId' TEXT TEXT,'content'  TEXT,'imageUrl'  TEXT,'msgType' INTEGER NOT NULL,'GroupMsg'  INTEGER,'MsgInfoClass' INTEGER)";// 聊天的 表
+    NSString *sql = @"create table if not exists chatMessages ('target' TEXT,'headIcon' TEXT,'sendId' TEXT, 'receivedId' TEXT TEXT,'content'  TEXT,'imageUrl'  TEXT,'msgType' INTEGER NOT NULL,'GroupMsg'  INTEGER,'MsgInfoClass' INTEGER,'time' datetime)";// 聊天的 表
     
     NSString * sql1 = @"create table if not exists conversations ('Id' TEXT, 'name' TEXT,'imgUrl'  TEXT,'GroupMsg'  INTEGER,'newCount' INTEGER)"; // 会话的表
     
@@ -203,13 +203,17 @@ static DBTool *shared = nil;
     NSString * receivedId = [NSString stringWithFormat:@"%@",model.receivedId];
     NSString * content = [NSString stringWithFormat:@"%@",model.content];
     NSString * imageUrl = [NSString stringWithFormat:@"%@",model.imageUrl];
+
+    
     BOOL GroupMsg      = model.GroupMsg;
     InformationType  MsgInfoClass = model.MsgInfoClass;
     
     NSInteger  msgType = model.msgType;
     
+    NSDate * date =[[NSDate date]dateByAddingTimeInterval:60*60*8];
     
-    BOOL result = [_accountDb executeUpdate:@"insert into 'chatMessages'(target,headIcon,sendId,receivedId,content,imageUrl,msgType,GroupMsg,MsgInfoClass) values(?,?,?,?,?,?,?,?,?)" withArgumentsInArray:@[targets,headIcon,sendId,receivedId,content,imageUrl,@(msgType),@(GroupMsg),@(MsgInfoClass)]];
+    
+    BOOL result = [_accountDb executeUpdate:@"insert into 'chatMessages'(target,headIcon,sendId,receivedId,content,imageUrl,msgType,GroupMsg,MsgInfoClass,time) values(?,?,?,?,?,?,?,?,?,?)" withArgumentsInArray:@[targets,headIcon,sendId,receivedId,content,imageUrl,@(msgType),@(GroupMsg),@(MsgInfoClass),date]];
     if (response) {
         response(result);
     }
@@ -259,7 +263,7 @@ static DBTool *shared = nil;
         message.imageUrl = [result stringForColumn:@"imageUrl"];
         message.MsgInfoClass = [result intForColumn:@"MsgInfoClass"];
         message.GroupMsg     = [result intForColumn:@"GroupMsg"];
-        
+        message.time = [result dateForColumn:@"time"];
        
         [arr addObject:message];
         

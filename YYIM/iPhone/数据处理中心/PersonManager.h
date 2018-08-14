@@ -32,4 +32,8 @@
 -(void)refreshGroupChats;
 -(void)updateGroupChatModel:(GroupChatModel *)groupChatModel;
 -(GroupChatModel *)getGroupChatModelWithGroupId:(NSString *)groupId;
+#pragma mark -- 我的好友
+-(void)refreshMyFriends:(void(^)(BOOL success))response;
+-(NSMutableArray*)getMyFriends;
+-(BOOL)isMyFriend:(NSString *)Id;
 @end

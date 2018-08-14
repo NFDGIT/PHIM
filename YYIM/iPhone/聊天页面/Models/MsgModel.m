@@ -14,4 +14,5 @@
     NSDictionary * dic = [NSString dictionaryWithJsonString:fileJson];
     return dic;
 }
+
 @end

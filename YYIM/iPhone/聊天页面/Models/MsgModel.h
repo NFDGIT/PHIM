@@ -21,11 +21,12 @@
 @property (nonatomic,assign)MsgType  msgType;     //消息类型 0，文本 1,图片 2，语音
 @property (nonatomic,strong)NSString * imageUrl;
 @property (nonatomic,strong)NSString * headIcon;
-@property (nonatomic,strong)NSString * time;  //时间
+@property (nonatomic,strong)NSDate * time;  //时间
 @property (nonatomic,strong)NSString * imageLocal;
 
 
 @property (nonatomic,assign)BOOL      GroupMsg;     // 是否是群聊
 @property (nonatomic,assign)InformationType  MsgInfoClass; // 消息的种类。
 +(NSDictionary *)getFileDicWithFileJson:(NSString *)fileJson;
+
 @end

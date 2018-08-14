@@ -12,13 +12,12 @@
 #import "ChatAddView.h"
 #import "RishTextAdapter.h"
 
-#import "SmiliesAttributedString.h"
+//#import "SmiliesAttributedString.h"
 
 
 @interface ChatInputView()<UITextViewDelegate>
 
-
-
+@property (nonatomic,strong)UIButton * sendBtn;
 @property (nonatomic,strong)UIButton * addBtn;
 @property (nonatomic,strong)UIButton * emotionBtn;
 @property (nonatomic,strong)UITextView * textTF;
@@ -50,14 +49,33 @@
 //    _topView = topView;
     
     
+    
+    
     UIButton * addBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
     [self addSubview:addBtn];
     [addBtn setImage:[UIImage imageNamed:@"chat_add"] forState:UIControlStateNormal];
+    [addBtn setImage:[UIImage imageNamed:@"chat_keyboard"] forState:UIControlStateSelected];
     _addBtn = addBtn;
     [addBtn addTarget:self action:@selector(addClick) forControlEvents:UIControlEventTouchUpInside];
     
+    
+    
+    UIButton * sendBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 50, 30)];
+    sendBtn.backgroundColor = ColorTheme;
+    sendBtn.layer.cornerRadius = 8;
+    sendBtn.layer.masksToBounds = YES;
+    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
+    sendBtn.hidden = YES;
+    [self addSubview:sendBtn];
+    [sendBtn addTarget:self action:@selector(sendText) forControlEvents:UIControlEventTouchUpInside];
+    _sendBtn = sendBtn;
+    
+    
+    
+    
 
     UIButton * emotionBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [emotionBtn setImage:[UIImage imageNamed:@"chat_keyboard"] forState:UIControlStateSelected];
 //    emotionBtn.backgroundColor = [UIColor lightGrayColor];
     [self addSubview:emotionBtn];
     [emotionBtn setImage:[UIImage imageNamed:@"chat_emotion"] forState:UIControlStateNormal];
@@ -85,13 +103,16 @@
 
     
 }
+
+
 -(void)layout{
+    
     _addBtn.right = self.width - 15;
     _emotionBtn.right = _addBtn.left - 15;
     
-    _addBtn.centerY = _emotionBtn.centerY = _textTF.centerY = self.height/2;
+
     
-    
+
     _textTF.width = _emotionBtn.left - _textTF.left - 15;
     
     
@@ -110,7 +131,14 @@
     self.height = _textTF.bottom + 10;
     
     
-    _addBtn.bottom = _emotionBtn.bottom = _textTF.bottom;
+
+    _addBtn.centerY = _emotionBtn.centerY = _textTF.centerY = self.height/2;
+    _sendBtn.center = _addBtn.center;
+    _sendBtn.hidden = [_textTF.text isEmptyString];
+    _addBtn.hidden = !_sendBtn.hidden;
+    
+    _addBtn.bottom =  _textTF.bottom;
+    _emotionBtn.centerY = _sendBtn.centerY = _addBtn.centerY;
     
     if(_changeHeightBlock){
         _changeHeightBlock();
@@ -140,6 +168,7 @@
         EmotionView * emotionView = [[EmotionView alloc]initWithFrame:CGRectMake(0, 100, ScreenWidth, 220)];
         emotionView.clickBlock = ^(NSString *imgName) {
             [self inputImage:imgName];
+            [self layout];
         };
         emotionView.deleteBlock = ^{
             [self deleteClick];
@@ -148,6 +177,8 @@
     }
 
     [_textTF reloadInputViews];
+    _emotionBtn.selected = _index == 1;
+    _addBtn.selected = _index == 2;
  
 }
 /**
@@ -174,50 +205,54 @@
     
 
     [_textTF reloadInputViews];
+    _emotionBtn.selected = _index == 1;
+    _addBtn.selected = _index == 2;
 }
 #pragma mark -- texttf delegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
-        //在这里做你响应return键的代码
-        if (textView.text.length <= 0) {
-            //        [SVProgressHUD showWithStatus:@"请输入内容"];
-            return NO;
-        }
-        
-    
-        if (_inputBlock) {
-            _inputBlock(textView.text);
-        }
-//        [[IQKeyboardManager sharedManager] resignFirstResponder];
-        textView.text = @"";
-        [self layout];
+        [self sendText];
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
     }
     if ([text isEqualToString:@""]) { // 删除键
         
     }
 //
-    
-    
     return YES;
 }
+
+
+
 
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     textView.inputView = nil;
     [textView reloadInputViews];
-
     
     return YES;
 }
 -(void)textViewClick{
     
-    
+}
+
+-(void)sendText{
+    //在这里做你响应return键的代码
+    if (_textTF.text.length <= 0) {
+        //        [SVProgressHUD showWithStatus:@"请输入内容"];
+        return ;
+    }
+    if (_inputBlock) {
+        _inputBlock(_textTF.text);
+    }
+    //        [[IQKeyboardManager sharedManager] resignFirstResponder];
+    _textTF.text = @"";
+    [self layout];
     
 }
 
 -(void)textViewDidChange:(UITextView *)textView{
-    
 //    textView.attributedText = [RishTextAdapter getAttributedStringWithString:textView.text];
+//    NSMutableAttributedString * attri = [[NSMutableAttributedString alloc]initWithAttributedString:textView.attributedText];
+
     [self layout];
 
 }

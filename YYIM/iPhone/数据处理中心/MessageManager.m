@@ -216,9 +216,6 @@ static MessageManager *shared = nil;
     }];
 
     
-
-    
-    
     [self getConversationWithId:target.Id response:^(ConversationModel *model) {// 获取本地的 会话
         ConversationModel * targetModel;
         

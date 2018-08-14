@@ -23,7 +23,7 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 
 
-static SocketTool *shared = nil;
+static NetTool *shared = nil;
 @interface NetTool()
 @property (nonatomic,strong)NSTimer * detectionTimer;
 

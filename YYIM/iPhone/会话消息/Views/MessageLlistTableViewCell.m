@@ -19,6 +19,7 @@
 @property (nonatomic,strong)UILabel *     labelName;
 @property (nonatomic,strong)UILabel *     labelSignature;
 
+@property (nonatomic,strong)UILabel *     labelTime;
 @property (nonatomic,strong)UILabel *     labelCount;
 
 @end
@@ -48,10 +49,17 @@
 
     
     _labelSignature = [[UILabel alloc]initWithFrame:CGRectMake(_imgView.right + 10, _labelName.bottom + 10, self.width - _imgView.right - 20, 20)];
-    _labelSignature.font = FontNormal;
+    _labelSignature.font = FontBig;
     _labelSignature.textColor = ColorGray;
     [self.contentView addSubview:_labelSignature];
 
+    
+    
+    _labelTime = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, Scale(200), 20)];
+    _labelTime.textAlignment = NSTextAlignmentRight;
+    _labelTime.font = FontBig;
+    _labelTime.textColor = ColorGray;
+    [self.contentView addSubview:_labelTime];
     
     _labelCount = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
     _labelCount.font = FontNormal;
@@ -61,6 +69,7 @@
     [self.contentView addSubview:_labelCount];
     
    
+    
 }
 -(void)layoutSubviews{
     [super layoutSubviews];
@@ -75,6 +84,8 @@
     _labelSignature.left = _labelName.left;
     _labelSignature.top = _labelName.bottom + 10;
     
+    _labelTime.top = 10;
+    _labelTime.right = self.width - 10;
     
     {
         [_labelCount sizeToFit];
@@ -89,7 +100,7 @@
         _labelCount.layer.masksToBounds = YES;
         
         _labelCount.right = self.width - 20;
-        _labelCount.centerY =_imgView.centerY;
+        _labelCount.bottom = _imgView.bottom;
         
         _labelCount.hidden = _model.newCount == 0;
     }
@@ -105,10 +116,16 @@
     _labelName.text = _model.name;
     _labelSignature.text = _model.Id;
     
+
+    
     if (_model.GroupMsg) {
         _imgView.image = [UIImage imageNamed:@"群组_default"];
         MsgModel * msgModel = [[MessageManager share]getLastMessageWithTargetId:_model.Id response:nil];
         UserInfoModel * userInfoModel =  [[PersonManager share]getModelWithId:msgModel.sendId];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+        _labelTime.text = [dateFormatter stringFromDate:msgModel.time];
         
         
         if (msgModel) {
