@@ -43,6 +43,7 @@
 		C55FF60E20F8672C00A86F00 /* NetTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF60D20F8672C00A86F00 /* NetTool.m */; };
 		C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61620F898E000A86F00 /* MineTableViewCell.m */; };
 		C55FF61A20F89A2300A86F00 /* DBTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C55FF61920F89A2300A86F00 /* DBTool.m */; };
+		C56534F12122DE460090ADC2 /* UIImage+Text_tag.m in Sources */ = {isa = PBXBuildFile; fileRef = C56534F02122DE460090ADC2 /* UIImage+Text_tag.m */; };
 		C57490482105D8FB00577882 /* PHPush.m in Sources */ = {isa = PBXBuildFile; fileRef = C57490472105D8FB00577882 /* PHPush.m */; };
 		C574904B2107058C00577882 /* PersonCenterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C574904A2107058C00577882 /* PersonCenterView.m */; };
 		C57490522107228800577882 /* ChatSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57490512107228800577882 /* ChatSettingViewController.m */; };
@@ -187,6 +188,8 @@
 		C55FF61620F898E000A86F00 /* MineTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineTableViewCell.m; sourceTree = "<group>"; };
 		C55FF61820F89A2300A86F00 /* DBTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBTool.h; sourceTree = "<group>"; };
 		C55FF61920F89A2300A86F00 /* DBTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBTool.m; sourceTree = "<group>"; };
+		C56534EF2122DE460090ADC2 /* UIImage+Text_tag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Text_tag.h"; sourceTree = "<group>"; };
+		C56534F02122DE460090ADC2 /* UIImage+Text_tag.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Text_tag.m"; sourceTree = "<group>"; };
 		C57490462105D8FB00577882 /* PHPush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PHPush.h; sourceTree = "<group>"; };
 		C57490472105D8FB00577882 /* PHPush.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PHPush.m; sourceTree = "<group>"; };
 		C57490492107058C00577882 /* PersonCenterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PersonCenterView.h; sourceTree = "<group>"; };
@@ -939,6 +942,8 @@
 				C59021AA20F5F583001296C4 /* MsgModel.m */,
 				C5EFFE5C20FC923A003BDB2E /* RishTextAdapter.h */,
 				C5EFFE5D20FC923A003BDB2E /* RishTextAdapter.m */,
+				C56534EF2122DE460090ADC2 /* UIImage+Text_tag.h */,
+				C56534F02122DE460090ADC2 /* UIImage+Text_tag.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1261,6 +1266,7 @@
 				C59021AB20F5F583001296C4 /* MsgModel.m in Sources */,
 				C590210320F44D49001296C4 /* ViewController.m in Sources */,
 				C55FF61720F898E000A86F00 /* MineTableViewCell.m in Sources */,
+				C56534F12122DE460090ADC2 /* UIImage+Text_tag.m in Sources */,
 				C5C8642D210AB8B400E6BC7F /* SocketRequest.m in Sources */,
 				C50937F92100809D00A70E41 /* PersonManager.m in Sources */,
 				C50937CC20FEE04D00A70E41 /* MyFriendsGroupHeaderView.m in Sources */,

@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UIImage+Text_tag.h"
 
 @interface RishTextAdapter : NSObject
 +(NSAttributedString *)getAttributedStringWithString:(NSString *)string;
++(NSString *)getStringWithAttributedString:(NSAttributedString *)attributedString;
+
 @end

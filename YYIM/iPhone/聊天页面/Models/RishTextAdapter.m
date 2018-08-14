@@ -7,6 +7,8 @@
 //
 
 #import "RishTextAdapter.h"
+
+
 @interface RishTextAdapter()
 @property (nonatomic,strong)NSMutableArray * replaceArr;
 @end
@@ -59,10 +61,35 @@
     if ([mstring hasPrefix:@"[:f"] && [mstring hasSuffix:@"]"]) {
         mstring = [mstring stringByReplacingOccurrencesOfString:@"[:f" withString:@""];
         mstring = [mstring stringByReplacingOccurrencesOfString:@"]" withString:@""];
+        
+    
     }
     UIImage * image = [UIImage imageNamed:[NSString stringWithFormat:@"Emotion.bundle/%@.gif",mstring]];
+    image.text_tag = [NSString stringWithFormat:@"[:f%@]",mstring];
     
     return image;
+}
+
++(NSString *)getStringWithAttributedString:(NSAttributedString *)attributedString{
+    __block NSString * result = @"";
+    
+    [attributedString enumerateAttributesInRange:NSMakeRange(0, attributedString.length) options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(NSDictionary<NSAttributedStringKey,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
+        NSTextAttachment * attachment = attrs[@"NSAttachment"];
+        if ([attachment isKindOfClass:[NSTextAttachment class]]) {
+            UIImage * image = attachment.image;
+            if ([image.text_tag hasPrefix:@"["] && [image.text_tag hasSuffix:@"]"]) {
+                result = [result stringByAppendingString:image.text_tag];
+            }
+
+            
+            
+        }else{
+            
+            result = [result stringByAppendingString:[[attributedString attributedSubstringFromRange:range] string]];
+        }
+    }];
+    
+    return result;
 }
 
 @end
