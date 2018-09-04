@@ -26,24 +26,24 @@
     [self initData];
     [self initNavi];
     [self initUI];
+    [self refreshData];
     
-    
-    [ProgressTool show];
-    [Request joinGroupWithIdOrName:CurrentUserId groupId:@"123" success:^(NSUInteger code, NSString *msg, id data) {
-        [ProgressTool hidden];
-        if (code == 200) {
-            
-        }
-        [self.view makeToast:data duration:2 position:CSToastPositionCenter];
-    } failure:^(NSError *error) {
-        [ProgressTool hidden];
-        [self.view makeToast:@"失败" duration:2 position:CSToastPositionCenter];
-    }];
+//    [ProgressTool show];
+//    [Request joinGroupWithIdOrName:CurrentUserId groupId:@"123" success:^(NSUInteger code, NSString *msg, id data) {
+//        [ProgressTool hidden];
+//        if (code == 200) {
+//
+//        }
+//        [self.view makeToast:data duration:2 position:CSToastPositionCenter];
+//    } failure:^(NSError *error) {
+//        [ProgressTool hidden];
+//        [self.view makeToast:@"失败" duration:2 position:CSToastPositionCenter];
+//    }];
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self refreshData];
+
     
 }
 

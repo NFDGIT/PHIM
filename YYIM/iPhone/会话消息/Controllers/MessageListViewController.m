@@ -16,6 +16,8 @@
 #import "NaviAddAlertView.h"
 #import "PHPush.h"
 #import "PersonManager.h"
+#import "CreateGroupViewController.h"
+
 //
 //#import "DBTool.h"
 
@@ -43,10 +45,10 @@
     if ([PersonManager share].groupChatDic.allKeys.count < 1) {
         [[PersonManager share]refreshGroupChats];
     }
-    if ([[PersonManager share]getMyFriends].count < 1) {
+//    if ([[PersonManager share]getMyFriends].count < 1) {
         [[PersonManager share]refreshMyFriends:^(BOOL success) {
         }];
-    }
+//    }
     
 
     
@@ -242,6 +244,23 @@
 -(void)addBtnClick{
     NaviAddAlertView * addView = [NaviAddAlertView new];
     [addView appear];
+    addView.clickBlock = ^(NSUInteger index) {
+        if (index == 0) { // 创建群聊
+            CreateGroupViewController * createGroup = [CreateGroupViewController new];
+            [self.navigationController pushViewController:createGroup animated:YES];
+            
+            
+            return ;
+        }
+        if (index == 1) { // 加好友/群
+            return ;
+        }
+        if (index == 2) { // 创建组织架构
+            return ;
+        }
+        
+    };
+    
 }
 /*
 #pragma mark - Navigation

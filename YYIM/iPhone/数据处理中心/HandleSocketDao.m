@@ -301,7 +301,7 @@
                 NSString * suffix = [NSString stringWithFormat:@"%@",imageinfocompent[4]];
                 
                 
-                NSString * imgUrl = [NSString stringWithFormat:@"%@%@/%@%@?width=%@&height=%@",serverAddress,CurrentUserId,fileName,suffix,width,height];
+                NSString * imgUrl = [NSString stringWithFormat:@"%@%@/%@%@?width=%@&height=%@",serverAddress,ReceiveId,fileName,suffix,width,height];
                 
                 
                 MsgModel * model = [MsgModel new];
@@ -361,7 +361,7 @@
                     NSString * suffix = [NSString stringWithFormat:@"%@",imageinfocompent[4]];
                     
                     
-                    NSString * imgUrl = [NSString stringWithFormat:@"%@%@/%@%@?width=%@&height=%@",serverAddress,CurrentUserId,fileName,suffix,width,height];
+                    NSString * imgUrl = [NSString stringWithFormat:@"%@%@/%@%@?width=%@&height=%@",serverAddress,ReceiveId,fileName,suffix,width,height];
                     
                     
                     MsgModel * model = [MsgModel new];
@@ -429,7 +429,7 @@
                 
                 
                 NSString * identification = [NSString stringWithFormat:@"%@",fileContent[@"identification"]];
-                NSString * fileUrl = [NSString stringWithFormat:@"%@%@/%@",serverAddress,CurrentUserId,identification];
+                NSString * fileUrl = [NSString stringWithFormat:@"%@%@/%@",serverAddress,ReceiveId,identification];
                 
                 
                 MsgModel * model = [MsgModel new];
@@ -474,7 +474,7 @@
                     
                     
                     NSString * identification = [NSString stringWithFormat:@"%@",fileContent[@"identification"]];
-                    NSString * fileUrl = [NSString stringWithFormat:@"%@%@/%@",serverAddress,CurrentUserId,identification];
+                    NSString * fileUrl = [NSString stringWithFormat:@"%@%@/%@",serverAddress,ReceiveId,identification];
                     
                     
                     MsgModel * model = [MsgModel new];

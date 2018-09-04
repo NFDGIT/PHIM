@@ -296,7 +296,17 @@
             NSString * fileName =[NSString stringWithFormat:@"%@",[data firstObject]];
             NSString * fileUrl =[NSString stringWithFormat:@"%@%@/%@",serverAddress,self->_conversationModel.Id,[NSString stringWithFormat:@"%@",[data firstObject]]];
             
-            [SocketRequest  sendFileName:fileName fileDesc:fileDesc fileSize:fileSize receiceId:self->_conversationModel.Id];
+            
+            if (self->_conversationModel.GroupMsg) {
+                [SocketRequest sendGroupFileName:fileName fileDesc:fileDesc fileSize:fileSize receiceId:self->_conversationModel.Id];
+                
+            }else{
+                [SocketRequest  sendFileName:fileName fileDesc:fileDesc fileSize:fileSize receiceId:self->_conversationModel.Id];
+            }
+
+
+            
+            
             
             
             MsgModel * model = [MsgModel new];
@@ -384,9 +394,20 @@
                 
                 [[MessageManager share] addMsg:model toTarget:self->_conversationModel];
                 
-                NSString * imgUrl1 = [NSString stringWithFormat:@"0,%@,%f,%f,.png|",imgNam,image.size.width,image.size.height];
+                NSString * imgUrl1 = [NSString stringWithFormat:@"0,%@,%.0f,%.0f,.png|",imgNam,image.size.width,image.size.height];
                 
-                [SocketRequest sendPhoto:imgUrl1 receiceId:self->_conversationModel.Id];
+                
+                
+                if (self->_conversationModel.GroupMsg) {
+        
+                    [SocketRequest sendGroupPhoto:imgUrl1 receiceId:self->_conversationModel.Id];
+                    
+                }else{
+                    
+                    [SocketRequest sendPhoto:imgUrl1 receiceId:self->_conversationModel.Id];
+//                    [SocketRequest  sendFileName:fileName fileDesc:fileDesc fileSize:fileSize receiceId:self->_conversationModel.Id];
+                }
+
                 
             }
             

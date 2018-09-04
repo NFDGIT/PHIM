@@ -156,6 +156,10 @@
         
         
         MsgModel * msgModel = [[MessageManager share]getLastMessageWithTargetId:_model.Id response:nil];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat: @"yyyy-MM-dd HH:mm:ss"];
+        _labelTime.text = [dateFormatter stringFromDate:msgModel.time];
+        
         if (msgModel) {
             switch (msgModel.msgType) {
                 case MsgTypeText:

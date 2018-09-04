@@ -280,7 +280,7 @@ static PersonManager *shared = nil;
     [[NSUserDefaults standardUserDefaults] setObject:_myFriends forKey:@"myFriends"];
 }
 -(BOOL)isMyFriend:(NSString *)Id{
-    return YES;
+//    return YES;
     for (NSDictionary * dic in [self getMyFriends]) {
         NSArray * Friend = dic[@"Friend"];
         for (NSDictionary * friendDic in Friend) {

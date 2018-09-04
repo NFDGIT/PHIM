@@ -55,12 +55,12 @@
                 [btn setImage:[UIImage imageNamed:@"naviadd_creategroup"] forState:UIControlStateNormal];
                 break;
             case 1:
-                [btn setTitle:@" 加好友/群" forState:UIControlStateNormal];
+                [btn setTitle:@" 加好友" forState:UIControlStateNormal];
                 [btn setImage:[UIImage imageNamed:@"naviadd_add"] forState:UIControlStateNormal];
                 break;
             case 2:
-                [btn setTitle:@" 创建组织架构" forState:UIControlStateNormal];
-                [btn setImage:[UIImage imageNamed:@"naviadd_framework"] forState:UIControlStateNormal];
+                [btn setTitle:@" 加群" forState:UIControlStateNormal];
+                [btn setImage:[UIImage imageNamed:@"naviadd_add"] forState:UIControlStateNormal];
                 break;
                 
             default:
@@ -69,22 +69,26 @@
     }
     
     
-    self.top = NaviHeight+50;
+    self.top = NaviHeight;
     self.right = ScreenWidth - 10;
     
     
 }
 
 -(void)btnClick:(UIButton *)sender{
-    self.userStatus = sender.tag - 100;
-
-}
-
--(void)setUserStatus:(UserStatus)userStatus{
 
     
-    [self refreshUI];
+    
+    
+    if (self.clickBlock) {
+        self.clickBlock(sender.tag - 100);
+        [self disAppear];
+    }
+    
+
+
 }
+
 
 
 -(void)refreshUI{

@@ -80,6 +80,7 @@ static SocketTool *shared = nil;
      *
      */
     [self stopHeartBeat];
+    [self longConnectToSocket];
     self.connectTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(longConnectToSocket) userInfo:nil repeats:YES];// 在longConnectToSocket方法中进行长连接需要向服务器发送的讯息
     /**
      *  启动定时器

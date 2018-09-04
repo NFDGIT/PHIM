@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface NaviAddAlertView : UIView
+@property (nonatomic,strong)void(^clickBlock)(NSUInteger index);
 -(void)appear;
 -(void)disAppear;
+
 @end

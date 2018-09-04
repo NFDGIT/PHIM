@@ -11,6 +11,10 @@
 #import "UserInfoModel.h"
 #import "PersonManager.h"
 #import "MessageManager.h"
+#import "EditPersonInfoViewController.h"
+
+
+
 
 @interface PersonDetailViewController ()
 @property (nonatomic,strong)UserInfoModel * infoModel;
@@ -199,6 +203,8 @@
     btnMessage.centerX = self.view.width / 2;
     setY = btnMessage.bottom;
     _btnMessage = btnMessage;
+    
+    
 
     
 }
@@ -249,6 +255,10 @@
     [_btnDesc setTitle: [NSString stringWithFormat:@"  %@",_infoModel.UnderWrite] forState:UIControlStateNormal];
     
     NSString * actionTitle =  [[PersonManager share]isMyFriend:_infoModel.userID]?@"聊天":@"添加好友";
+    if ([_infoModel.userID isEqualToString:CurrentUserId]) {
+        actionTitle = @"编辑资料";
+    }
+    
     [_btnMessage setTitle:actionTitle forState:UIControlStateNormal];
 }
 
@@ -269,10 +279,20 @@
     
 }
 -(void)jumpToChatVC{
+    
+    
+    
     if ([_Id isEmptyString]) {
         [self.view makeToast:@"Id 不存在" duration:2 position:CSToastPositionCenter];
         return;
     }
+    if ([_infoModel.userID isEqualToString:CurrentUserId]) {
+        EditPersonInfoViewController * editInfo = [EditPersonInfoViewController new];
+        editInfo.userId = CurrentUserId;
+        [self.navigationController pushViewController:editInfo animated:YES];
+        return;
+    }
+    
     
     if ([[PersonManager share] isMyFriend:_infoModel.userID]) {
         
@@ -300,7 +320,7 @@
                 
                 
                 [[PersonManager share]refreshMyFriends:^(BOOL success) {
-                    [self refreshUI];
+                    [self refreshData];
                 }];
                 
             }
@@ -338,13 +358,13 @@
 //    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt:%@",_infoModel.Phone];
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     
-    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",_infoModel.Phone];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-    
 //    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",_infoModel.Phone];
-//    UIWebView * callWebview = [[UIWebView alloc] init];
-//    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-//    [self.view addSubview:callWebview];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+    
+    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",_infoModel.Phone];
+    UIWebView * callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+    [self.view addSubview:callWebview];
 }
 
 /*

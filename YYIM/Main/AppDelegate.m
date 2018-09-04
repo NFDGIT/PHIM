@@ -54,7 +54,10 @@
         [[NetTool share] startDetection];    // 开始检测服务器
         [[DBTool share]createAccountDb];     // 初始化数据库
         [SocketRequest login];               // socket 发送上线通知
-        [SocketRequest getOffLineMessage];   // 请求离线消息
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                  [SocketRequest getOffLineMessage];   // 请求离线消息
+        });
+
         
         
     };

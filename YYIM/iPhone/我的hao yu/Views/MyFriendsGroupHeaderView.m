@@ -24,6 +24,9 @@
     self.contentView.backgroundColor = [UIColor whiteColor];
     self.contentView.frame = CGRectMake(0, 0, ScreenWidth, 50);
     
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(expandedClick)];
+    [self addGestureRecognizer:tap];
+    
     
     _btnName = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, 200, 20)];
     [_btnName setTitleColor:ColorBlack forState:UIControlStateNormal];
@@ -32,7 +35,8 @@
     [self.contentView addSubview:_btnName];
     [_btnName setImage:[UIImage imageNamed:@"展开"] forState:UIControlStateSelected];
     [_btnName setImage:[UIImage imageNamed:@"收起"] forState:UIControlStateNormal];
-    [_btnName addTarget:self action:@selector(expandedClick) forControlEvents:UIControlEventTouchUpInside];
+    _btnName.enabled = NO;
+//    [_btnName addTarget:self action:@selector(expandedClick) forControlEvents:UIControlEventTouchUpInside];
     
     
     _labelCount = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 20)];

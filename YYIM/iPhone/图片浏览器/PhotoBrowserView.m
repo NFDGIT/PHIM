@@ -9,6 +9,7 @@
 #import "PhotoBrowserView.h"
 #import "ProgressTool.h"
 #import "FileManager.h"
+#import <Photos/Photos.h>
 
 @interface PhotoBrowserView()
 @property (nonatomic,assign)CGRect originRect;
@@ -86,14 +87,40 @@
 #pragma mark -- 点击事件
 -(void)downLoad{
 
-    [ProgressTool showProgressWithText:@"下载中"];
+    [ProgressTool showProgressWithText:@"保存中"];
     [Request downloadImage:[NSURL URLWithString:_imgs.firstObject] progress:^(float progress) {
         [ProgressTool setProgress:progress];
     } success:^(NSUInteger code, NSString *msg, id data) {
-        [ProgressTool hidden];
+
         UIImage * image = (UIImage *)data;
         [FileManager saveImageToResourceFolder:image];
-        [[UIApplication sharedApplication].keyWindow makeToast:@"保存成功" duration:2 position:CSToastPositionCenter];
+        
+//        __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+//        [lib writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+//            NSLog(@"assetURL = %@, error = %@", assetURL, error);
+//            lib = nil;
+//        }];
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+            //写入图片到相册
+            PHAssetChangeRequest *req = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+        } completionHandler:^(BOOL success, NSError * _Nullable error) {
+          
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                          [ProgressTool hidden];
+                if (success) {
+                    [[UIApplication sharedApplication].keyWindow makeToast:@"保存成功" duration:2 position:CSToastPositionCenter];
+                }else{
+                    [[UIApplication sharedApplication].keyWindow makeToast:@"保存失败" duration:2 position:CSToastPositionCenter];
+                }
+            });
+            
+    
+            
+            NSLog(@"success = %d, error = %@", success, error);
+        }];
+        
+      
     } failure:^(NSError *error) {
         [ProgressTool hidden];
         [[UIApplication sharedApplication].keyWindow makeToast:@"保存失败" duration:2 position:CSToastPositionCenter];

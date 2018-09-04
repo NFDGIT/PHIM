@@ -440,7 +440,7 @@
     [param setValue:idOrName forKey:@"friendId"];
     [param setValue:catalogName forKey:@"catalogName"];
     
-    [Request getWithUrlPath:UrlPath AndUrl:@"/addfriend" params:param success:^(NSUInteger code, NSString *msg, id data) {
+    [Request postWithUrlPath:UrlPath AndUrl:@"/addfriend" params:param success:^(NSUInteger code, NSString *msg, id data) {
         if (success) {
             NSString * datas = data[@"data"];
             success(code,msg,datas);

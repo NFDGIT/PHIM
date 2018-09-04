@@ -52,5 +52,20 @@
  @param receiveId 接收ID
  */
 +(void)sendGroupMsg:(NSString *)msg receiveId:(NSString *)receiveId;
+/**
+ 发送群图片
+ 
+ @param imgUrl 图片的内容
+ @param receiveId 接收ID
+ */
++(void)sendGroupPhoto:(NSString *)imgUrl receiceId:(NSString *)receiveId;
+/**
+  发送群文件消息
 
+ @param fileName 文件名称
+ @param fileDesc 文件描述
+ @param fileSize 文件大小
+ @param receiveId 接收方
+ */
++(void)sendGroupFileName:(NSString *)fileName fileDesc:(NSString *)fileDesc fileSize:(NSString *)fileSize receiceId:(NSString *)receiveId;
 @end
